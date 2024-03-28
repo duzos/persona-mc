@@ -1,6 +1,7 @@
 package mc.duzo.persona.client.data;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import net.minecraft.entity.LivingEntity;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class ClientData {
     private static ClientData instance;
     private HashMap<UUID, PlayerData> players = new HashMap<>();
+    private HashMap<UUID, ClientBattleData> battles = new HashMap<>();
 
     public static ClientData getInstance() {
         if (instance == null) {
@@ -38,5 +40,18 @@ public class ClientData {
     }
     public static PlayerData getPlayerState(LivingEntity player) {
         return getPlayerState(player.getUuid());
+    }
+
+    public static void addBattle(UUID uuid, ClientBattleData battleData) {
+        getInstance().battles.put(uuid, battleData);
+    }
+    public static void addBattle(UUID uuid, NbtCompound data) {
+        addBattle(uuid, new ClientBattleData(data));
+    }
+    public static void addBattle(ClientBattleData data) {
+        addBattle(data.getUuid(), data);
+    }
+    public static void addBattle(NbtCompound data) {
+        addBattle(new ClientBattleData(data));
     }
 }

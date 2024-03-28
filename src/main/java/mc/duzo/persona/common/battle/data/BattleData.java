@@ -1,5 +1,6 @@
 package mc.duzo.persona.common.battle.data;
 
+import mc.duzo.persona.PersonaMod;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -9,19 +10,33 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class BattleData {
+	protected final UUID uuid;
 	protected final List<UUID> players;
 	protected final List<UUID> targets;
 
-	protected BattleData() {
+	protected BattleData(UUID uuid) {
+		this.uuid = uuid;
+
 		this.players = new ArrayList<>();
 		this.targets = new ArrayList<>();
+	}
+	protected BattleData(NbtCompound data) {
+		this(data.getUuid("Uuid"));
+
+		this.loadNbt(data);
+	}
+	protected BattleData() {
+		this(UUID.randomUUID());
 	}
 
 	public abstract List<? extends PlayerEntity> getPlayers();
 	public abstract List<? extends LivingEntity> getTargets();
+	public UUID getUuid() { return this.uuid; }
 
 	public NbtCompound toNbt() {
 		NbtCompound nbt = new NbtCompound();
+
+		nbt.putUuid("Uuid", this.uuid);
 
 		NbtCompound playersNbt = new NbtCompound();
 		for (UUID player : this.players) {
@@ -41,6 +56,10 @@ public abstract class BattleData {
 	public BattleData loadNbt(NbtCompound nbt) {
 		this.players.clear();
 		this.targets.clear();
+
+		if (this.getUuid() != nbt.getUuid("Uuid")) {
+			PersonaMod.LOGGER.warn("Loading a battle data with a different UUID than the original!");
+		}
 
 		NbtCompound playersNbt = nbt.getCompound("Players");
 		playersNbt.getKeys().forEach(key -> {

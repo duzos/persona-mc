@@ -5,6 +5,7 @@ import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -23,6 +24,9 @@ public class ServerBattleData extends BattleData {
 		for (LivingEntity target : targets) {
 			this.targets.add(target.getUuid());
 		}
+	}
+	public ServerBattleData(NbtCompound nbt) {
+		super(nbt);
 	}
 
 	public void toClient(ServerPlayerEntity target) {

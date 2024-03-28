@@ -8,12 +8,17 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class ClientBattleData extends BattleData {
+	public ClientBattleData(NbtCompound nbt) {
+		super(nbt);
+	}
+
 	@Override
 	public List<? extends PlayerEntity> getPlayers() {
 		ClientWorld world = MinecraftClient.getInstance().world;

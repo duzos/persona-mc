@@ -1,6 +1,8 @@
 package mc.duzo.persona.data;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.data.BattleData;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
@@ -8,10 +10,7 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Data that will be saved to the world in .nbt form
@@ -23,6 +22,7 @@ import java.util.UUID;
 public class ServerData extends PersistentState {
     public boolean hasVelvetRoom;
     private HashMap<UUID, PlayerData> players = new HashMap<>();
+    private HashMap<UUID, BattleData> battles = new HashMap<>();
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
@@ -35,6 +35,12 @@ public class ServerData extends PersistentState {
         nbt.put("players", playersNbt);
 
         nbt.putBoolean("HasVelvetRoom", hasVelvetRoom);
+
+        NbtCompound battlesNbt = new NbtCompound();
+        battles.forEach((uuid, battleData) -> {
+            battlesNbt.put(uuid.toString(), battleData.toNbt());
+        });
+        nbt.put("Battles", battlesNbt);
 
         return nbt;
     }
@@ -51,6 +57,14 @@ public class ServerData extends PersistentState {
         });
 
         data.hasVelvetRoom = nbt.getBoolean("HasVelvetRoom");
+
+        NbtCompound battlesNbt = nbt.getCompound("Battles");
+        battlesNbt.getKeys().forEach(key -> {
+            ServerBattleData battleData = new ServerBattleData(battlesNbt.getCompound(key));
+
+            UUID uuid = UUID.fromString(key);
+            data.battles.put(uuid, battleData);
+        });
 
         return data;
     }

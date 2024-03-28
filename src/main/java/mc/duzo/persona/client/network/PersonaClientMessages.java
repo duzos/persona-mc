@@ -43,10 +43,8 @@ public class PersonaClientMessages {
         recievePlayerData(uuid, nbt);
     }
     private static void receiveBattleData(PacketByteBuf buf) {
-        // todo - somewhere to store this result
-
         NbtCompound nbt = buf.readNbt();
-        ClientBattleData data = (ClientBattleData) new ClientBattleData().loadNbt(nbt);
+        ClientData.addBattle(nbt);
     }
 
     public static void askForPlayerData(UUID uuid) {
