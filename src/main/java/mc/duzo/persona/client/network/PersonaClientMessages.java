@@ -1,6 +1,7 @@
 package mc.duzo.persona.client.network;
 
 import mc.duzo.persona.client.PersonaModClient;
+import mc.duzo.persona.client.data.ClientBattleData;
 import mc.duzo.persona.client.data.ClientData;
 import mc.duzo.persona.client.sound.PlayerFollowingLoopingSound;
 import mc.duzo.persona.common.PersonaSounds;
@@ -17,6 +18,7 @@ public class PersonaClientMessages {
     public static void initialise() {
         ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.SYNC_DATA, ((client, handler, buf, responseSender) -> recievePlayerData(buf)));
         ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.CHANGED_VELVET, ((client, handler, buf, responseSender) -> recieveVelvetChange(buf)));
+        ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.BATTLE_DATA, ((client, handler, buf, responseSender) -> receiveBattleData(buf)));
     }
 
     private static void recieveVelvetChange(boolean entry) {
@@ -39,6 +41,12 @@ public class PersonaClientMessages {
         UUID uuid = buf.readUuid();
         NbtCompound nbt = buf.readNbt();
         recievePlayerData(uuid, nbt);
+    }
+    private static void receiveBattleData(PacketByteBuf buf) {
+        // todo - somewhere to store this result
+
+        NbtCompound nbt = buf.readNbt();
+        ClientBattleData data = (ClientBattleData) new ClientBattleData().loadNbt(nbt);
     }
 
     public static void askForPlayerData(UUID uuid) {
