@@ -2,6 +2,7 @@ package mc.duzo.persona.common.battle.data;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.network.PersonaMessages;
+import mc.duzo.persona.util.DeltaTimeManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,7 +35,25 @@ public class ServerBattleData extends BattleData {
 	}
 
 	@Override
+	protected boolean shouldUpdateCache() {
+		return DeltaTimeManager.isOnDelay(this.getCacheKey());
+	}
+	private void createCacheDelay() {
+		DeltaTimeManager.createDelay(this.getCacheKey(), this.getCacheDelay());
+	}
+	private long getCacheDelay() {
+		return (long) ((PersonaMod.RANDOM.nextDouble(2,5)) * 1000L);
+	}
+	private String getCacheKey() {
+		return this.getUuid().toString() + "-cache";
+	}
+
+	@Override
 	public List<? extends PlayerEntity> getPlayers() {
+		if (!this.shouldUpdateCache() && this.playersCache != null) {
+			return this.playersCache;
+		}
+
 		if (!PersonaMod.hasServer()) {
 			PersonaMod.LOGGER.error("Tried to get players from server without a server!");
 			return List.of();
@@ -51,11 +70,18 @@ public class ServerBattleData extends BattleData {
 			list.add(found);
 		}
 
+		this.playersCache = list;
+		this.createCacheDelay();
+
 		return list;
 	}
 
 	@Override
 	public List<? extends LivingEntity> getTargets() {
+		if (!this.shouldUpdateCache() && this.targetsCache != null) {
+			return this.targetsCache;
+		}
+
 		if (!PersonaMod.hasServer()) {
 			PersonaMod.LOGGER.error("Tried to get targets from server without a server!");
 			return List.of();
@@ -77,6 +103,9 @@ public class ServerBattleData extends BattleData {
 				searchList.remove(id);
 			}
 		}
+
+		this.targetsCache = list;
+		this.createCacheDelay();
 
 		return list;
 	}

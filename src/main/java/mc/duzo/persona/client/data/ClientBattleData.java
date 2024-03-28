@@ -2,6 +2,8 @@ package mc.duzo.persona.client.data;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.common.battle.data.BattleData;
+import mc.duzo.persona.network.PersonaMessages;
+import mc.duzo.persona.util.DeltaTimeManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -20,7 +22,25 @@ public class ClientBattleData extends BattleData {
 	}
 
 	@Override
+	protected boolean shouldUpdateCache() {
+		return DeltaTimeManager.isOnDelay(this.getCacheKey());
+	}
+	private void createCacheDelay() {
+		DeltaTimeManager.createDelay(this.getCacheKey(), this.getCacheDelay());
+	}
+	private long getCacheDelay() {
+		return (long) ((PersonaMod.RANDOM.nextDouble(10,12)) * 1000L);
+	}
+	private String getCacheKey() {
+		return this.getUuid().toString() + "-cache";
+	}
+
+	@Override
 	public List<? extends PlayerEntity> getPlayers() {
+		if (!this.shouldUpdateCache() && this.playersCache != null) {
+			return this.playersCache;
+		}
+
 		ClientWorld world = MinecraftClient.getInstance().world;
 
 		if (world == null) {
@@ -38,11 +58,18 @@ public class ClientBattleData extends BattleData {
 			list.add(found);
 		}
 
+		this.playersCache = list;
+		this.createCacheDelay();
+
 		return list;
 	}
 
 	@Override
 	public List<? extends LivingEntity> getTargets() {
+		if (!this.shouldUpdateCache() && this.targetsCache != null) {
+			return this.targetsCache;
+		}
+
 		ClientWorld world = MinecraftClient.getInstance().world;
 
 		if (world == null) {
@@ -59,6 +86,9 @@ public class ClientBattleData extends BattleData {
 				list.add((LivingEntity) entity);
 			}
 		}
+
+		this.targetsCache = list;
+		this.createCacheDelay();
 
 		return list;
 	}

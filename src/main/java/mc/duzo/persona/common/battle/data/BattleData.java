@@ -14,6 +14,9 @@ public abstract class BattleData {
 	protected final List<UUID> players;
 	protected final List<UUID> targets;
 
+	protected List<? extends PlayerEntity> playersCache;
+	protected List<? extends LivingEntity> targetsCache;
+
 	protected BattleData(UUID uuid) {
 		this.uuid = uuid;
 
@@ -28,10 +31,12 @@ public abstract class BattleData {
 	protected BattleData() {
 		this(UUID.randomUUID());
 	}
+	public UUID getUuid() { return this.uuid; }
+
 
 	public abstract List<? extends PlayerEntity> getPlayers();
 	public abstract List<? extends LivingEntity> getTargets();
-	public UUID getUuid() { return this.uuid; }
+	protected abstract boolean shouldUpdateCache();
 
 	public NbtCompound toNbt() {
 		NbtCompound nbt = new NbtCompound();
