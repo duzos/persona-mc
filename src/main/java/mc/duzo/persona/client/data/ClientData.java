@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -53,5 +54,9 @@ public class ClientData {
     }
     public static void addBattle(NbtCompound data) {
         addBattle(new ClientBattleData(data));
+    }
+
+    public static Optional<ClientBattleData> getBattleState(UUID uuid) {
+        return Optional.ofNullable(getInstance().battles.get(uuid));
     }
 }

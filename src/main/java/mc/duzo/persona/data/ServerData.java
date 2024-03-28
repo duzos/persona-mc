@@ -22,7 +22,7 @@ import java.util.*;
 public class ServerData extends PersistentState {
     public boolean hasVelvetRoom;
     private HashMap<UUID, PlayerData> players = new HashMap<>();
-    private HashMap<UUID, BattleData> battles = new HashMap<>();
+    private HashMap<UUID, ServerBattleData> battles = new HashMap<>();
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
@@ -90,5 +90,19 @@ public class ServerData extends PersistentState {
 
     public static Set<UUID> getKeys(MinecraftServer server) {
         return getServerState(server).players.keySet();
+    }
+
+    public static Optional<ServerBattleData> getBattleState(MinecraftServer server, UUID uuid) {
+        ServerData serverData = getServerState(server);
+
+        return Optional.ofNullable(serverData.battles.get(uuid));
+    }
+
+    public static void addBattle(MinecraftServer server, UUID uuid, ServerBattleData battleData) {
+        ServerData serverData = getServerState(server);
+        serverData.battles.put(uuid, battleData);
+    }
+    public static void addBattle(MinecraftServer server, ServerBattleData battleData) {
+        addBattle(server, battleData.getUuid(), battleData);
     }
 }
