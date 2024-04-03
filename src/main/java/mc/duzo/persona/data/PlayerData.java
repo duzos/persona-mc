@@ -165,4 +165,8 @@ public class PlayerData {
 
         return data;
     }
+
+	public boolean isRunningAnimations() {
+        return false; // TODO
+	}
 }
