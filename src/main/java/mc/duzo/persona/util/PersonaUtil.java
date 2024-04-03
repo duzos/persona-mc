@@ -2,6 +2,7 @@ package mc.duzo.persona.util;
 
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.data.PlayerData;
@@ -14,6 +15,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Math;
 
@@ -92,6 +94,25 @@ public class PersonaUtil {
 
         battle.get().addTarget(target);
     }
+    public static void useSkill(LivingEntity entity) {
+        if (entity instanceof ServerPlayerEntity player) {
+            useSkill(player);
+            return;
+        }
+
+        Optional<ServerBattleData> battle = BattleHandler.findBattle(entity);
+        if (battle.isEmpty()) return;
+
+        Skill skill = BattleHandler.findRandomDamageSkill();
+        LivingEntity target = BattleHandler.findRandomPlayer(battle.get());
+
+        skill.run(entity, null, target);
+
+        createSkillParticles(target, ParticleTypes.ENCHANTED_HIT);
+        createSkillParticles(entity, ParticleTypes.FIREWORK);
+
+        entity.getWorld().playSound(null, entity.getBlockPos(), skill.getUseSound(), SoundCategory.PLAYERS, 1.0f, 1.0f);
+    }
 
     public static void revealPersona(ServerPlayerEntity player) {
         PlayerData data = ServerData.getPlayerState(player);
@@ -125,6 +146,15 @@ public class PersonaUtil {
         if (onCooldown(player)) return false;
 
         PlayerData data = ServerData.getPlayerState(player);
+
+        Optional<ServerBattleData> battle = BattleHandler.findBattle(player);
+        if (battle.isPresent()) {
+            BattleTurn turn = battle.get().getTurn();
+
+            if (!turn.isCurrent(player)) {
+                return false;
+            }
+        }
 
         if (skill.usesHealth()) return true;
 

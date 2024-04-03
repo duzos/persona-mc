@@ -2,6 +2,9 @@ package mc.duzo.persona.common.skill;
 
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.common.affinities.Affinity;
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
@@ -14,6 +17,8 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public abstract class Skill implements Identifiable {
     private final Identifier id;
@@ -29,18 +34,34 @@ public abstract class Skill implements Identifiable {
                 '}';
     }
 
-    public void run(ServerPlayerEntity source, Persona persona, LivingEntity target) {
-        PlayerData data = ServerData.getPlayerState(source);
+    public boolean run(LivingEntity source, Persona persona, LivingEntity target) {
+        Optional<ServerBattleData> battle = BattleHandler.findBattle(source);
+        if (battle.isPresent()) {
+            BattleTurn turn = battle.get().getTurn();
 
-        if (this.usesHealth()) {
-            source.damage(source.getDamageSources().generic(), source.getMaxHealth() * (this.getCost() / 100f));
-            return;
+            if (!turn.isCurrent(source)) {
+                source.sendMessage(Text.literal("Not your turn!"));
+                return false;
+            }
+
+            turn.next();
+            turn.getCurrent().sendMessage(Text.literal("It's your turn!"));
         }
 
-        data.removeSP(this.getCost());
+        if (source instanceof ServerPlayerEntity player) {
+            PlayerData data = ServerData.getPlayerState(player);
 
-        ServerData.getServerState(source.getServer()).markDirty();
-        PersonaMessages.syncData(source, source);
+            if (this.usesHealth()) {
+                source.damage(source.getDamageSources().generic(), source.getMaxHealth() * (this.getCost() / 100f));
+                return true;
+            }
+
+            data.removeSP(this.getCost());
+
+            ServerData.getServerState(player.getServer()).markDirty();
+            PersonaMessages.syncData(player, player);
+        }
+        return true;
     }
 
     public Text getName() {
@@ -79,10 +100,14 @@ public abstract class Skill implements Identifiable {
     public static Skill create(Identifier id, Affinity affinity, RunSkill onRun, boolean usesHealth, int cost, double cooldown, @Nullable SoundEvent sound) {
         return new Skill(id) {
             @Override
-            public void run(ServerPlayerEntity source, Persona persona, LivingEntity target) {
-                super.run(source, persona, target);
+            public boolean run(LivingEntity source, Persona persona, LivingEntity target) {
+                boolean success = super.run(source, persona, target);
+
+                if (!success) return false;
 
                 onRun.run(source, persona, target);
+
+                return true;
             }
 
             @Override
@@ -121,6 +146,6 @@ public abstract class Skill implements Identifiable {
         return create(id, affinity, onRun, usesHealth, cost, cooldown, null);
     }
     public interface RunSkill {
-        void run(ServerPlayerEntity source, Persona persona, LivingEntity target);
+        void run(LivingEntity source, Persona persona, LivingEntity target);
     }
 }

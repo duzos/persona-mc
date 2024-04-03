@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -65,14 +66,21 @@ public class SkillRegistry {
             new Identifier(PersonaMod.MOD_ID, "mazio"),
             Affinity.ELEC,
             (source, persona, target) -> {
-                Optional<ServerBattleData> battle = BattleHandler.findPlayersBattle(source, true);
+                Optional<ServerBattleData> battle = BattleHandler.findBattle(source);
                 if (battle.isEmpty()) {
                     ZIO.run(source, persona, target);
                     return;
                 }
 
-                for (LivingEntity entity : battle.get().getTargets()) {
-                    ZIO.run(source, persona, entity);
+                if (source instanceof ServerPlayerEntity) {
+                    for (LivingEntity entity : battle.get().getTargets()) {
+                        EntityType.LIGHTNING_BOLT.spawn((ServerWorld) entity.getWorld(), entity.getBlockPos(), SpawnReason.TRIGGERED);
+                    }
+                    return;
+                }
+
+                for (LivingEntity player : battle.get().getPlayers()) {
+                    EntityType.LIGHTNING_BOLT.spawn((ServerWorld) player.getWorld(), player.getBlockPos(), SpawnReason.TRIGGERED);
                 }
             },
             false,
@@ -86,16 +94,18 @@ public class SkillRegistry {
             (source, persona, target) -> {
                 if (!PersonaMod.hasServer()) return;
 
-                ServerWorld world = WorldUtil.findWorld(source.getSpawnPointDimension());
-                BlockPos pos = source.getSpawnPointPosition();
+                if (!(source instanceof ServerPlayerEntity sauce)) return;
+
+                ServerWorld world = WorldUtil.findWorld(sauce.getSpawnPointDimension());
+                BlockPos pos = sauce.getSpawnPointPosition();
 
                 if (world == null || pos == null) return;
 
-                Optional<Vec3d> respawnPos = PlayerEntity.findRespawnPosition(world, pos, source.getSpawnAngle(), true, true);
+                Optional<Vec3d> respawnPos = PlayerEntity.findRespawnPosition(world, pos, sauce.getSpawnAngle(), true, true);
 
                 if (respawnPos.isEmpty()) return;
 
-                WorldUtil.teleport(source, world, respawnPos.get(), source.getSpawnAngle(), 0);
+                WorldUtil.teleport(source, world, respawnPos.get(), sauce.getSpawnAngle(), 0);
             },
             false,
             25,

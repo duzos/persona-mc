@@ -1,6 +1,7 @@
 package mc.duzo.persona.common.battle.data;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -47,8 +48,22 @@ public abstract class BattleData {
 	public void addTarget(LivingEntity entity) {
 		this.addTarget(entity.getUuid());
 	}
+	public boolean hasTarget(UUID id) {
+		return this.targets.contains(id);
+	}
+	public boolean hasTarget(LivingEntity entity) {
+		return this.hasTarget(entity.getUuid());
+	}
+	public boolean hasPlayer(UUID id) {
+		return this.players.contains(id);
+	}
+	public boolean hasPlayer(PlayerEntity player) {
+		return this.hasPlayer(player.getUuid());
+	}
+
 	protected abstract boolean shouldUpdateCache();
 
+	public abstract BattleTurn getTurn();
 
 	public NbtCompound toNbt() {
 		NbtCompound nbt = new NbtCompound();
@@ -66,6 +81,8 @@ public abstract class BattleData {
 			targetsNbt.putUuid(target.toString(), target);
 		}
 		nbt.put("Targets", targetsNbt);
+
+		nbt.put("Turn", this.getTurn().toNbt());
 
 		return nbt;
 	}

@@ -1,7 +1,9 @@
 package mc.duzo.persona.client.battle.data;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.client.battle.turn.ClientBattleTurn;
 import mc.duzo.persona.common.battle.data.BattleData;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.DeltaTimeManager;
 import net.minecraft.client.MinecraftClient;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class ClientBattleData extends BattleData {
+	private ClientBattleTurn turn;
+
 	public ClientBattleData(NbtCompound nbt) {
 		super(nbt);
 	}
@@ -26,6 +30,17 @@ public class ClientBattleData extends BattleData {
 	protected boolean shouldUpdateCache() {
 		return DeltaTimeManager.isOnDelay(this.getCacheKey());
 	}
+
+	@Override
+	public BattleTurn getTurn() {
+		if (this.turn == null) {
+			this.turn = new ClientBattleTurn(this);
+			PersonaMod.LOGGER.error("Client is missing turn!");
+		}
+
+		return this.turn;
+	}
+
 	private void createCacheDelay() {
 		DeltaTimeManager.createDelay(this.getCacheKey(), this.getCacheDelay());
 	}
@@ -98,5 +113,15 @@ public class ClientBattleData extends BattleData {
 		this.createCacheDelay();
 
 		return list;
+	}
+
+	@Override
+	public BattleData loadNbt(NbtCompound nbt) {
+		super.loadNbt(nbt);
+
+		this.turn = new ClientBattleTurn(this);
+		this.turn.loadNbt(nbt.getCompound("Turn"));
+
+		return this;
 	}
 }
