@@ -18,7 +18,7 @@ public abstract class BattleTurn {
 		this.current = current;
 	}
 	protected BattleTurn(BattleData data) {
-		this(data, data.getPlayers().get(0).getUuid());
+		this(data, null);
 	}
 
 	public abstract LivingEntity getCurrent();
