@@ -69,6 +69,7 @@ public class ClientData {
     }
     public static void clearBattles() {
         getInstance().battles.clear();
+        ClientBattleCache.clear();
     }
 
     public static Optional<ClientBattleData> getBattleState(UUID uuid) {
