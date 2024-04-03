@@ -25,6 +25,8 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 			// Music
 			provider.addSound("velvet_room", PersonaSounds.MUSIC_VELVET);
 			provider.addSound("reach_out_to_the_truth", PersonaSounds.MUSIC_REACH_OUT);
+			provider.addSound("going_down", PersonaSounds.MUSIC_GOING_DOWN);
+			provider.addSound("take_over", PersonaSounds.MUSIC_TAKE_OVER);
 
 			// Skills
 			provider.addSound("attack", PersonaSounds.ATTACK);

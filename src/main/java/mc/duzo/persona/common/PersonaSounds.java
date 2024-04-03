@@ -14,6 +14,8 @@ public class PersonaSounds {
     public static final SoundEvent PERSONA_SHOUT = register("persona_shout");
     public static final SoundEvent ARSENE_SHOUT = register("arsene");
     public static final SoundEvent MUSIC_REACH_OUT = register("reach_out_to_the_truth");
+    public static final SoundEvent MUSIC_GOING_DOWN = register("going_down");
+    public static final SoundEvent MUSIC_TAKE_OVER = register("take_over");
 
     public static void init() {
 
