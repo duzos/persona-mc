@@ -82,13 +82,15 @@ public abstract class BattleTurn {
 	public NbtCompound toNbt() {
 		NbtCompound nbt = new NbtCompound();
 
-		nbt.putUuid("Current", this.current);
+		if (this.current != null)
+			nbt.putUuid("Current", this.current);
 
 		return nbt;
 	}
 
 	public BattleTurn loadNbt(NbtCompound nbt) {
-		this.current = nbt.getUuid("Current");
+		if (nbt.contains("Current"))
+			this.current = nbt.getUuid("Current");
 
 		return this;
 	}
