@@ -98,6 +98,13 @@ public class ServerBattleData extends BattleData {
 		this.toClient();
 	}
 
+	@Override
+	protected void addPlayer(UUID id) {
+		super.addPlayer(id);
+
+		this.toClient();
+	}
+
 	public void tick(MinecraftServer server) {
 		if (server.getTicks() % 32 == 0) {
 			BattleHandler.validateBattle(server, this);

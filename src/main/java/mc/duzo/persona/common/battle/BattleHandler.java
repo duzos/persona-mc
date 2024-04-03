@@ -201,7 +201,7 @@ public class BattleHandler {
 			count++;
 		}
 
-		count = 0;
+		count = 1;
 		pos = playerCentre;
 
 		for (PlayerEntity target : data.getPlayers()) {
