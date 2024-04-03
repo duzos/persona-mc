@@ -83,7 +83,7 @@ public class BattleHandler {
 			}
 		}
 
-		return Optional.empty();
+		return findTargetsBattle(player);
 	}
 	private static Optional<ServerBattleData> findPlayersBattleAndValidate(ServerPlayerEntity player) {
 		Optional<ServerBattleData> found = findPlayersBattle(player);
@@ -142,7 +142,12 @@ public class BattleHandler {
 				pos = enemyCentre.west(count / 2);
 			}
 
-			target.teleport((ServerWorld) centre.getWorld(), pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, Set.of(), Direction.SOUTH.asRotation(), 0f);
+			if (target instanceof PlayerEntity) {
+				target.teleport((ServerWorld) centre.getWorld(), pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, Set.of(), target.headYaw, target.getPitch());
+			}
+			else {
+				target.teleport((ServerWorld) centre.getWorld(), pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, Set.of(), Direction.SOUTH.asRotation(), 0f);
+			}
 
 			pos = enemyCentre;
 			count++;
