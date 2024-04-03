@@ -54,6 +54,16 @@ public abstract class BattleData {
 	public boolean hasTarget(LivingEntity entity) {
 		return this.hasTarget(entity.getUuid());
 	}
+
+	protected void addPlayer(UUID id) {
+		if (this.targets.contains(id)) return;
+		if (this.players.contains(id)) return;
+
+		this.players.add(id);
+	}
+	public void addPlayer(PlayerEntity entity) {
+		this.addPlayer(entity.getUuid());
+	}
 	public boolean hasPlayer(UUID id) {
 		return this.players.contains(id);
 	}

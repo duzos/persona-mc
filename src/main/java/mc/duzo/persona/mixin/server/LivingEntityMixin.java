@@ -35,9 +35,18 @@ public abstract class LivingEntityMixin {
 
 			if (thisEntity instanceof PlayerEntity) return; // Cannot attack players (yet)
 
-			Optional<ServerBattleData> found = BattleHandler.findPlayersBattle(player, true);
-			if (found.isPresent()) {
-				found.get().addTarget(thisEntity);
+			Optional<ServerBattleData> playersBattle = BattleHandler.findBattle(player);
+			Optional<ServerBattleData> entityBattle = BattleHandler.findBattle(thisEntity);
+
+			if (entityBattle.isPresent()) {
+				entityBattle.get().addPlayer(player);
+
+				cir.setReturnValue(false);
+				return;
+			}
+
+			if (playersBattle.isPresent()) {
+				playersBattle.get().addTarget(thisEntity);
 
 				cir.setReturnValue(false);
 				return;
