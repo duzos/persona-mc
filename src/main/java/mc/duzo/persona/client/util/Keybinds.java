@@ -4,7 +4,7 @@ import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.network.PersonaClientMessages;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
@@ -64,7 +64,7 @@ public class Keybinds {
 
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            ClientPlayerEntity player = client.player;
+            AbstractClientPlayerEntity player = client.player;
             if (player == null) return;
 
             tickTargetingKey(player);
@@ -75,7 +75,7 @@ public class Keybinds {
         });
     }
 
-    private static void tickTargetingKey(ClientPlayerEntity player) {
+    private static void tickTargetingKey(AbstractClientPlayerEntity player) {
         if (!targetingKey.wasPressed()) {
             if (wasTargetingHeld)
                 wasTargetingHeld = false;
@@ -89,7 +89,7 @@ public class Keybinds {
         PersonaClientMessages.sendTargetChangeRequest();
     }
 
-    private static void tickNextSkillKey(ClientPlayerEntity player) {
+    private static void tickNextSkillKey(AbstractClientPlayerEntity player) {
         if (!nextSkillKey.wasPressed()) {
             if (wasNextSkillHeld)
                 wasNextSkillHeld = false;
@@ -102,7 +102,7 @@ public class Keybinds {
 
         PersonaClientMessages.sendChangeSkillRequest(true);
     }
-    private static void tickPreviousSkillKey(ClientPlayerEntity player) {
+    private static void tickPreviousSkillKey(AbstractClientPlayerEntity player) {
         if (!previousSkillKey.wasPressed()) {
             if (wasPreviousSkillHeld)
                 wasPreviousSkillHeld = false;
@@ -116,7 +116,7 @@ public class Keybinds {
         PersonaClientMessages.sendChangeSkillRequest(false);
     }
 
-    private static void tickUseSkillKey(ClientPlayerEntity player) {
+    private static void tickUseSkillKey(AbstractClientPlayerEntity player) {
         if (!useSkillKey.wasPressed()) {
             if (wasUseSkillHeld)
                 wasUseSkillHeld = false;
@@ -130,7 +130,7 @@ public class Keybinds {
         PersonaClientMessages.sendUseSkillRequest();
     }
 
-    private static void tickToggleKey(ClientPlayerEntity player) {
+    private static void tickToggleKey(AbstractClientPlayerEntity player) {
         if (!toggleKey.wasPressed()) {
             if (wasToggleHeld)
                 wasToggleHeld = false;

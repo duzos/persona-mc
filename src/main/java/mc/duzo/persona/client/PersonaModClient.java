@@ -20,7 +20,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 
 public class PersonaModClient implements ClientModInitializer {
@@ -36,7 +37,7 @@ public class PersonaModClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
 
         ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            if (!(entity instanceof ClientPlayerEntity player)) return;
+            if (!(entity instanceof AbstractClientPlayerEntity player)) return;
 
             PersonaClientMessages.askForPlayerData(player.getUuid());
         });

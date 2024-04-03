@@ -5,7 +5,8 @@ import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.DeltaTimeManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -52,11 +53,13 @@ public class ClientBattleData extends BattleData {
 			return List.of();
 		}
 
-		List<ClientPlayerEntity> list = new ArrayList<>();
+		List<AbstractClientPlayerEntity> list = new ArrayList<>();
 
-		ClientPlayerEntity found;
+		AbstractClientPlayerEntity found;
 		for (UUID id : this.players) {
-			found = (ClientPlayerEntity) world.getPlayerByUuid(id);
+			if (!(world.getPlayerByUuid(id) instanceof AbstractClientPlayerEntity)) continue;
+
+			found = (AbstractClientPlayerEntity) world.getPlayerByUuid(id);
 			if (found == null) continue;
 
 			list.add(found);

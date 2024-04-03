@@ -3,7 +3,7 @@ package mc.duzo.persona.mixin.client;
 import mc.duzo.persona.util.VelvetUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +25,7 @@ public class ClientPlayerInteractionManagerMixin {
     @Inject(method = "breakBlock", at = @At(value = "HEAD"), cancellable = true)
     public void persona$breakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         ClientWorld world = this.client.world;
-        ClientPlayerEntity player = this.client.player;
+        AbstractClientPlayerEntity player = this.client.player;
         if (world == null || player == null) return;
 
 

@@ -7,7 +7,7 @@ import mc.duzo.persona.client.data.ClientData;
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.util.DeltaTimeManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 
 import java.util.Optional;
 
@@ -49,7 +49,7 @@ public class ClientBattleCache {
 			clear();
 		}
 
-		ClientPlayerEntity player = MinecraftClient.getInstance().player;
+		AbstractClientPlayerEntity player = MinecraftClient.getInstance().player;
 		if (player == null) return Optional.empty();
 
 		Optional<ClientBattleData> found = ClientBattleHandler.findPlayersBattle(player);
