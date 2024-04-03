@@ -118,9 +118,7 @@ public class BattleHandler {
 
 		ServerData.addBattle(players.stream().findAny().get().getServer(), created);
 
-		for (ServerPlayerEntity player : players) {
-			created.toClient(player);
-		}
+		created.toClient();
 
 		return created;
 	}

@@ -47,6 +47,16 @@ public class ServerBattleData extends BattleData {
 	public void toClient(ServerPlayerEntity target) {
 		PersonaMessages.syncBattleData(target, this);
 	}
+	public void toClient() {
+		for (PlayerEntity player : this.getPlayers()) {
+			this.toClient((ServerPlayerEntity) player);
+		}
+		for (LivingEntity target : this.getTargets()) {
+			if (target instanceof ServerPlayerEntity) {
+				this.toClient((ServerPlayerEntity) target);
+			}
+		}
+	}
 
 	@Override
 	protected boolean shouldUpdateCache() {
@@ -70,9 +80,7 @@ public class ServerBattleData extends BattleData {
 	protected void addTarget(UUID id) {
 		super.addTarget(id);
 
-		for (PlayerEntity player : this.getPlayers()) {
-			this.toClient((ServerPlayerEntity) player);
-		}
+		this.toClient();
 	}
 
 	public void tick(MinecraftServer server) {
