@@ -2,7 +2,10 @@ package mc.duzo.persona.client.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.battle.data.ClientBattleData;
 import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.data.PlayerData;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
@@ -52,6 +55,7 @@ public class SPHudOverlay implements HudRenderCallback {
 
         if (!data.isPersonaRevealed()) return;
         if (data.findPersona().isEmpty()) return;
+        if (ClientBattleCache.findCurrentBattle().isEmpty()) return;
 
         String spText =  data.getSP() < 100 ? data.getSP() < 10 ? "00" + data.getSP() : "0" + data.getSP() : "" + data.getSP();
 

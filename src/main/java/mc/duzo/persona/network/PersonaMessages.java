@@ -22,6 +22,7 @@ public class PersonaMessages {
     public static final Identifier SYNC_DATA = new Identifier(PersonaMod.MOD_ID, "sync_data");
     public static final Identifier ASK_DATA = new Identifier(PersonaMod.MOD_ID, "ask_data");
     public static final Identifier BATTLE_DATA = new Identifier(PersonaMod.MOD_ID, "sync_data_battle");
+    public static final Identifier BATTLE_FINISH = new Identifier(PersonaMod.MOD_ID, "battle_finish");
 
     // Skills
     public static final Identifier PRESS_TARGET = new Identifier(PersonaMod.MOD_ID, "press_target");
@@ -81,6 +82,13 @@ public class PersonaMessages {
         buf.writeNbt(data.toNbt());
 
         ServerPlayNetworking.send(target, BATTLE_DATA, buf);
+    }
+    public static void syncBattleRemoval(ServerPlayerEntity target, ServerBattleData data) {
+        PacketByteBuf buf = PacketByteBufs.create();
+
+        buf.writeUuid(data.getUuid());
+
+        ServerPlayNetworking.send(target, BATTLE_FINISH, buf);
     }
 
     private static void recieveTargetRequest(ServerPlayerEntity player) {

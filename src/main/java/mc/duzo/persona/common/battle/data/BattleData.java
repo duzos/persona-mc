@@ -62,7 +62,7 @@ public abstract class BattleData {
 		this.players.clear();
 		this.targets.clear();
 
-		if (this.getUuid() != nbt.getUuid("Uuid")) {
+		if (!this.getUuid().equals(nbt.getUuid("Uuid"))) {
 			PersonaMod.LOGGER.warn("Loading a battle data with a different UUID than the original!");
 		}
 

@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "server.BlockItemMixin",
+    "server.LivingEntityMixin",
     "server.ServerPlayerInteractionManagerMixin"
   ],
   "injectors": {

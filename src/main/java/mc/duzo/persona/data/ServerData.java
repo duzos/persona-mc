@@ -3,9 +3,12 @@ package mc.duzo.persona.data;
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
@@ -92,6 +95,9 @@ public class ServerData extends PersistentState {
         return getServerState(server).players.keySet();
     }
 
+    public static Collection<ServerBattleData> getBattles(MinecraftServer server) {
+        return getServerState(server).battles.values();
+    }
     public static Optional<ServerBattleData> getBattleState(MinecraftServer server, UUID uuid) {
         ServerData serverData = getServerState(server);
 
@@ -104,5 +110,23 @@ public class ServerData extends PersistentState {
     }
     public static void addBattle(MinecraftServer server, ServerBattleData battleData) {
         addBattle(server, battleData.getUuid(), battleData);
+    }
+    private static void removeBattle(MinecraftServer server, UUID uuid) {
+        PersonaMod.LOGGER.info("Removing battle " + uuid);
+
+        ServerData serverData = getServerState(server);
+        serverData.battles.remove(uuid);
+    }
+    public static void removeBattle(MinecraftServer server, UUID uuid, boolean sync) {
+        if (sync) {
+            ServerBattleData data = getBattleState(server, uuid).orElse(null);
+            if (data == null) return; // No need to remove
+
+            for (PlayerEntity player : data.getPlayers()) {
+                PersonaMessages.syncBattleRemoval((ServerPlayerEntity) player, data);
+            }
+        }
+
+        removeBattle(server, uuid);
     }
 }

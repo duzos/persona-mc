@@ -1,4 +1,4 @@
-package mc.duzo.persona.client.data;
+package mc.duzo.persona.client.battle.data;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.common.battle.data.BattleData;

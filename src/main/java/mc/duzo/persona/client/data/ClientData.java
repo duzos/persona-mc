@@ -1,12 +1,17 @@
 package mc.duzo.persona.client.data;
 
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.battle.data.BattleData;
+import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.battle.data.ClientBattleData;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.MinecraftServer;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,7 +61,16 @@ public class ClientData {
         addBattle(new ClientBattleData(data));
     }
 
+    public static void removeBattle(UUID uuid) {
+        PersonaMod.LOGGER.info("Removing battle " + uuid);
+
+        getInstance().battles.remove(uuid);
+    }
+
     public static Optional<ClientBattleData> getBattleState(UUID uuid) {
         return Optional.ofNullable(getInstance().battles.get(uuid));
+    }
+    public static Collection<ClientBattleData> getBattles() {
+        return getInstance().battles.values();
     }
 }

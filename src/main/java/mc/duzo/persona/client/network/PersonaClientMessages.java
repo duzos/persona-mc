@@ -1,7 +1,8 @@
 package mc.duzo.persona.client.network;
 
 import mc.duzo.persona.client.PersonaModClient;
-import mc.duzo.persona.client.data.ClientBattleData;
+import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.battle.data.ClientBattleData;
 import mc.duzo.persona.client.data.ClientData;
 import mc.duzo.persona.client.sound.PlayerFollowingLoopingSound;
 import mc.duzo.persona.common.PersonaSounds;
@@ -19,6 +20,7 @@ public class PersonaClientMessages {
         ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.SYNC_DATA, ((client, handler, buf, responseSender) -> recievePlayerData(buf)));
         ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.CHANGED_VELVET, ((client, handler, buf, responseSender) -> recieveVelvetChange(buf)));
         ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.BATTLE_DATA, ((client, handler, buf, responseSender) -> receiveBattleData(buf)));
+        ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.BATTLE_FINISH, ((client, handler, buf, responseSender) -> receiveBattleFinish(buf)));
     }
 
     private static void recieveVelvetChange(boolean entry) {
@@ -46,6 +48,19 @@ public class PersonaClientMessages {
         NbtCompound nbt = buf.readNbt();
         ClientData.addBattle(nbt);
     }
+    private static void receiveBattleFinish(PacketByteBuf buf) {
+        UUID uuid = buf.readUuid();
+
+        ClientData.removeBattle(uuid);
+
+        ClientBattleData current = ClientBattleCache.findCurrentBattle().orElse(null);
+        if (current == null) return;
+
+        if (current.getUuid().equals(uuid)) {
+            ClientBattleCache.clear();
+        }
+    }
+
 
     public static void askForPlayerData(UUID uuid) {
         ClientPlayNetworking.send(PersonaMessages.ASK_DATA, PacketByteBufs.create().writeUuid(uuid));

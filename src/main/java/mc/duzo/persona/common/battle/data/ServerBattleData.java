@@ -100,7 +100,7 @@ public class ServerBattleData extends BattleData {
 				if (!(found instanceof LivingEntity)) continue;
 
 				list.add((LivingEntity) found);
-				searchList.remove(id);
+				// searchList.remove(id); // fixme - comodification error
 			}
 		}
 
