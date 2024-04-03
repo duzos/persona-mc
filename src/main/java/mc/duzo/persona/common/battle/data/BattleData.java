@@ -1,6 +1,8 @@
 package mc.duzo.persona.common.battle.data;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.util.AbsoluteBlockPos;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -36,7 +38,16 @@ public abstract class BattleData {
 
 	public abstract List<? extends PlayerEntity> getPlayers();
 	public abstract List<? extends LivingEntity> getTargets();
+	protected void addTarget(UUID id) {
+		if (this.targets.contains(id)) return;
+
+		this.targets.add(id);
+	}
+	public void addTarget(LivingEntity entity) {
+		this.addTarget(entity.getUuid());
+	}
 	protected abstract boolean shouldUpdateCache();
+
 
 	public NbtCompound toNbt() {
 		NbtCompound nbt = new NbtCompound();

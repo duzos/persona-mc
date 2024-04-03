@@ -129,4 +129,10 @@ public class ServerData extends PersistentState {
 
         removeBattle(server, uuid);
     }
+
+    public static void tick(MinecraftServer server) {
+        for (ServerBattleData data : getBattles(server)) {
+            data.tick(server);
+        }
+    }
 }

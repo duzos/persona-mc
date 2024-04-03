@@ -54,7 +54,8 @@ public class ClientBattleCache {
 
 		Optional<ClientBattleData> found = ClientBattleHandler.findPlayersBattle(player);
 		if (found.isEmpty()) {
-			clear();
+			if (current != null)
+				clear();
 			return found;
 		}
 

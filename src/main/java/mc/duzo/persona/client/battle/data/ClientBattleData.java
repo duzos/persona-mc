@@ -35,6 +35,10 @@ public class ClientBattleData extends BattleData {
 		return this.getUuid().toString() + "-cache";
 	}
 
+	public void tick(MinecraftClient client) {
+
+	}
+
 	@Override
 	public List<? extends PlayerEntity> getPlayers() {
 		if (!this.shouldUpdateCache() && this.playersCache != null) {

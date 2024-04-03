@@ -1,5 +1,7 @@
 package mc.duzo.persona.util;
 
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.data.PlayerData;
@@ -14,6 +16,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Math;
 
+import java.util.List;
 import java.util.Optional;
 
 public class PersonaUtil {
@@ -26,9 +29,28 @@ public class PersonaUtil {
         TargetingUtil.verifyTarget(player);
 
         Persona persona = data.findPersona().get();
-        Optional<LivingEntity> foundTarget = data.findTarget(player.getServerWorld());
+        // Optional<LivingEntity> foundTarget = data.findTarget(player.getServerWorld());
+        Optional<LivingEntity> foundTarget = TargetingUtil.findEntityBeingLookedAt(player);
 
-        if (foundTarget.isEmpty()) return;
+        if (player.isSneaking()) {
+            foundTarget = Optional.of(player);
+        }
+
+        if (foundTarget.isEmpty()) {
+            /*
+            Optional<LivingEntity> newTarget = TargetingUtil.findEntityBeingLookedAt(player);
+            if (newTarget.isPresent()) {
+                data.setTarget(newTarget.get());
+                PersonaMessages.syncData(player, player);
+                foundTarget = newTarget;
+                useSkill(player);
+            }
+             */
+            return;
+        }
+
+        data.setTarget(foundTarget.get());
+        PersonaMessages.syncData(player, player);
 
         if (!canUseSkill(player, persona.getSkillSet().getSelected())) return;
 
@@ -51,6 +73,16 @@ public class PersonaUtil {
             ServerData.getServerState(player.getServer()).markDirty();
             PersonaMessages.syncData(player, player);
         }
+
+        if (target.equals(player)) return;
+
+        Optional<ServerBattleData> battle = BattleHandler.findPlayersBattle(player, true);
+        if (battle.isEmpty()) {
+            BattleHandler.createBattle(List.of(player), List.of(target));
+            return;
+        }
+
+        battle.get().addTarget(target);
     }
 
     public static void revealPersona(ServerPlayerEntity player) {

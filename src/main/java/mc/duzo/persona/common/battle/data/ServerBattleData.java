@@ -1,7 +1,9 @@
 package mc.duzo.persona.common.battle.data;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.network.PersonaMessages;
+import mc.duzo.persona.util.AbsoluteBlockPos;
 import mc.duzo.persona.util.DeltaTimeManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -16,7 +18,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class ServerBattleData extends BattleData {
-	public ServerBattleData(List<ServerPlayerEntity> players, List<LivingEntity> targets) {
+	private AbsoluteBlockPos battlePos;
+
+	public ServerBattleData(List<ServerPlayerEntity> players, List<LivingEntity> targets, AbsoluteBlockPos pos) {
 		super();
 
 		for (ServerPlayerEntity player : players) {
@@ -25,6 +29,16 @@ public class ServerBattleData extends BattleData {
 		for (LivingEntity target : targets) {
 			this.targets.add(target.getUuid());
 		}
+
+		this.battlePos = pos;
+	}
+	public ServerBattleData(List<ServerPlayerEntity> players, List<LivingEntity> targets) {
+		this(players,targets,null);
+
+		if (players.isEmpty()) return;
+		ServerPlayerEntity found = players.get(0);
+
+		this.battlePos = new AbsoluteBlockPos(found.getBlockPos(), found.getServerWorld());
 	}
 	public ServerBattleData(NbtCompound nbt) {
 		super(nbt);
@@ -46,6 +60,26 @@ public class ServerBattleData extends BattleData {
 	}
 	private String getCacheKey() {
 		return this.getUuid().toString() + "-cache";
+	}
+
+	public AbsoluteBlockPos getBattlePos() {
+		return this.battlePos;
+	}
+
+	@Override
+	protected void addTarget(UUID id) {
+		super.addTarget(id);
+
+		for (PlayerEntity player : this.getPlayers()) {
+			this.toClient((ServerPlayerEntity) player);
+		}
+	}
+
+	public void tick(MinecraftServer server) {
+		if (server.getTicks() % 32 == 0) {
+			BattleHandler.validateBattle(server, this);
+			BattleHandler.applyPositionTransforms(this);
+		}
 	}
 
 	@Override
@@ -110,5 +144,22 @@ public class ServerBattleData extends BattleData {
 		return list;
 	}
 
+	@Override
+	public NbtCompound toNbt() {
+		NbtCompound nbt = super.toNbt();
 
+		// Null check?
+		nbt.put("BattlePos", this.battlePos.toNbt());
+
+		return nbt;
+	}
+
+	@Override
+	public BattleData loadNbt(NbtCompound nbt) {
+		super.loadNbt(nbt);
+
+		this.battlePos = AbsoluteBlockPos.fromNbt(nbt.getCompound("BattlePos"));
+
+		return this;
+	}
 }

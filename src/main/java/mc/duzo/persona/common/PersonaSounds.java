@@ -7,12 +7,13 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
 public class PersonaSounds {
-    public static final SoundEvent VELVET_MUSIC = register("velvet_room");
+    public static final SoundEvent MUSIC_VELVET = register("velvet_room");
     public static final SoundEvent WELCOME_VELVET = register("welcome_velvet");
     public static final SoundEvent ATTACK = register("attack");
     public static final SoundEvent DIA = register("dia");
     public static final SoundEvent PERSONA_SHOUT = register("persona_shout");
     public static final SoundEvent ARSENE_SHOUT = register("arsene");
+    public static final SoundEvent MUSIC_REACH_OUT = register("reach_out_to_the_truth");
 
     public static void init() {
 

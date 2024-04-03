@@ -3,13 +3,18 @@ package mc.duzo.persona.common.battle;
 import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.util.AbsoluteBlockPos;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Static class for handling battle data.
@@ -94,9 +99,22 @@ public class BattleHandler {
 		if (!validate) return findPlayersBattle(player);
 		return findPlayersBattleAndValidate(player);
 	}
+	public static Optional<ServerBattleData> findTargetsBattle(LivingEntity target) {
+		if (target.getServer() == null) return Optional.empty();
+
+		for (ServerBattleData data : ServerData.getBattles(target.getServer())) {
+			if (data.getTargets().contains(target)) {
+				return Optional.of(data);
+			}
+		}
+
+		return Optional.empty();
+	}
 
 	public static ServerBattleData createBattle(List<ServerPlayerEntity> players, List<LivingEntity> targets) {
 		ServerBattleData created = new ServerBattleData(players, targets);
+
+		applyPositionTransforms(created);
 
 		ServerData.addBattle(players.stream().findAny().get().getServer(), created);
 
@@ -105,5 +123,47 @@ public class BattleHandler {
 		}
 
 		return created;
+	}
+
+	public static void applyPositionTransforms(ServerBattleData data) {
+		AbsoluteBlockPos centre = data.getBattlePos();
+		BlockPos enemyCentre = centre.north(2);
+		BlockPos playerCentre = centre.south(2);
+
+		// todo cleanup / document
+
+		int count = 1;
+		BlockPos pos = enemyCentre;
+
+		for (LivingEntity target : data.getTargets()) {
+			if (count % 2 == 0) { // if even go east
+				pos = enemyCentre.east((count / 2));
+			} else {
+				pos = enemyCentre.west(count / 2);
+			}
+
+			target.teleport((ServerWorld) centre.getWorld(), pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, Set.of(), Direction.SOUTH.asRotation(), 0f);
+
+			pos = enemyCentre;
+			count++;
+		}
+
+		count = 0;
+		pos = playerCentre;
+
+		for (PlayerEntity target : data.getPlayers()) {
+
+			if (count % 2 == 0) { // if even go east
+				if (count != 0)
+					pos = playerCentre.east(count / 2);
+			} else {
+				pos = playerCentre.west(count / 2);
+			}
+
+			target.teleport((ServerWorld) centre.getWorld(), pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, Set.of(), target.headYaw, target.getPitch());
+
+			pos = playerCentre;
+			count++;
+		}
 	}
 }

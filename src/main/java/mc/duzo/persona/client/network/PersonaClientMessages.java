@@ -4,14 +4,13 @@ import mc.duzo.persona.client.PersonaModClient;
 import mc.duzo.persona.client.battle.ClientBattleCache;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
 import mc.duzo.persona.client.data.ClientData;
-import mc.duzo.persona.client.sound.PlayerFollowingLoopingSound;
+import mc.duzo.persona.client.sound.MusicSound;
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.network.PersonaMessages;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.sound.SoundCategory;
 
 import java.util.UUID;
 
@@ -25,11 +24,11 @@ public class PersonaClientMessages {
 
     private static void recieveVelvetChange(boolean entry) {
         if (entry) {
-            PersonaModClient.sounds.startSound(new PlayerFollowingLoopingSound(PersonaSounds.VELVET_MUSIC, SoundCategory.MUSIC));
+            PersonaModClient.sounds.startSound(new MusicSound(PersonaSounds.MUSIC_VELVET));
             return;
         }
 
-        PersonaModClient.sounds.stopSound(PersonaSounds.VELVET_MUSIC);
+        PersonaModClient.sounds.stopSound(PersonaSounds.MUSIC_VELVET);
     }
     private static void recieveVelvetChange(PacketByteBuf buf) {
         boolean entry = buf.readBoolean();

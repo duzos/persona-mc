@@ -1,9 +1,12 @@
 package mc.duzo.persona.client;
 
 import mc.duzo.persona.Register;
+import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.data.ClientData;
 import mc.duzo.persona.client.hud.SPHudOverlay;
 import mc.duzo.persona.client.network.PersonaClientMessages;
 import mc.duzo.persona.client.render.VelvetDoorRenderer;
+import mc.duzo.persona.client.sound.MusicSound;
 import mc.duzo.persona.client.sound.PlayerFollowingLoopingSound;
 import mc.duzo.persona.client.sound.SoundsManager;
 import mc.duzo.persona.client.util.Keybinds;
@@ -44,5 +47,19 @@ public class PersonaModClient implements ClientModInitializer {
 
     private void tick(MinecraftClient client) {
         if (client.player == null) return;
+        ClientData.getInstance().tick(client);
+
+        tickBattleMusic(client);
+    }
+
+    private void tickBattleMusic(MinecraftClient client) {
+        if (!sounds.isPlaying(PersonaSounds.MUSIC_REACH_OUT) && ClientBattleCache.findCurrentBattle().isPresent()) {
+            sounds.startSound(new MusicSound(PersonaSounds.MUSIC_REACH_OUT, 0.25f));
+            return;
+        }
+        if (sounds.isPlaying(PersonaSounds.MUSIC_REACH_OUT) && ClientBattleCache.findCurrentBattle().isEmpty()) {
+            sounds.stopSound(PersonaSounds.MUSIC_REACH_OUT);
+            return;
+        }
     }
 }

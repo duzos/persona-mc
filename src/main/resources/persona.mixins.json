@@ -5,6 +5,7 @@
   "mixins": [
     "server.BlockItemMixin",
     "server.LivingEntityMixin",
+    "server.MobEntityMixin",
     "server.ServerPlayerInteractionManagerMixin"
   ],
   "injectors": {

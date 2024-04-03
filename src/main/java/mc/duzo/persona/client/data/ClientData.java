@@ -7,6 +7,7 @@ import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
@@ -72,5 +73,11 @@ public class ClientData {
     }
     public static Collection<ClientBattleData> getBattles() {
         return getInstance().battles.values();
+    }
+
+    public static void tick(MinecraftClient client) {
+        for (ClientBattleData data : getInstance().getBattles()) {
+            data.tick(client);
+        }
     }
 }
