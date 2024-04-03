@@ -7,6 +7,7 @@ import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -95,7 +96,7 @@ public class PersonaUtil {
         player.getServerWorld().playSound(null, player.getBlockPos(), data.findPersona().get().getSummonSound(), SoundCategory.PLAYERS, 1.0f, 1.0f);
 
         ServerData.getServerState(player.getServer()).markDirty();
-        PersonaMessages.syncData(player, player);
+        syncToNearby(player);
     }
     public static void hidePersona(ServerPlayerEntity player) {
         PlayerData data = ServerData.getPlayerState(player);
@@ -103,7 +104,7 @@ public class PersonaUtil {
         data.hidePersona();
 
         ServerData.getServerState(player.getServer()).markDirty();
-        PersonaMessages.syncData(player, player);
+        syncToNearby(player);
     }
 
     public static void createCooldown(ServerPlayerEntity player, double seconds) {
@@ -148,6 +149,13 @@ public class PersonaUtil {
 
                 world.spawnParticles(particle, pos.getX(), pos.getY(), pos.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
             }
+        }
+    }
+
+    public static void syncToNearby(ServerPlayerEntity player) {
+        PersonaMessages.syncData(player, player);
+        for (ServerPlayerEntity p : PlayerLookup.tracking(player)) {
+            PersonaMessages.syncData(p, player);
         }
     }
 }
