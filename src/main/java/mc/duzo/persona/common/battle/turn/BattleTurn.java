@@ -24,7 +24,7 @@ public abstract class BattleTurn {
 	public abstract LivingEntity getCurrent();
 	public BattleData getData() { return this.data; }
 
-	protected boolean isCurrent(UUID id) { return this.current.equals(id); }
+	protected boolean isCurrent(UUID id) { return id.equals(this.current); }
 	public boolean isCurrent(LivingEntity entity) { return this.isCurrent(entity.getUuid()); }
 
 	public void next() {
