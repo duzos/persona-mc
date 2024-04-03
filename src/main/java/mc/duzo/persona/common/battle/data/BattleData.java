@@ -40,6 +40,7 @@ public abstract class BattleData {
 	public abstract List<? extends LivingEntity> getTargets();
 	protected void addTarget(UUID id) {
 		if (this.targets.contains(id)) return;
+		if (this.players.contains(id)) return;
 
 		this.targets.add(id);
 	}

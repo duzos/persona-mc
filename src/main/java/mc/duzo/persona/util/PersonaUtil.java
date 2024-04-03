@@ -78,6 +78,13 @@ public class PersonaUtil {
         if (target.equals(player)) return;
 
         Optional<ServerBattleData> battle = BattleHandler.findPlayersBattle(player, true);
+
+        boolean isPlayer = target instanceof ServerPlayerEntity;
+
+        if (isPlayer) {
+            if (BattleHandler.findPlayersBattle((ServerPlayerEntity) target, true).isPresent()) return;
+        }
+
         if (battle.isEmpty()) {
             BattleHandler.createBattle(List.of(player), List.of(target));
             return;
