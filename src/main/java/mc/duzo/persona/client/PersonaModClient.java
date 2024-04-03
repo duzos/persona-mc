@@ -44,6 +44,8 @@ public class PersonaModClient implements ClientModInitializer {
             PersonaClientMessages.askForPlayerData(player.getUuid());
         });
 
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> ClientData.clearBattles());
+
         // Entity Renderers
         EntityRendererRegistry.register(Register.VELVET_DOOR_ENTITY, VelvetDoorRenderer::new);
     }
