@@ -5,6 +5,7 @@ import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.common.affinities.Affinity;
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.util.PersonaUtil;
 import mc.duzo.persona.util.VelvetUtil;
 import mc.duzo.persona.util.WorldUtil;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
@@ -14,6 +15,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -81,6 +83,7 @@ public class SkillRegistry {
                 }
 
                 for (LivingEntity entity : battle.get().getPlayers()) {
+                    PersonaUtil.createSkillParticles(entity, ParticleTypes.FIREWORK);
                     entity.setHealth(entity.getHealth() + 4);
                 }
             },
@@ -120,12 +123,14 @@ public class SkillRegistry {
 
                 if (source instanceof ServerPlayerEntity) {
                     for (LivingEntity entity : battle.get().getTargets()) {
+                        PersonaUtil.createSkillParticles(entity, ParticleTypes.FIREWORK);
                         EntityType.LIGHTNING_BOLT.spawn((ServerWorld) entity.getWorld(), entity.getBlockPos(), SpawnReason.TRIGGERED);
                     }
                     return;
                 }
 
                 for (LivingEntity player : battle.get().getPlayers()) {
+                    PersonaUtil.createSkillParticles(player, ParticleTypes.FIREWORK);
                     EntityType.LIGHTNING_BOLT.spawn((ServerWorld) player.getWorld(), player.getBlockPos(), SpawnReason.TRIGGERED);
                 }
             },
