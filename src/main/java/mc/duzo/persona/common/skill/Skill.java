@@ -1,6 +1,7 @@
 package mc.duzo.persona.common.skill;
 
 import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.affinities.Affinity;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
@@ -51,6 +52,7 @@ public abstract class Skill implements Identifiable {
     public abstract boolean usesHealth();
     public abstract int getCost();
     public abstract double getCooldown();
+    public abstract Affinity getAffinity();
     public SoundEvent getUseSound() {
         return PersonaSounds.ATTACK;
     }
@@ -74,7 +76,7 @@ public abstract class Skill implements Identifiable {
         return SkillRegistry.get(new Identifier(nbt.getString("id")));
     }
 
-    public static Skill create(Identifier id, RunSkill onRun, boolean usesHealth, int cost, double cooldown, @Nullable SoundEvent sound) {
+    public static Skill create(Identifier id, Affinity affinity, RunSkill onRun, boolean usesHealth, int cost, double cooldown, @Nullable SoundEvent sound) {
         return new Skill(id) {
             @Override
             public void run(ServerPlayerEntity source, Persona persona, LivingEntity target) {
@@ -108,10 +110,15 @@ public abstract class Skill implements Identifiable {
                 if (sound == null) return super.getUseSound();
                 return sound;
             }
+
+            @Override
+            public Affinity getAffinity() {
+                return affinity;
+            }
         };
     }
-    public static Skill create(Identifier id, RunSkill onRun, boolean usesHealth, int cost, double cooldown) {
-        return create(id, onRun, usesHealth, cost, cooldown, null);
+    public static Skill create(Identifier id, Affinity affinity, RunSkill onRun, boolean usesHealth, int cost, double cooldown) {
+        return create(id, affinity, onRun, usesHealth, cost, cooldown, null);
     }
     public interface RunSkill {
         void run(ServerPlayerEntity source, Persona persona, LivingEntity target);

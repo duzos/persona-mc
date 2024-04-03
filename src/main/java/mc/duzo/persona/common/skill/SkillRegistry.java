@@ -2,10 +2,14 @@ package mc.duzo.persona.common.skill;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.affinities.Affinity;
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.util.VelvetUtil;
 import mc.duzo.persona.util.WorldUtil;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registry;
@@ -31,6 +35,7 @@ public class SkillRegistry {
 
     public static Skill DIA = register(Skill.create(
             new Identifier(PersonaMod.MOD_ID, "dia"),
+            Affinity.HEAL,
             (source, persona, target) -> target.setHealth(target.getHealth() + 4),
             false,
             3,
@@ -39,6 +44,7 @@ public class SkillRegistry {
     ));
     public static Skill CLEAVE = register(Skill.create(
             new Identifier(PersonaMod.MOD_ID, "cleave"),
+            Affinity.PHYS,
             (source, persona, target) -> target.damage(target.getDamageSources().generic(), 4),
             true,
             5,
@@ -46,6 +52,7 @@ public class SkillRegistry {
     ));
     public static Skill ZIO = register(Skill.create(
             new Identifier(PersonaMod.MOD_ID, "zio"),
+            Affinity.ELEC,
             (source, persona, target) -> {
                 EntityType.LIGHTNING_BOLT.spawn((ServerWorld) target.getWorld(), target.getBlockPos(), SpawnReason.TRIGGERED);
             },
@@ -54,8 +61,28 @@ public class SkillRegistry {
             2
     ));
 
+    public static Skill MAZIO = register(Skill.create(
+            new Identifier(PersonaMod.MOD_ID, "mazio"),
+            Affinity.ELEC,
+            (source, persona, target) -> {
+                Optional<ServerBattleData> battle = BattleHandler.findPlayersBattle(source, true);
+                if (battle.isEmpty()) {
+                    ZIO.run(source, persona, target);
+                    return;
+                }
+
+                for (LivingEntity entity : battle.get().getTargets()) {
+                    ZIO.run(source, persona, entity);
+                }
+            },
+            false,
+            10,
+            2
+    ));
+
     public static Skill TRAFURI = register(Skill.create(
             new Identifier(PersonaMod.MOD_ID, "trafuri"),
+            Affinity.SUPPORT,
             (source, persona, target) -> {
                 if (!PersonaMod.hasServer()) return;
 
@@ -75,13 +102,7 @@ public class SkillRegistry {
             4
     ));
 
-    public static Skill VELVET = register(Skill.create( // Temporary skill
-            new Identifier(PersonaMod.MOD_ID, "velvet"),
-            (source, persona, target) -> VelvetUtil.sendToRoom(source),
-            false,
-            0,
-            1
-    ));
+
 
     public static void init() {
 
