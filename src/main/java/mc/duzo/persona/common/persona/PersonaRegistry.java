@@ -29,7 +29,8 @@ public class PersonaRegistry {
         DEV = register(Persona.create(
                 new Identifier(PersonaMod.MOD_ID, "dev"),
                 new SkillSet(
-                        SkillRegistry.DIA,
+                        SkillRegistry.DIARAHAN,
+                        SkillRegistry.MEDIA,
                         SkillRegistry.CLEAVE,
                         SkillRegistry.ZIO,
                         SkillRegistry.MAZIO

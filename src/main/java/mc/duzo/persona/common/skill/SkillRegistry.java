@@ -11,6 +11,8 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -40,6 +42,50 @@ public class SkillRegistry {
             (source, persona, target) -> target.setHealth(target.getHealth() + 4),
             false,
             3,
+            1,
+            PersonaSounds.DIA
+    ));
+    public static Skill DIARAMA = register(Skill.create(
+            new Identifier(PersonaMod.MOD_ID, "diarama"),
+            Affinity.HEAL,
+            (source, persona, target) -> {
+                target.setHealth(target.getHealth() + 10);
+            },
+            false,
+            6,
+            1,
+            PersonaSounds.DIA
+    ));
+    public static Skill DIARAHAN = register(Skill.create(
+            new Identifier(PersonaMod.MOD_ID, "diarahan"),
+            Affinity.HEAL,
+            (source, persona, target) -> {
+                target.setHealth(target.getHealth() + 10);
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 60, 3));
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 10, 1));
+            },
+            false,
+            18,
+            1,
+            PersonaSounds.DIA
+    ));
+    public static Skill MEDIA = register(Skill.create(
+            new Identifier(PersonaMod.MOD_ID, "media"),
+            Affinity.HEAL,
+            (source, persona, target) -> {
+                Optional<ServerBattleData> battle = BattleHandler.findBattle(source);
+
+                if (battle.isEmpty()) {
+                    target.setHealth(target.getHealth() + 4);
+                    return;
+                }
+
+                for (LivingEntity entity : battle.get().getPlayers()) {
+                    entity.setHealth(entity.getHealth() + 4);
+                }
+            },
+            false,
+            18,
             1,
             PersonaSounds.DIA
     ));
