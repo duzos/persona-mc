@@ -205,10 +205,8 @@ public class BattleHandler {
 		pos = playerCentre;
 
 		for (PlayerEntity target : data.getPlayers()) {
-
 			if (count % 2 == 0) { // if even go east
-				if (count != 0)
-					pos = playerCentre.east(count / 2);
+				pos = playerCentre.east((count / 2));
 			} else {
 				pos = playerCentre.west(count / 2);
 			}
