@@ -63,8 +63,8 @@ public class SkillRegistry {
             Affinity.HEAL,
             (source, persona, target) -> {
                 target.setHealth(target.getHealth() + 10);
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 60, 3));
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 10, 1));
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 60 * 20, 3));
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 10 * 20, 1));
             },
             false,
             18,
