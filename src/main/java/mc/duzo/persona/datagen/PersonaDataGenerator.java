@@ -31,6 +31,7 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 			// Skills
 			provider.addSound("attack", PersonaSounds.ATTACK);
 			provider.addSound("dia", PersonaSounds.DIA);
+			provider.addSound("weak_phys", PersonaSounds.WEAK_PHYS);
 
 			// PERSONA!!
 			provider.addSound("persona_shout", PersonaSounds.PERSONA_SHOUT);
@@ -38,6 +39,8 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 
 			// Other
 			provider.addSound("welcome_velvet", PersonaSounds.WELCOME_VELVET);
+			provider.addSound("fail", PersonaSounds.FAIL);
+			provider.addSound("skill_switch", PersonaSounds.SKILL_SWITCH);
 
 			return provider;
 		})));

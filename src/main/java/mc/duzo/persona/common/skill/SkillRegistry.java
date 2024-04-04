@@ -98,7 +98,8 @@ public class SkillRegistry {
             (source, persona, target) -> target.damage(target.getDamageSources().generic(), 4),
             true,
             5,
-            1
+            1,
+            PersonaSounds.WEAK_PHYS
     ));
     public static Skill ZIO = register(Skill.create(
             new Identifier(PersonaMod.MOD_ID, "zio"),

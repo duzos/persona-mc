@@ -13,6 +13,7 @@ import mc.duzo.persona.util.Identifiable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -41,6 +42,7 @@ public abstract class Skill implements Identifiable {
 
             if (!turn.isCurrent(source)) {
                 source.sendMessage(Text.literal("Not your turn!"));
+                source.getWorld().playSound(null, source.getBlockPos(), PersonaSounds.FAIL, SoundCategory.PLAYERS);
                 return false;
             }
 

@@ -9,8 +9,12 @@ import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.network.PersonaMessages;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.sound.SoundCategory;
 
 import java.util.UUID;
 
@@ -73,6 +77,9 @@ public class PersonaClientMessages {
         PacketByteBuf buf = PacketByteBufs.create();
 
         buf.writeBoolean(next);
+
+        if (MinecraftClient.getInstance().player != null)
+            PersonaModClient.sounds.startSound(new PositionedSoundInstance(PersonaSounds.SKILL_SWITCH, SoundCategory.PLAYERS, 1f, 1f, SoundInstance.createRandom(), MinecraftClient.getInstance().player.getBlockPos()));
 
         ClientPlayNetworking.send(PersonaMessages.CHANGE_SKILL, buf);
     }

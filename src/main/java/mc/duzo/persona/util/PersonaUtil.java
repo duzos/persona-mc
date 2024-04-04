@@ -1,5 +1,6 @@
 package mc.duzo.persona.util;
 
+import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.common.affinities.Affinity;
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
@@ -57,7 +58,10 @@ public class PersonaUtil {
         data.setTarget(foundTarget.get());
         PersonaMessages.syncData(player, player);
 
-        if (!canUseSkill(player, persona.getSkillSet().getSelected())) return;
+        if (!canUseSkill(player, persona.getSkillSet().getSelected())) {
+            player.getServerWorld().playSound(null, player.getBlockPos(), PersonaSounds.FAIL, SoundCategory.PLAYERS);
+            return;
+        }
 
         LivingEntity target = foundTarget.get();
         Skill selected = persona.getSkillSet().getSelected();
