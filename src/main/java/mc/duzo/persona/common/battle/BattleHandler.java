@@ -1,7 +1,11 @@
 package mc.duzo.persona.common.battle;
 
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.affinities.Affinity;
 import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.skill.Skill;
+import mc.duzo.persona.common.skill.SkillRegistry;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import net.minecraft.entity.LivingEntity;
@@ -100,6 +104,7 @@ public class BattleHandler {
 		return findPlayersBattleAndValidate(player);
 	}
 	public static Optional<ServerBattleData> findTargetsBattle(LivingEntity target) {
+		if (target == null) return Optional.empty();
 		if (target.getServer() == null) return Optional.empty();
 
 		for (ServerBattleData data : ServerData.getBattles(target.getServer())) {
@@ -109,6 +114,72 @@ public class BattleHandler {
 		}
 
 		return Optional.empty();
+	}
+
+	public static Optional<ServerBattleData> findBattle(LivingEntity target) {
+		if (target instanceof ServerPlayerEntity player) {
+			return findPlayersBattle(player, true);
+		}
+
+		return findTargetsBattle(target);
+	}
+
+	public static LivingEntity findRandomPlayer(BattleData data) {
+		List<? extends PlayerEntity> players = data.getPlayers();
+
+		int chosen = PersonaMod.RANDOM.nextInt(players.size());
+		return players.get(chosen);
+	}
+	public static LivingEntity findRandomTarget(BattleData data) {
+		List<? extends LivingEntity> targets = data.getTargets();
+
+		int chosen = PersonaMod.RANDOM.nextInt(targets.size());
+		return targets.get(chosen);
+	}
+	public static Skill findRandomSkill() {
+		int chosen = PersonaMod.RANDOM.nextInt(SkillRegistry.REGISTRY.size());
+		return SkillRegistry.REGISTRY.get(chosen);
+	}
+	public static Skill findRandomDamageSkill() {
+		Skill found = findRandomSkill();
+
+		int max = 128;
+		int count = 0;
+		while (count < max && !isDamageAffinity(found.getAffinity())) {
+			found = findRandomSkill();
+			count++;
+		}
+
+		return found;
+	}
+	public static Skill findRandomSkill(Affinity... affs) {
+		Skill found = findRandomSkill();
+
+		int max = 128;
+		int count = 0;
+
+		while (count < max && !(isAffinity(found, affs))) {
+			found = findRandomSkill();
+			count++;
+		}
+
+		return found;
+	}
+	private static boolean isAffinity(Skill skill, Affinity... affs) {
+		for (Affinity aff : affs) {
+			if (skill.getAffinity().equals(aff)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean isDamageAffinity(Affinity aff) {
+		// BAD!!
+
+		return switch(aff) {
+			default -> true;
+			case HEAL, SUPPORT -> false;
+		};
 	}
 
 	public static ServerBattleData createBattle(List<ServerPlayerEntity> players, List<LivingEntity> targets) {
@@ -151,14 +222,12 @@ public class BattleHandler {
 			count++;
 		}
 
-		count = 0;
+		count = 1;
 		pos = playerCentre;
 
 		for (PlayerEntity target : data.getPlayers()) {
-
 			if (count % 2 == 0) { // if even go east
-				if (count != 0)
-					pos = playerCentre.east(count / 2);
+				pos = playerCentre.east((count / 2));
 			} else {
 				pos = playerCentre.west(count / 2);
 			}

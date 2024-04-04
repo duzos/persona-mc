@@ -2,9 +2,13 @@ package mc.duzo.persona.common.battle.data;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
+import mc.duzo.persona.common.battle.turn.ServerBattleTurn;
+import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import mc.duzo.persona.util.DeltaTimeManager;
+import mc.duzo.persona.util.PersonaUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +23,7 @@ import java.util.UUID;
 
 public class ServerBattleData extends BattleData {
 	private AbsoluteBlockPos battlePos;
+	private ServerBattleTurn turn;
 
 	public ServerBattleData(List<ServerPlayerEntity> players, List<LivingEntity> targets, AbsoluteBlockPos pos) {
 		super();
@@ -62,6 +67,16 @@ public class ServerBattleData extends BattleData {
 	protected boolean shouldUpdateCache() {
 		return DeltaTimeManager.isOnDelay(this.getCacheKey());
 	}
+
+	@Override
+	public BattleTurn getTurn() {
+		if (this.turn == null) {
+			this.turn = new ServerBattleTurn(this);
+		}
+
+		return this.turn;
+	}
+
 	private void createCacheDelay() {
 		DeltaTimeManager.createDelay(this.getCacheKey(), this.getCacheDelay());
 	}
@@ -83,10 +98,28 @@ public class ServerBattleData extends BattleData {
 		this.toClient();
 	}
 
+	@Override
+	protected void addPlayer(UUID id) {
+		super.addPlayer(id);
+
+		this.toClient();
+	}
+
 	public void tick(MinecraftServer server) {
 		if (server.getTicks() % 32 == 0) {
 			BattleHandler.validateBattle(server, this);
 			BattleHandler.applyPositionTransforms(this);
+
+			if (!(this.getTurn().getCurrent() instanceof ServerPlayerEntity)) {
+				LivingEntity current = this.getTurn().getCurrent();
+
+				if (current == null || !current.isAlive()) {
+					this.getTurn().next();
+					return;
+				}
+
+				PersonaUtil.useSkill(current);
+			}
 		}
 	}
 
@@ -167,6 +200,9 @@ public class ServerBattleData extends BattleData {
 		super.loadNbt(nbt);
 
 		this.battlePos = AbsoluteBlockPos.fromNbt(nbt.getCompound("BattlePos"));
+
+		this.turn = new ServerBattleTurn(this);
+		this.turn.loadNbt(nbt.getCompound("Turn"));
 
 		return this;
 	}

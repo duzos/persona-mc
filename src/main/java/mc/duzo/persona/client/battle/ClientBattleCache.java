@@ -52,7 +52,7 @@ public class ClientBattleCache {
 		AbstractClientPlayerEntity player = MinecraftClient.getInstance().player;
 		if (player == null) return Optional.empty();
 
-		Optional<ClientBattleData> found = ClientBattleHandler.findPlayersBattle(player);
+		Optional<ClientBattleData> found = ClientBattleHandler.findBattle(player);
 		if (found.isEmpty()) {
 			if (current != null)
 				clear();

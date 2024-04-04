@@ -67,6 +67,10 @@ public class ClientData {
 
         getInstance().battles.remove(uuid);
     }
+    public static void clearBattles() {
+        getInstance().battles.clear();
+        ClientBattleCache.clear();
+    }
 
     public static Optional<ClientBattleData> getBattleState(UUID uuid) {
         return Optional.ofNullable(getInstance().battles.get(uuid));

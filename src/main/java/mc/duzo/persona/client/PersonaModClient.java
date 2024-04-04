@@ -9,6 +9,7 @@ import mc.duzo.persona.client.render.VelvetDoorRenderer;
 import mc.duzo.persona.client.sound.MusicSound;
 import mc.duzo.persona.client.sound.PlayerFollowingLoopingSound;
 import mc.duzo.persona.client.sound.SoundsManager;
+import mc.duzo.persona.client.sound.persona.SoundSetRegistry;
 import mc.duzo.persona.client.util.Keybinds;
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.util.VelvetUtil;
@@ -31,6 +32,7 @@ public class PersonaModClient implements ClientModInitializer {
     public void onInitializeClient() {
         PersonaClientMessages.initialise();
         Keybinds.initialise();
+        SoundSetRegistry.initialise();
 
         HudRenderCallback.EVENT.register(new SPHudOverlay());
 
@@ -41,6 +43,8 @@ public class PersonaModClient implements ClientModInitializer {
 
             PersonaClientMessages.askForPlayerData(player.getUuid());
         });
+
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> ClientData.clearBattles());
 
         // Entity Renderers
         EntityRendererRegistry.register(Register.VELVET_DOOR_ENTITY, VelvetDoorRenderer::new);
@@ -54,12 +58,12 @@ public class PersonaModClient implements ClientModInitializer {
     }
 
     private void tickBattleMusic(MinecraftClient client) {
-        if (!sounds.isPlaying(PersonaSounds.MUSIC_REACH_OUT) && ClientBattleCache.findCurrentBattle().isPresent()) {
-            sounds.startSound(new MusicSound(PersonaSounds.MUSIC_REACH_OUT, 0.25f));
+        if (!SoundSetRegistry.isPlayingBattleMusic() && ClientBattleCache.findCurrentBattle().isPresent()) {
+            SoundSetRegistry.playRandomBattleMusic();
             return;
         }
-        if (sounds.isPlaying(PersonaSounds.MUSIC_REACH_OUT) && ClientBattleCache.findCurrentBattle().isEmpty()) {
-            sounds.stopSound(PersonaSounds.MUSIC_REACH_OUT);
+        if (SoundSetRegistry.isPlayingBattleMusic() && ClientBattleCache.findCurrentBattle().isEmpty()) {
+            SoundSetRegistry.stopBattleMusic();
             return;
         }
     }

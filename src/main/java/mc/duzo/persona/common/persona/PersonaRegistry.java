@@ -29,11 +29,11 @@ public class PersonaRegistry {
         DEV = register(Persona.create(
                 new Identifier(PersonaMod.MOD_ID, "dev"),
                 new SkillSet(
-                        SkillRegistry.DIA,
+                        SkillRegistry.DIARAHAN,
+                        SkillRegistry.MEDIA,
                         SkillRegistry.CLEAVE,
                         SkillRegistry.ZIO,
-                        SkillRegistry.TRAFURI,
-                        SkillRegistry.VELVET
+                        SkillRegistry.MAZIO
                 ),
                 new Identifier(PersonaMod.MOD_ID, "textures/skins/arsene.png"), // TODO - ask for permission (https://www.planetminecraft.com/member/magpied/) / ask for them to make more / ask for one of my texture friends to make some
                 PersonaSounds.ARSENE_SHOUT
