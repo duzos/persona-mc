@@ -50,8 +50,10 @@ public abstract class BattleTurn {
 				return;
 			}
 
-			this.current = ((PlayerEntity) players.toArray()[0]).getUuid();
-			return;
+			if (!players.isEmpty()) {
+				this.current = ((PlayerEntity) players.toArray()[0]).getUuid();
+				return;
+			}
 		}
 
 		if (this.getData().hasPlayer(this.current)) {
@@ -71,8 +73,10 @@ public abstract class BattleTurn {
 				return;
 			}
 
-			this.current = ((LivingEntity) targets.toArray()[0]).getUuid();
-			return;
+			if (!targets.isEmpty()) {
+				this.current = ((LivingEntity) targets.toArray()[0]).getUuid();
+				return;
+			}
 		}
 
 		PersonaMod.LOGGER.error("Could not find next entity in turn!");

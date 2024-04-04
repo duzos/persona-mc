@@ -39,6 +39,11 @@ public abstract class LivingEntityMixin {
 			Optional<ServerBattleData> entityBattle = BattleHandler.findBattle(thisEntity);
 
 			if (entityBattle.isPresent()) {
+				if (entityBattle.get().getTurn().isCurrent(player)) {
+					entityBattle.get().getTurn().next();
+					return;
+				}
+
 				entityBattle.get().addPlayer(player);
 
 				cir.setReturnValue(false);
@@ -46,6 +51,11 @@ public abstract class LivingEntityMixin {
 			}
 
 			if (playersBattle.isPresent()) {
+				if (playersBattle.get().getTurn().isCurrent(player)) {
+					playersBattle.get().getTurn().next();
+					return;
+				}
+
 				playersBattle.get().addTarget(thisEntity);
 
 				cir.setReturnValue(false);
