@@ -80,7 +80,9 @@ public abstract class BattleTurn {
 		}
 
 		PersonaMod.LOGGER.error("Could not find next entity in turn!");
-		this.current = ((LivingEntity) players.toArray()[0]).getUuid();
+
+		if (!players.isEmpty())
+			this.current = ((LivingEntity) players.toArray()[0]).getUuid();
 		// Throw exception?
 	}
 

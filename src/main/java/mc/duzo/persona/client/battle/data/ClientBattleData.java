@@ -62,6 +62,19 @@ public class ClientBattleData extends BattleData {
 
 	}
 
+	public float getYawAdjustment(boolean frontFacing) {
+		return (!frontFacing) ? 135f : -45f;
+	}
+	public float getPitchAdjustment(boolean frontFacing) {
+		return 35f;
+	}
+	public BlockPos getPosAdjustment(boolean frontFacing) {
+		if (!frontFacing)
+			return this.getBattlePos().add(3,4,4);
+
+		return this.getBattlePos().add(-3, 4, -4);
+	}
+
 	@Override
 	public List<? extends PlayerEntity> getPlayers() {
 		if (!this.shouldUpdateCache() && this.playersCache != null) {

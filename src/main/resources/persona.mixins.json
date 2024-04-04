@@ -13,6 +13,7 @@
     "defaultRequire": 1
   },
   "client": [
+    "client.CameraMixin",
     "client.ClientPlayerInteractionManagerMixin",
     "client.HeadFeatureRendererMixin",
     "client.MusicMixin",
