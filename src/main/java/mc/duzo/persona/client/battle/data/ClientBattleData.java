@@ -14,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.UUID;
 
 public class ClientBattleData extends BattleData {
 	private ClientBattleTurn turn;
+	private BlockPos battlePos;
 
 	public ClientBattleData(NbtCompound nbt) {
 		super(nbt);
@@ -39,6 +42,10 @@ public class ClientBattleData extends BattleData {
 		}
 
 		return this.turn;
+	}
+
+	public BlockPos getBattlePos() {
+		return this.battlePos;
 	}
 
 	private void createCacheDelay() {
@@ -118,6 +125,8 @@ public class ClientBattleData extends BattleData {
 	@Override
 	public BattleData loadNbt(NbtCompound nbt) {
 		super.loadNbt(nbt);
+
+		this.battlePos = NbtHelper.toBlockPos(nbt.getCompound("BattlePos").getCompound("pos"));
 
 		this.turn = new ClientBattleTurn(this);
 		this.turn.loadNbt(nbt.getCompound("Turn"));
