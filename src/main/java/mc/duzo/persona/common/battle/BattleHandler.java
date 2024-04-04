@@ -152,6 +152,27 @@ public class BattleHandler {
 
 		return found;
 	}
+	public static Skill findRandomSkill(Affinity... affs) {
+		Skill found = findRandomSkill();
+
+		int max = 128;
+		int count = 0;
+
+		while (count < max && !(isAffinity(found, affs))) {
+			found = findRandomSkill();
+			count++;
+		}
+
+		return found;
+	}
+	private static boolean isAffinity(Skill skill, Affinity... affs) {
+		for (Affinity aff : affs) {
+			if (skill.getAffinity().equals(aff)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static boolean isDamageAffinity(Affinity aff) {
 		// BAD!!
 

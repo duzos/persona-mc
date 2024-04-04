@@ -48,13 +48,13 @@ public abstract class Skill implements Identifiable {
             turn.getCurrent().sendMessage(Text.literal("It's your turn!"));
         }
 
+        if (this.usesHealth()) {
+            source.damage(source.getDamageSources().generic(), source.getMaxHealth() * (this.getCost() / 100f));
+            return true;
+        }
+
         if (source instanceof ServerPlayerEntity player) {
             PlayerData data = ServerData.getPlayerState(player);
-
-            if (this.usesHealth()) {
-                source.damage(source.getDamageSources().generic(), source.getMaxHealth() * (this.getCost() / 100f));
-                return true;
-            }
 
             data.removeSP(this.getCost());
 

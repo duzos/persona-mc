@@ -1,5 +1,6 @@
 package mc.duzo.persona.util;
 
+import mc.duzo.persona.common.affinities.Affinity;
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.battle.turn.BattleTurn;
@@ -10,6 +11,7 @@ import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -103,13 +105,25 @@ public class PersonaUtil {
         Optional<ServerBattleData> battle = BattleHandler.findBattle(entity);
         if (battle.isEmpty()) return;
 
-        Skill skill = BattleHandler.findRandomDamageSkill();
+        Skill skill = BattleHandler.findRandomSkill(Affinity.PHYS);
         LivingEntity target = BattleHandler.findRandomPlayer(battle.get());
 
         skill.run(entity, null, target);
 
-        createSkillParticles(target, ParticleTypes.ENCHANTED_HIT);
-        createSkillParticles(entity, ParticleTypes.FIREWORK);
+        DefaultParticleType targetParticle = ParticleTypes.ENCHANTED_HIT;
+        DefaultParticleType sourceParticle = ParticleTypes.FIREWORK;
+
+        if (skill.usesHealth()) {
+            sourceParticle = ParticleTypes.HEART;
+
+            if (entity.getHealth() <= (entity.getMaxHealth() * (skill.getCost() / 100f))) {
+                battle.get().getTurn().next();
+                return;
+            }
+        }
+
+        createSkillParticles(target, targetParticle);
+        createSkillParticles(entity, sourceParticle);
 
         entity.getWorld().playSound(null, entity.getBlockPos(), skill.getUseSound(), SoundCategory.PLAYERS, 1.0f, 1.0f);
     }

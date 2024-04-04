@@ -1,6 +1,7 @@
 package mc.duzo.persona.data;
 
 import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.PersonaUser;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -17,7 +18,7 @@ import java.util.Optional;
  *
  * @author duzo
  */
-public class PlayerData {
+public class PlayerData implements PersonaUser {
     public static final int MAX_SP = 100;
 
     private Persona persona;
@@ -27,6 +28,7 @@ public class PlayerData {
     private boolean personaRevealed;
     private AbsoluteBlockPos.Directed velvetDoorPos; // the position of the velvet door through which the player entered the velvet room
 
+    @Override
     public Optional<Persona> findPersona() {
         return Optional.ofNullable(this.persona);
     }
@@ -82,23 +84,19 @@ public class PlayerData {
         return target;
     }
 
+    @Override
     public int getSP() {
         return this.spiritPoints;
     }
-    public void removeSP(int amount) {
-        this.spiritPoints = Math.max(0, this.spiritPoints - amount);
-    }
-    public void addSP(int amount) {
-        this.spiritPoints = Math.min(MAX_SP, this.spiritPoints + amount);
-    }
 
+    @Override
+    public int getMaxSP() {
+        return MAX_SP;
+    }
+    @Override
     public void setSP(int amount) {
         this.spiritPoints = Math.min(MAX_SP, amount);
     }
-    public boolean hasEnoughSP(int amount) {
-        return this.spiritPoints >= amount;
-    }
-
     public boolean isPersonaRevealed() {
         return this.personaRevealed;
     }
