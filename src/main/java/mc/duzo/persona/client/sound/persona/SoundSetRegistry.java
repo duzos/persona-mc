@@ -3,8 +3,10 @@ package mc.duzo.persona.client.sound.persona;
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.PersonaModClient;
 import mc.duzo.persona.client.sound.MusicSound;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class SoundSetRegistry {
@@ -32,21 +34,23 @@ public class SoundSetRegistry {
 
 	public static boolean isPlayingBattleMusic() {
 		for (PersonaSoundSet set : REGISTRY.values()) {
-			if (PersonaModClient.sounds.isPlaying(set.getBattleMusic())) {
-				return true;
+			for (SoundEvent song : set.getBattleMusic()) {
+				if (PersonaModClient.sounds.isPlaying(song)) return true;
 			}
 		}
 		return false;
 	}
 	public static PersonaSoundSet playRandomBattleMusic() {
 		PersonaSoundSet set = findRandom();
-		PersonaModClient.sounds.startIfNotPlaying(new MusicSound(set.getBattleMusic(), 0.25f));
+		PersonaModClient.sounds.startIfNotPlaying(new MusicSound(set.getRandomBattleMusic(), 0.25f));
 		return set;
 	}
 	public static void stopBattleMusic() {
 		for (PersonaSoundSet set : REGISTRY.values()) {
-			if (PersonaModClient.sounds.isPlaying(set.getBattleMusic()))
-				PersonaModClient.sounds.stopSound(set.getBattleMusic());
+			for (SoundEvent song : set.getBattleMusic()) {
+				if (PersonaModClient.sounds.isPlaying(song))
+					PersonaModClient.sounds.stopSound(song);
+			}
 		}
 	}
 

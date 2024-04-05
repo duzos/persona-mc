@@ -5,6 +5,8 @@ import mc.duzo.persona.common.PersonaSounds;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
+
 public class PersonaFiveSoundSet implements PersonaSoundSet {
 	@Override
 	public Identifier getId() {
@@ -12,7 +14,7 @@ public class PersonaFiveSoundSet implements PersonaSoundSet {
 	}
 
 	@Override
-	public SoundEvent getBattleMusic() {
-		return PersonaSounds.MUSIC_TAKE_OVER;
+	public List<SoundEvent> getBattleMusic() {
+		return List.of(PersonaSounds.MUSIC_TAKE_OVER);
 	}
 }
