@@ -163,4 +163,8 @@ public class PlayerData implements PersonaUser {
 
         return data;
     }
+
+	public boolean isRunningAnimations() {
+        return false; // TODO
+	}
 }
