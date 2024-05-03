@@ -1,0 +1,49 @@
+package mc.duzo.persona.commands.argument;
+
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.PersonaRegistry;
+import net.minecraft.command.CommandSource;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
+
+public class PersonaArgumentType implements ArgumentType<Persona> {
+	private static final Collection<String> EXAMPLES = Arrays.asList("foo", "foo:bar", "012");
+
+	public static PersonaArgumentType persona() {
+		return new PersonaArgumentType();
+	}
+
+	public static Persona getPersona(CommandContext<ServerCommandSource> context, String name) {
+		return context.getArgument(name, Persona.class);
+	}
+
+	public Persona parse(StringReader stringReader) throws CommandSyntaxException {
+		Identifier id = Identifier.fromCommandInput(stringReader);
+		Persona found = PersonaRegistry.get(id);
+
+		if (found == null) throw new SimpleCommandExceptionType(Text.literal("Persona not found in registry")).create();
+
+		return found;
+	}
+
+	@Override
+	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
+		return CommandSource.suggestMatching(PersonaRegistry.REGISTRY.stream().map(Persona::id).map(Identifier::toString), builder);
+	}
+
+	public Collection<String> getExamples() {
+		return EXAMPLES;
+	}
+}

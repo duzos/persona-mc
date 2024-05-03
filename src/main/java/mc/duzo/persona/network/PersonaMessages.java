@@ -7,6 +7,7 @@ import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.util.PersonaUtil;
 import mc.duzo.persona.util.TargetingUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketByteBuf;
@@ -73,7 +74,11 @@ public class PersonaMessages {
 
         syncData(target, player);
     }
-
+    public static void syncData(ServerPlayerEntity player) {
+        for (ServerPlayerEntity target : PlayerLookup.tracking(player)) {
+            syncData(target, player);
+        }
+    }
     private static void recieveTargetRequest(ServerPlayerEntity player) {
         Optional<LivingEntity> found = TargetingUtil.findEntityBeingLookedAt(player);
 

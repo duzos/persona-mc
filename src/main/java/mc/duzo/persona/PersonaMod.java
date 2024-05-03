@@ -1,6 +1,8 @@
 package mc.duzo.persona;
 
-import mc.duzo.persona.commands.Commands;
+import mc.duzo.persona.commands.argument.PersonaArgumentRegister;
+import mc.duzo.persona.commands.argument.PersonaArgumentType;
+import mc.duzo.persona.commands.command.Commands;
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.common.persona.PersonaRegistry;
 import mc.duzo.persona.common.skill.SkillRegistry;
@@ -40,7 +42,9 @@ public class PersonaMod implements ModInitializer {
 		SkillRegistry.init();
 		PersonaRegistry.init();
 		PersonaMessages.initialise();
+
 		Commands.init();
+		PersonaArgumentRegister.register();
 
 		registerEvents();
 	}
@@ -94,7 +98,7 @@ public class PersonaMod implements ModInitializer {
 			}
 
 			// Temporary for testing, remove soon.
-			ServerData.getPlayerState(player).setPersona(PersonaRegistry.DEV, server);
+			ServerData.getPlayerState(player).setPersona(PersonaRegistry.DEV, player);
 		}));
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> PersonaMod.SERVER = server);

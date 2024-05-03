@@ -2,10 +2,12 @@ package mc.duzo.persona.data;
 
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.util.AbsoluteBlockPos;
+import mc.duzo.persona.util.DataHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,10 +40,10 @@ public class PlayerData {
     public void setPersona(Persona persona) {
         this.persona = persona;
     }
-    public void setPersona(Persona persona, MinecraftServer server) {
+    public void setPersona(Persona persona, ServerPlayerEntity player) {
         this.setPersona(persona);
 
-        ServerData.getServerState(server).markDirty();
+        DataHelper.markDirty(player);
     }
 
     /**
