@@ -104,11 +104,11 @@ public class ArseneModel extends PersonaModel {
 
 		matrices.pop();
 	}
-	private void runAnimations(PlayerData data, float progress) {
+	private void runAnimations(Persona persona, float progress) {
 		this.resetTransforms();
-		data.animationState.startIfNotRunning(0);
+		persona.animationState.startIfNotRunning(0);
 
-		AnimationHelper.updateAnimation(data.animationState, ArseneAnimations.IDLE, progress, this);
+		AnimationHelper.updateAnimation(persona.animationState, ArseneAnimations.IDLE, progress, this);
 	}
 
 	@Override
@@ -138,6 +138,6 @@ public class ArseneModel extends PersonaModel {
 
 	@Override
 	public void setAngles(LivingEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
-		this.runAnimations(ClientData.getPlayerState(entity), animationProgress);
+		this.runAnimations(ClientData.findPersona(entity), animationProgress);
 	}
 }
