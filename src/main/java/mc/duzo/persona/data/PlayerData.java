@@ -1,13 +1,12 @@
 package mc.duzo.persona.data;
 
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import mc.duzo.persona.util.DataHelper;
-import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -23,14 +22,14 @@ import java.util.Optional;
 public class PlayerData {
     public static final int MAX_SP = 100;
 
-    private Persona persona;
+    private AbstractPersona persona;
     private boolean hasTarget;
     private int target;
     private int spiritPoints;
     private boolean personaRevealed;
     private AbsoluteBlockPos.Directed velvetDoorPos; // the position of the velvet door through which the player entered the velvet room
 
-    public Optional<Persona> findPersona() {
+    public Optional<AbstractPersona> findPersona() {
         return Optional.ofNullable(this.persona);
     }
 
@@ -38,10 +37,10 @@ public class PlayerData {
      * Sets the players persona
      * Will not call markdirty
      */
-    public void setPersona(Persona persona) {
+    public void setPersona(AbstractPersona persona) {
         this.persona = persona;
     }
-    public void setPersona(Persona persona, ServerPlayerEntity player) {
+    public void setPersona(AbstractPersona persona, ServerPlayerEntity player) {
         this.setPersona(persona);
 
         DataHelper.markDirty(player);

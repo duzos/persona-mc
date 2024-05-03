@@ -4,7 +4,7 @@ import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.data.ClientData;
 import mc.duzo.persona.client.render.animation.persona.PersonaAnimationHelper;
 import mc.duzo.persona.client.render.animation.persona.ArseneAnimations;
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.persona.PersonaRegistry;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.OverlayTexture;
@@ -103,7 +103,7 @@ public class ArseneModel extends PersonaModel {
 
 		matrices.pop();
 	}
-	private void runAnimations(Persona persona, float progress) {
+	private void runAnimations(AbstractPersona persona, float progress) {
 		this.resetTransforms();
 		persona.animationState.startIfNotRunning(0);
 
@@ -111,7 +111,7 @@ public class ArseneModel extends PersonaModel {
 	}
 
 	@Override
-	public Persona getPersona() {
+	public AbstractPersona getPersona() {
 		return PersonaRegistry.ARSENE;
 	}
 

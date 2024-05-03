@@ -1,7 +1,7 @@
 package mc.duzo.persona.common.skill;
 
 import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
@@ -28,7 +28,7 @@ public abstract class Skill implements Identifiable {
                 '}';
     }
 
-    public void run(ServerPlayerEntity source, Persona persona, LivingEntity target) {
+    public void run(ServerPlayerEntity source, AbstractPersona persona, LivingEntity target) {
         PlayerData data = ServerData.getPlayerState(source);
 
         if (this.usesHealth()) {
@@ -77,7 +77,7 @@ public abstract class Skill implements Identifiable {
     public static Skill create(Identifier id, RunSkill onRun, boolean usesHealth, int cost, double cooldown, @Nullable SoundEvent sound) {
         return new Skill(id) {
             @Override
-            public void run(ServerPlayerEntity source, Persona persona, LivingEntity target) {
+            public void run(ServerPlayerEntity source, AbstractPersona persona, LivingEntity target) {
                 super.run(source, persona, target);
 
                 onRun.run(source, persona, target);
@@ -114,6 +114,6 @@ public abstract class Skill implements Identifiable {
         return create(id, onRun, usesHealth, cost, cooldown, null);
     }
     public interface RunSkill {
-        void run(ServerPlayerEntity source, Persona persona, LivingEntity target);
+        void run(ServerPlayerEntity source, AbstractPersona persona, LivingEntity target);
     }
 }

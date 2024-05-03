@@ -4,25 +4,18 @@ import mc.duzo.persona.client.data.ClientData;
 import mc.duzo.persona.client.render.model.persona.PersonaModel;
 import mc.duzo.persona.client.render.model.persona.PersonaModelRegistry;
 import mc.duzo.persona.client.render.model.persona.PersonaSkinModel;
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.*;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.RotationAxis;
 
 import java.util.Objects;
 
@@ -32,7 +25,7 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
     private static final int MAX_LIGHT = 0xF000F0;
 
     private EntityModel<T> model;
-    private Persona prevPersona;
+    private AbstractPersona prevPersona;
     private final PlayerEntityModel<T> playerModel;
 
     public PersonaFeatureRenderer(FeatureRendererContext<T, M> context, EntityModelLoader loader) {
@@ -45,7 +38,7 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
         PlayerData data = ClientData.getPlayerState(livingEntity);
 
         if (!data.isPersonaRevealed() || data.findPersona().isEmpty()) return;
-        Persona persona = data.findPersona().get();
+        AbstractPersona persona = data.findPersona().get();
 
         if (!(livingEntity instanceof AbstractClientPlayerEntity player)) return;
 

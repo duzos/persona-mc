@@ -1,7 +1,6 @@
 package mc.duzo.persona.datagen;
 
 import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.common.skill.SkillRegistry;
 import mc.duzo.persona.datagen.provider.PersonaSoundProvider;
@@ -9,9 +8,7 @@ import mc.duzo.persona.datagen.provider.lang.LanguageProvider;
 import mc.duzo.persona.datagen.provider.lang.LanguageType;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import org.apache.commons.codec.language.bm.Lang;
 
 public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 	@Override

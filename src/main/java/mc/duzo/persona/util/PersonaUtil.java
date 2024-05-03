@@ -1,6 +1,6 @@
 package mc.duzo.persona.util;
 
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
@@ -25,7 +25,7 @@ public class PersonaUtil {
 
         TargetingUtil.verifyTarget(player);
 
-        Persona persona = data.findPersona().get();
+        AbstractPersona persona = data.findPersona().get();
         Optional<LivingEntity> foundTarget = data.findTarget(player.getServerWorld());
 
         if (foundTarget.isEmpty()) return;

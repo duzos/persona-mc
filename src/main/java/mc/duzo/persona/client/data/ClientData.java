@@ -1,7 +1,7 @@
 package mc.duzo.persona.client.data;
 
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -41,7 +41,7 @@ public class ClientData {
     public static PlayerData getPlayerState(LivingEntity player) {
         return getPlayerState(player.getUuid());
     }
-    public static Persona findPersona(LivingEntity entity) {
+    public static AbstractPersona findPersona(LivingEntity entity) {
         if (entity instanceof AbstractClientPlayerEntity) {
             return getPlayerState(entity).findPersona().orElse(null);
         }
