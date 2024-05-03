@@ -1,9 +1,8 @@
 package mc.duzo.persona.client.render.model.persona;
 
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
@@ -23,7 +22,7 @@ public abstract class PersonaModel extends EntityModel<LivingEntity> {
 	public Optional<Identifier> getEmission() {
 		return Optional.empty(); // TODO
 	}
-	public abstract Persona getPersona();
+	public abstract AbstractPersona getPersona();
 
 	/**
 	 * @return The root model part

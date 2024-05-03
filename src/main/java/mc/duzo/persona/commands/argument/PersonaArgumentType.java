@@ -7,7 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.persona.PersonaRegistry;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.ServerCommandSource;
@@ -18,20 +18,20 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-public class PersonaArgumentType implements ArgumentType<Persona> {
+public class PersonaArgumentType implements ArgumentType<AbstractPersona> {
 	private static final Collection<String> EXAMPLES = Arrays.asList("foo", "foo:bar", "012");
 
 	public static PersonaArgumentType persona() {
 		return new PersonaArgumentType();
 	}
 
-	public static Persona getPersona(CommandContext<ServerCommandSource> context, String name) {
-		return context.getArgument(name, Persona.class);
+	public static AbstractPersona getPersona(CommandContext<ServerCommandSource> context, String name) {
+		return context.getArgument(name, AbstractPersona.class);
 	}
 
-	public Persona parse(StringReader stringReader) throws CommandSyntaxException {
+	public AbstractPersona parse(StringReader stringReader) throws CommandSyntaxException {
 		Identifier id = Identifier.fromCommandInput(stringReader);
-		Persona found = PersonaRegistry.get(id);
+		AbstractPersona found = PersonaRegistry.get(id);
 
 		if (found == null) throw new SimpleCommandExceptionType(Text.literal("Persona not found in registry")).create();
 
@@ -40,7 +40,7 @@ public class PersonaArgumentType implements ArgumentType<Persona> {
 
 	@Override
 	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-		return CommandSource.suggestMatching(PersonaRegistry.REGISTRY.stream().map(Persona::id).map(Identifier::toString), builder);
+		return CommandSource.suggestMatching(PersonaRegistry.REGISTRY.stream().map(AbstractPersona::id).map(Identifier::toString), builder);
 	}
 
 	public Collection<String> getExamples() {

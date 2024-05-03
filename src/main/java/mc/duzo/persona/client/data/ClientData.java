@@ -86,7 +86,7 @@ public class ClientData {
             data.tick(client);
         }
     }
-    public static Persona findPersona(LivingEntity entity) {
+    public static AbstractPersona findPersona(LivingEntity entity) {
         if (entity instanceof AbstractClientPlayerEntity) {
             return getPlayerState(entity).findPersona().orElse(null);
         }

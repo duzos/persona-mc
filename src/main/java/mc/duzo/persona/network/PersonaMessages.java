@@ -2,7 +2,7 @@ package mc.duzo.persona.network;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.util.PersonaUtil;
@@ -118,7 +118,7 @@ public class PersonaMessages {
 
         if (data.findPersona().isEmpty()) return;
 
-        Persona persona = data.findPersona().get();
+        AbstractPersona persona = data.findPersona().get();
 
         if (next) {
             persona.getSkillSet().selectNext();

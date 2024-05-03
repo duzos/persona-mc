@@ -1,11 +1,6 @@
 package mc.duzo.persona.client.render.model.persona;
 
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.client.render.model.door.P4DoorModel;
-import mc.duzo.persona.client.render.model.door.VelvetDoorModel;
-import mc.duzo.persona.client.render.model.door.VelvetDoorRegistry;
-import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
-import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.common.persona.PersonaRegistry;
 import net.minecraft.util.Identifier;
 
