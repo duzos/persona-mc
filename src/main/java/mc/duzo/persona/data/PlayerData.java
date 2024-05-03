@@ -30,7 +30,6 @@ public class PlayerData implements PersonaUser {
     private int spiritPoints;
     private boolean personaRevealed;
     private AbsoluteBlockPos.Directed velvetDoorPos; // the position of the velvet door through which the player entered the velvet room
-    public AnimationState animationState = new AnimationState();
 
     @Override
     public Optional<Persona> findPersona() {

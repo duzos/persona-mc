@@ -1,6 +1,7 @@
 package mc.duzo.persona.client.data;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.client.battle.ClientBattleCache;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
@@ -8,6 +9,7 @@ import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
@@ -83,5 +85,13 @@ public class ClientData {
         for (ClientBattleData data : getInstance().getBattles()) {
             data.tick(client);
         }
+    }
+    public static Persona findPersona(LivingEntity entity) {
+        if (entity instanceof AbstractClientPlayerEntity) {
+            return getPlayerState(entity).findPersona().orElse(null);
+        }
+
+        // TODO - Entities having personas
+        return null;
     }
 }

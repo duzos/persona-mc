@@ -3,6 +3,7 @@ package mc.duzo.persona.common.persona;
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.common.skill.SkillSet;
 import mc.duzo.persona.util.Identifiable;
+import net.minecraft.entity.AnimationState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -15,6 +16,7 @@ public class Persona implements Identifiable {
     private final SkillSet skills;
     private final SoundEvent summonSound;
     private int level;
+    public AnimationState animationState = new AnimationState();
 
     protected Persona(Identifier id, SkillSet skills, Identifier texture, SoundEvent sound) {
         this.id = id;
