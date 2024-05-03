@@ -1,6 +1,7 @@
 package mc.duzo.persona.client.render.model.persona;
 
 import mc.duzo.persona.common.persona.Persona;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -23,4 +24,26 @@ public abstract class PersonaModel extends EntityModel<LivingEntity> {
 		return Optional.empty(); // TODO
 	}
 	public abstract Persona getPersona();
+
+	/**
+	 * @return The root model part
+	 */
+	public abstract ModelPart getPart();
+
+	/**
+	 * @return the name of the root model part
+	 */
+	protected String getPartName() {
+		return "root";
+	}
+	public Optional<ModelPart> getChild(String name) {
+		if (name.equals(this.getPartName())) {
+			return Optional.of(this.getPart());
+		}
+		return this.getPart().traverse().filter(part -> part.hasChild(name)).findFirst().map(part -> part.getChild(name));
+	}
+	protected void resetTransforms() {
+		this.getPart().resetTransform();
+		this.getPart().traverse().forEach(ModelPart::resetTransform);
+	}
 }

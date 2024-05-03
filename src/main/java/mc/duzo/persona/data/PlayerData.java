@@ -3,6 +3,7 @@ package mc.duzo.persona.data;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import mc.duzo.persona.util.DataHelper;
+import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -28,6 +29,7 @@ public class PlayerData {
     private int spiritPoints;
     private boolean personaRevealed;
     private AbsoluteBlockPos.Directed velvetDoorPos; // the position of the velvet door through which the player entered the velvet room
+    public AnimationState animationState = new AnimationState();
 
     public Optional<Persona> findPersona() {
         return Optional.ofNullable(this.persona);
