@@ -1,8 +1,13 @@
 package mc.duzo.persona.client.render.animation.player;
 
+import mc.duzo.persona.client.battle.ClientBattleHandler;
+import mc.duzo.persona.client.battle.data.ClientBattleData;
+import mc.duzo.persona.client.render.animation.player.holder.PlayerAnimationHolder;
+import mc.duzo.persona.client.render.animation.player.holder.PlayerIdleAnimation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.animation.Keyframe;
 import net.minecraft.client.render.entity.animation.Transformation;
@@ -12,6 +17,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Vector3f;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -25,7 +31,8 @@ public class PlayerAnimationHelper {
 	public static void animate(PlayerEntityModel<?> model, Animation animation, long runningTime, float scale, Vector3f tempVec) {
 		float f = getRunningSeconds(animation, runningTime);
 		animation.boneAnimations().forEach((key, list) -> {
-			Optional<ModelPart> optional = getChild(model, key);;
+			// TODO - fix "player" / "root" part not animating properly
+			Optional<ModelPart> optional = getChild(model, key);
 			optional.ifPresent(part -> list.forEach(transformation -> {
 				Keyframe[] keyframes = transformation.keyframes();
 				int i = Math.max(0, MathHelper.binarySearch(0, keyframes.length, index -> f <= keyframes[index].timestamp()) - 1);
@@ -38,6 +45,17 @@ public class PlayerAnimationHelper {
 				transformation.target().apply(part, tempVec);
 			}));
 		});
+
+		correctSleevies(model);
+	}
+
+	private static void correctSleevies(PlayerEntityModel<?> model) {
+		model.hat.copyTransform(model.head);
+		model.leftSleeve.copyTransform(model.leftArm);
+		model.rightSleeve.copyTransform(model.rightArm);
+		model.leftPants.copyTransform(model.leftLeg);
+		model.rightPants.copyTransform(model.rightLeg);
+		model.jacket.copyTransform(model.body);
 	}
 
 	public static void updateAnimation(AnimationState animationState, Animation animation, float animationProgress, float speedMultiplier, PlayerEntityModel<?> model) {
@@ -71,14 +89,40 @@ public class PlayerAnimationHelper {
 		return rotation;
 	}
 
-	public static void runAnimations(LivingEntity livingEntity, PlayerEntityModel<?> model) {
-		// TODO animations will go here
+	public static void runAnimations(AbstractClientPlayerEntity livingEntity, PlayerEntityModel<?> model, float progress) {
+		PlayerAnimationHolder anim = PlayerAnimationTracker.getAnimation(livingEntity);
+		anim.update(model, progress);
 	}
 
-	public static boolean isRunningAnimations(LivingEntity livingEntity) {
-		return false; // TODO
+	public static void startAnimations(AbstractClientPlayerEntity entity) {
+		if (shouldBeIdleAnimation(entity)) {
+			playAnimation(entity, new PlayerIdleAnimation());
+		}
+	}
+	private static boolean shouldBeIdleAnimation(AbstractClientPlayerEntity entity) {
+		if (isRunningAnimations(entity)) {
+			return false;
+		}
+
+		Optional<ClientBattleData> battleData = ClientBattleHandler.findBattle(entity);
+		return battleData.isPresent();
 	}
 
+	public static boolean isRunningAnimations(AbstractClientPlayerEntity livingEntity) {
+		PlayerAnimationHolder anim = PlayerAnimationTracker.getAnimation(livingEntity);
+		return anim != null && !anim.isFinished(livingEntity);
+	}
+
+	public static void playAnimation(AbstractClientPlayerEntity player, Animation animation) {
+		playAnimation(player, new PlayerAnimationHolder(animation));
+	}
+	public static void playAnimation(AbstractClientPlayerEntity player, PlayerAnimationHolder holder) {
+		stopAnimation(player);
+		PlayerAnimationTracker.addAnimation(player.getUuid(), holder);
+	}
+	public static void stopAnimation(AbstractClientPlayerEntity player) {
+		PlayerAnimationTracker.clearAnimation(player.getUuid());
+	}
 	public static final Transformation.Interpolation STEP = (dest, delta, keyframes, start, end, scale) -> {
 		Vector3f vector3f = keyframes[start].target();
 		Vector3f vector3f2 = keyframes[end].target();

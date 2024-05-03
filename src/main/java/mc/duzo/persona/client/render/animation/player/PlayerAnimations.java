@@ -111,6 +111,8 @@ public class PlayerAnimations {
             .addBoneAnimation("player",
                     new Transformation(Transformation.Targets.ROTATE,
                             new Keyframe(0f, AnimationHelper.createRotationalVector(15f, 0f, 0f),
+                                    Transformation.Interpolations.CUBIC),
+                            new Keyframe(0.9167666f, AnimationHelper.createRotationalVector(15f, 0f, 0f),
                                     Transformation.Interpolations.CUBIC)))
             .addBoneAnimation("head",
                     new Transformation(Transformation.Targets.TRANSLATE,

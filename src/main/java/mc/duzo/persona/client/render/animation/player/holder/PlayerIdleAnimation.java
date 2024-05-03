@@ -1,0 +1,23 @@
+package mc.duzo.persona.client.render.animation.player.holder;
+
+import mc.duzo.persona.client.battle.ClientBattleHandler;
+import mc.duzo.persona.client.battle.data.ClientBattleData;
+import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.client.render.animation.player.PlayerAnimations;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.entity.animation.Animation;
+
+import java.util.Optional;
+
+public class PlayerIdleAnimation extends PlayerAnimationHolder {
+	public PlayerIdleAnimation() {
+		super(PlayerAnimations.PERSONA_BATTLE_IDLE);
+	}
+
+	@Override
+	public boolean isFinished(AbstractClientPlayerEntity entity) {
+		Optional<ClientBattleData> data = ClientBattleHandler.findBattle(entity);
+
+		return super.isFinished(entity) || data.isEmpty();
+	}
+}

@@ -5,6 +5,7 @@ import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
 import mc.duzo.persona.client.render.animation.player.PlayerModelHook;
 import mc.duzo.persona.data.PlayerData;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.entity.LivingEntity;
@@ -43,18 +44,23 @@ public abstract class PlayerEntityModelMixin<T extends LivingEntity>
 	public void persona$setAngles(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
 		PlayerData data = ClientData.getPlayerState(livingEntity);
 
-		if (!PlayerAnimationHelper.isRunningAnimations(livingEntity)) return;
+		if (!(livingEntity instanceof AbstractClientPlayerEntity player)) return;
 
+		PlayerAnimationHelper.startAnimations(player);
+
+		if (!PlayerAnimationHelper.isRunningAnimations(player)) return;
+
+		this.persona$getPart().resetTransform();
 		this.parts.forEach(ModelPart::resetTransform);
 
 		PlayerEntityModel<?> model = (PlayerEntityModel<?>) (Object) this;
 
-		PlayerAnimationHelper.runAnimations(livingEntity, model);
+		PlayerAnimationHelper.runAnimations(player, model, h);
 	}
 
 	@Override
 	public Optional<ModelPart> persona$getChild(String name) {
-		if (name.equals("root")) {
+		if (name.equals("root") || name.equalsIgnoreCase("player")) {
 			return Optional.of(this.persona$getPart());
 		}
 		return this.persona$getPart().traverse().filter(part -> part.hasChild(name)).findFirst().map(part -> part.getChild(name));
