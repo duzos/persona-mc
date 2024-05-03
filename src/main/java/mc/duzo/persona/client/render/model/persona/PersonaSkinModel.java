@@ -18,7 +18,7 @@ public class PersonaSkinModel extends PersonaModel{
 
 
 	@Override
-	public void render(LivingEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, float r, float g, float b, float alpha) {
+	public void render(LivingEntity entity, float tickDelta, MatrixStack matrices, VertexConsumer vertexConsumers, int light, float r, float g, float b, float alpha) {
 
 	}
 
