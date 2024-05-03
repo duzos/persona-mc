@@ -15,8 +15,10 @@ public class PersonaSkinModel extends PersonaModel{
 	public PersonaSkinModel(Persona persona) {
 		this.persona = persona;
 	}
+
+
 	@Override
-	public void render(LivingEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+	public void render(LivingEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, float r, float g, float b, float alpha) {
 
 	}
 

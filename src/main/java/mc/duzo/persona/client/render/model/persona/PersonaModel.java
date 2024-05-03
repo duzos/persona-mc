@@ -9,8 +9,10 @@ import net.minecraft.util.Identifier;
 
 public abstract class PersonaModel extends EntityModel<LivingEntity> {
 
-	// TODO - use this to render the persona, instead it calls the other render method, so this isnt ever called.
-	public abstract void render(LivingEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light);
+	/**
+	 * This will be called to render the model, perform all adjustments here and render the model using the proper method.
+	 */
+	public abstract void render(LivingEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, float r, float g, float b, float alpha);
 	public Identifier getTexture() {
 		return this.getPersona().texture();
 	}
