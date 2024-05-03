@@ -1,8 +1,8 @@
 package mc.duzo.persona.mixin.client;
 
-import mc.duzo.persona.client.animation.AnimationHelper;
-import mc.duzo.persona.client.animation.PlayerModelHook;
 import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
+import mc.duzo.persona.client.render.animation.player.PlayerModelHook;
 import mc.duzo.persona.data.PlayerData;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
@@ -35,20 +35,21 @@ public abstract class PlayerEntityModelMixin<T extends LivingEntity>
 	}
 
 	@Inject(method = "<init>", at = @At("TAIL"))
-	public void ouroboros$init(ModelPart root, boolean thinArms, CallbackInfo ci) {
+	public void persona$init(ModelPart root, boolean thinArms, CallbackInfo ci) {
 		this.root = root;
 	}
 
 	@Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
-	public void ouroboros$setAngles(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+	public void persona$setAngles(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
 		PlayerData data = ClientData.getPlayerState(livingEntity);
 
-		if (!data.isRunningAnimations()) return;
+		if (!PlayerAnimationHelper.isRunningAnimations(livingEntity)) return;
 
 		this.parts.forEach(ModelPart::resetTransform);
 
 		PlayerEntityModel<?> model = (PlayerEntityModel<?>) (Object) this;
 
+		PlayerAnimationHelper.runAnimations(livingEntity, model);
 	}
 
 	@Override

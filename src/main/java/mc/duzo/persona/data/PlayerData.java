@@ -131,7 +131,6 @@ public class PlayerData implements PersonaUser {
         this.velvetDoorPos = pos;
     }
 
-
     public NbtCompound toNbt() {
         NbtCompound nbt = new NbtCompound();
 
