@@ -1,4 +1,4 @@
-package mc.duzo.persona.client.render.model;
+package mc.duzo.persona.client.render.model.door;
 
 import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
 

@@ -1,7 +1,7 @@
 package mc.duzo.persona.client.render;
 
-import mc.duzo.persona.client.render.model.VelvetDoorModel;
-import mc.duzo.persona.client.render.model.VelvetDoorRegistry;
+import mc.duzo.persona.client.render.model.door.VelvetDoorModel;
+import mc.duzo.persona.client.render.model.door.VelvetDoorRegistry;
 import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
 import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
 import net.minecraft.client.MinecraftClient;

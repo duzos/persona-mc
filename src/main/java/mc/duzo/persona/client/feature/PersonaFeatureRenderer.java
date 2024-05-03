@@ -1,6 +1,10 @@
 package mc.duzo.persona.client.feature;
 
 import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.client.render.model.persona.PersonaModel;
+import mc.duzo.persona.client.render.model.persona.PersonaModelRegistry;
+import mc.duzo.persona.client.render.model.persona.PersonaSkinModel;
+import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.data.PlayerData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,14 +24,18 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 
+import java.util.Objects;
+
 @Environment(value= EnvType.CLIENT)
 public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityModel<T>>
         extends FeatureRenderer<T, M> {
-    private final PlayerEntityModel<T> model;
+    private EntityModel<T> model;
+    private Persona prevPersona;
+    private final PlayerEntityModel<T> playerModel;
 
     public PersonaFeatureRenderer(FeatureRendererContext<T, M> context, EntityModelLoader loader) {
         super(context);
-        this.model = new PlayerEntityModel<>(loader.getModelPart(EntityModelLayers.PLAYER), false);
+        this.playerModel = new PlayerEntityModel<>(loader.getModelPart(EntityModelLayers.PLAYER), false);
     }
 
     @Override
@@ -35,10 +43,23 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
         PlayerData data = ClientData.getPlayerState(livingEntity);
 
         if (!data.isPersonaRevealed() || data.findPersona().isEmpty()) return;
+        Persona persona = data.findPersona().get();
 
         if (!(livingEntity instanceof AbstractClientPlayerEntity player)) return;
 
-        Identifier identifier = data.findPersona().get().texture();
+        if (!Objects.equals(persona, this.prevPersona)) {
+            this.prevPersona = persona;
+
+            this.model = (EntityModel<T>) PersonaModelRegistry.get(persona.id());
+
+            if (this.model instanceof PersonaSkinModel) {
+                this.model = this.playerModel;
+            }
+        }
+
+        if (this.model == null) return;
+
+        Identifier identifier = (this.model instanceof PersonaModel) ? ((PersonaModel) this.model).getTexture() : persona.texture();
         matrixStack.push();
         matrixStack.translate(0.25f, -0.5f, 0.5f);
 
@@ -49,6 +70,7 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
 
         this.model.setAngles(livingEntity, f, g, j, k, l);
 
+        /*
         this.model.leftLeg.pitch = 0f;
         this.model.rightLeg.pitch = 0f;
 
@@ -60,7 +82,7 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
 
         this.model.leftSleeve.pitch = 0f;
         this.model.rightSleeve.pitch = 0f;
-
+        */
 
         VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucentEmissive(identifier, true));
         this.model.render(matrixStack, vertexConsumer, 0xF000F0, OverlayTexture.DEFAULT_UV, 1, 1, 1, livingEntity.getWorld().random.nextInt(32) != 6 ? 0.4f : 0.05f);
