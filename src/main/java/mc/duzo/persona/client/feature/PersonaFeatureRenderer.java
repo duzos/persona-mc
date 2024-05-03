@@ -65,15 +65,16 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
         matrixStack.push();
         matrixStack.translate(0.25f, -0.5f, 0.5f);
 
-        matrixStack.translate(0f, livingEntity.getWorld().random.nextFloat() * 0.02, 0f);
-        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MinecraftClient.getInstance().getTickDelta() % 180));
+        // Shaking about
+        // matrixStack.translate(0f, livingEntity.getWorld().random.nextFloat() * 0.02, 0f);
+        // matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MinecraftClient.getInstance().getTickDelta() % 180));
 
         this.getContextModel().copyStateTo(this.model);
 
         this.model.setAngles(livingEntity, f, g, j, k, l);
 
         VertexConsumer textureVertex = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucentEmissive(identifier, true));
-        float alpha = livingEntity.getWorld().random.nextInt(32) != 6 ? 0.4f : 0.05f;
+        float alpha = livingEntity.getWorld().random.nextInt(32) != 6 ? 0.5f : 1f;
 
         if (this.model instanceof PersonaModel pModel) {
             pModel.render(player, j, matrixStack, textureVertex, i, 1, 1, 1, alpha);
