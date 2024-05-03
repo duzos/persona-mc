@@ -23,9 +23,12 @@ public class PlayerAnimationHolder {
 	public boolean isFinished(AbstractClientPlayerEntity entity) {
 		if (this.animation.looping()) return false; // Looping animations should extend this class so they properly finish
 
-		return this.state.getTimeRunning() >= this.animation.lengthInSeconds();
+		return this.getTimeRunning() >= this.animation.lengthInSeconds();
 	}
 
+	private float getTimeRunning() {
+		return this.state.getTimeRunning() / 1000f;
+	}
 	public Animation getAnimation() {
 		return animation;
 	}
