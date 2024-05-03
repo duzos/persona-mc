@@ -5,7 +5,7 @@ import mc.duzo.persona.common.affinities.Affinity;
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.battle.turn.BattleTurn;
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
@@ -18,7 +18,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Math;
 
@@ -34,7 +33,7 @@ public class PersonaUtil {
 
         TargetingUtil.verifyTarget(player);
 
-        Persona persona = data.findPersona().get();
+        AbstractPersona persona = data.findPersona().get();
         // Optional<LivingEntity> foundTarget = data.findTarget(player.getServerWorld());
         Optional<LivingEntity> foundTarget = TargetingUtil.findEntityBeingLookedAt(player);
 

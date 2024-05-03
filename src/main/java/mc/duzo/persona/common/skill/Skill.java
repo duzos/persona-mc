@@ -5,7 +5,7 @@ import mc.duzo.persona.common.affinities.Affinity;
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.battle.turn.BattleTurn;
-import mc.duzo.persona.common.persona.Persona;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
@@ -35,7 +35,7 @@ public abstract class Skill implements Identifiable {
                 '}';
     }
 
-    public boolean run(LivingEntity source, Persona persona, LivingEntity target) {
+    public boolean run(LivingEntity source, AbstractPersona persona, LivingEntity target) {
         Optional<ServerBattleData> battle = BattleHandler.findBattle(source);
         if (battle.isPresent()) {
             BattleTurn turn = battle.get().getTurn();
@@ -102,7 +102,7 @@ public abstract class Skill implements Identifiable {
     public static Skill create(Identifier id, Affinity affinity, RunSkill onRun, boolean usesHealth, int cost, double cooldown, @Nullable SoundEvent sound) {
         return new Skill(id) {
             @Override
-            public boolean run(LivingEntity source, Persona persona, LivingEntity target) {
+            public boolean run(LivingEntity source, AbstractPersona persona, LivingEntity target) {
                 boolean success = super.run(source, persona, target);
 
                 if (!success) return false;
@@ -148,6 +148,6 @@ public abstract class Skill implements Identifiable {
         return create(id, affinity, onRun, usesHealth, cost, cooldown, null);
     }
     public interface RunSkill {
-        void run(LivingEntity source, Persona persona, LivingEntity target);
+        void run(LivingEntity source, AbstractPersona persona, LivingEntity target);
     }
 }

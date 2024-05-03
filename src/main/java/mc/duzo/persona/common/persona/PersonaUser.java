@@ -5,7 +5,7 @@ import net.minecraft.util.math.MathHelper;
 import java.util.Optional;
 
 public interface PersonaUser {
-	Optional<Persona> findPersona();
+	Optional<AbstractPersona> findPersona();
 	int getSP();
 	int getMaxSP();
 	void setSP(int amount);

@@ -1,18 +1,15 @@
 package mc.duzo.persona.client.data;
 
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.client.battle.ClientBattleCache;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
-import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
-import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.MinecraftServer;
 
 import java.util.Collection;
 import java.util.HashMap;
