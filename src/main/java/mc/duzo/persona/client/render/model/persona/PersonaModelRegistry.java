@@ -17,6 +17,12 @@ public class PersonaModelRegistry {
 
 	public static PersonaModel get(Identifier variant) {
 		getInstance();
+
+		if (!models.containsKey(variant) && PersonaRegistry.get(variant) != null) {
+			PersonaMod.LOGGER.info("Registering generic skin model for " + variant); // Risky ?
+			register(variant, new PersonaSkinModel(PersonaRegistry.get(variant)));
+		}
+
 		return models.get(variant);
 	}
 
@@ -34,12 +40,14 @@ public class PersonaModelRegistry {
 	}
 
 	private void init() {
+		/*
 		for (Persona persona : PersonaRegistry.REGISTRY.stream().toList()) {
 			if (persona.performsDataGen()) {
 				PersonaMod.LOGGER.info("Registering model for " + persona.id());
 				register(persona.id(), new PersonaSkinModel(persona));
 			}
 		}
+		 */
 	}
 
 	// for obtaining our models statically
