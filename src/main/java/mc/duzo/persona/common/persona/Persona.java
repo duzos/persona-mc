@@ -74,9 +74,6 @@ public class Persona implements Identifiable {
     public Identifier texture() {
         return this.texture;
     }
-    public boolean performsDataGen() {
-        return true;
-    }
 
     public NbtCompound toNbt() {
         NbtCompound nbt = new NbtCompound();
