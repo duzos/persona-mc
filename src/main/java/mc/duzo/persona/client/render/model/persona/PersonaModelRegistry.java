@@ -40,14 +40,7 @@ public class PersonaModelRegistry {
 	}
 
 	private void init() {
-		/*
-		for (Persona persona : PersonaRegistry.REGISTRY.stream().toList()) {
-			if (persona.performsDataGen()) {
-				PersonaMod.LOGGER.info("Registering model for " + persona.id());
-				register(persona.id(), new PersonaSkinModel(persona));
-			}
-		}
-		 */
+		register(PersonaRegistry.ARSENE.id(), new ArseneModel(ArseneModel.getTexturedModelData().createModel()));
 	}
 
 	// for obtaining our models statically

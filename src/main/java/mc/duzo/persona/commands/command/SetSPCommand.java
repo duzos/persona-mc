@@ -1,4 +1,4 @@
-package mc.duzo.persona.commands;
+package mc.duzo.persona.commands.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;

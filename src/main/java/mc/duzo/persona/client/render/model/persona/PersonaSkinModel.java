@@ -1,6 +1,7 @@
 package mc.duzo.persona.client.render.model.persona;
 
 import mc.duzo.persona.common.persona.Persona;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -18,13 +19,18 @@ public class PersonaSkinModel extends PersonaModel{
 
 
 	@Override
-	public void render(LivingEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, float r, float g, float b, float alpha) {
+	public void render(LivingEntity entity, float tickDelta, MatrixStack matrices, VertexConsumer vertexConsumers, int light, float r, float g, float b, float alpha) {
 
 	}
 
 	@Override
 	public Persona getPersona() {
 		return this.persona;
+	}
+
+	@Override
+	public ModelPart getPart() {
+		return null;
 	}
 
 	@Override

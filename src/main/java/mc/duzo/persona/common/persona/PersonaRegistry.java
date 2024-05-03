@@ -24,6 +24,7 @@ public class PersonaRegistry {
     }
 
     public static Persona DEV;
+    public static Persona ARSENE;
 
     public static void init() {
         DEV = register(Persona.create(
@@ -35,7 +36,14 @@ public class PersonaRegistry {
                         SkillRegistry.ZIO,
                         SkillRegistry.MAZIO
                 ),
-                new Identifier(PersonaMod.MOD_ID, "textures/skins/arsene.png"), // TODO - ask for permission (https://www.planetminecraft.com/member/magpied/) / ask for them to make more / ask for one of my texture friends to make some
+                new Identifier(PersonaMod.MOD_ID, "textures/skins/igor.png")
+        ));
+        ARSENE = register(Persona.create(
+                new Identifier(PersonaMod.MOD_ID, "arsene"),
+                new SkillSet(
+                        SkillRegistry.CLEAVE
+                ),
+                new Identifier(PersonaMod.MOD_ID, "textures/persona/arsene.png"),
                 PersonaSounds.ARSENE_SHOUT
         ));
     }
