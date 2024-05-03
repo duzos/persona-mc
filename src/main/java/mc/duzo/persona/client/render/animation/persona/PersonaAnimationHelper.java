@@ -1,4 +1,4 @@
-package mc.duzo.persona.client.render.animation;
+package mc.duzo.persona.client.render.animation.persona;
 
 import mc.duzo.persona.client.render.model.persona.PersonaModel;
 import net.fabricmc.api.EnvType;
@@ -6,13 +6,10 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.animation.Keyframe;
-import net.minecraft.client.render.entity.animation.Transformation;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Vector3f;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,7 +19,7 @@ import java.util.Optional;
  * @author duzo
  */
 @Environment(value= EnvType.CLIENT)
-public class AnimationHelper {
+public class PersonaAnimationHelper {
 	public static void animate(PersonaModel model, Animation animation, long runningTime, float scale, Vector3f tempVec) {
 		float f = getRunningSeconds(animation, runningTime);
 		animation.boneAnimations().forEach((key, list) -> {

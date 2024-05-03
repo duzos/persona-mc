@@ -133,7 +133,6 @@ public class PlayerData {
         this.velvetDoorPos = pos;
     }
 
-
     public NbtCompound toNbt() {
         NbtCompound nbt = new NbtCompound();
 

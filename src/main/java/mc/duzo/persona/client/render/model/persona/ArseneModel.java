@@ -2,11 +2,10 @@ package mc.duzo.persona.client.render.model.persona;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.data.ClientData;
-import mc.duzo.persona.client.render.animation.AnimationHelper;
+import mc.duzo.persona.client.render.animation.persona.PersonaAnimationHelper;
 import mc.duzo.persona.client.render.animation.persona.ArseneAnimations;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.common.persona.PersonaRegistry;
-import mc.duzo.persona.data.PlayerData;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
@@ -108,7 +107,7 @@ public class ArseneModel extends PersonaModel {
 		this.resetTransforms();
 		persona.animationState.startIfNotRunning(0);
 
-		AnimationHelper.updateAnimation(persona.animationState, ArseneAnimations.IDLE, progress, this);
+		PersonaAnimationHelper.updateAnimation(persona.animationState, ArseneAnimations.IDLE, progress, this);
 	}
 
 	@Override
