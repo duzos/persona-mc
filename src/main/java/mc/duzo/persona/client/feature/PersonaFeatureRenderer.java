@@ -73,14 +73,15 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
 
         this.model.setAngles(livingEntity, f, g, j, k, l);
 
-        VertexConsumer textureVertex = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucentEmissive(identifier, true));
+        VertexConsumer textureVertex = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucentEmissive(identifier, false));
         float alpha = livingEntity.getWorld().random.nextInt(32) != 6 ? 0.5f : 1f;
 
         if (this.model instanceof PersonaModel pModel) {
+
             pModel.render(player, j, matrixStack, textureVertex, i, 1, 1, 1, alpha);
 
             if (pModel.getEmission().isPresent()) {
-                pModel.render(player, MAX_LIGHT, matrixStack, vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucentEmissive(pModel.getEmission().get(), true)), i, 1, 1, 1, alpha);
+                pModel.render(player, MAX_LIGHT, matrixStack, vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucentEmissive(pModel.getEmission().get(), false)), i, 1, 1, 1, alpha);
             }
 
         } else {

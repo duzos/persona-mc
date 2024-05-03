@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.animation.Keyframe;
+import net.minecraft.client.render.entity.animation.Transformation;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.LivingEntity;
@@ -77,4 +78,10 @@ public class PlayerAnimationHelper {
 	public static boolean isRunningAnimations(LivingEntity livingEntity) {
 		return false; // TODO
 	}
+
+	public static final Transformation.Interpolation STEP = (dest, delta, keyframes, start, end, scale) -> {
+		Vector3f vector3f = keyframes[start].target();
+		Vector3f vector3f2 = keyframes[end].target();
+		return vector3f.lerp(vector3f2, 0, dest).mul(scale);
+	};
 }
