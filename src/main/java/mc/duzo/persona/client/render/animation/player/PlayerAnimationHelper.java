@@ -91,7 +91,7 @@ public class PlayerAnimationHelper {
 
 	public static void runAnimations(AbstractClientPlayerEntity livingEntity, PlayerEntityModel<?> model, float progress) {
 		PlayerAnimationHolder anim = PlayerAnimationTracker.getAnimation(livingEntity);
-		anim.update(model, progress);
+		anim.update(model, progress, livingEntity);
 	}
 
 	public static void startAnimations(AbstractClientPlayerEntity entity) {

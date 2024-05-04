@@ -1,6 +1,7 @@
 package mc.duzo.persona.client.render.animation.player.holder;
 
 import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
+import mc.duzo.persona.common.persona.AbstractPersona;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
@@ -15,9 +16,14 @@ public class PlayerAnimationHolder {
 		this.animation = anim;
 	}
 
-	public void update(PlayerEntityModel<?> model, float progress) {
-		this.state.startIfNotRunning(0);
-		PlayerAnimationHelper.updateAnimation(this.state, this.animation, progress, model);
+	public void update(PlayerEntityModel<?> model, float progress, AbstractClientPlayerEntity player) {
+		PlayerAnimationHelper.updateAnimation(this.state, this.animation, progress, 1f, model);
+
+		if (this.isFinished(player)) {
+			this.state.stop();
+		} else {
+			this.state.startIfNotRunning(player.age);
+		}
 	}
 
 	public boolean isFinished(AbstractClientPlayerEntity entity) {
