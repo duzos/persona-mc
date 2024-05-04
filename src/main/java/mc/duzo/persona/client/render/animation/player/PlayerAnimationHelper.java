@@ -66,7 +66,7 @@ public class PlayerAnimationHelper {
 		updateAnimation(animationState, animation, animationProgress, 1.0f, model);
 	}
 
-	private static float getRunningSeconds(Animation animation, long runningTime) {
+	public static float getRunningSeconds(Animation animation, long runningTime) {
 		float f = (float)runningTime / 1000.0f;
 		return animation.looping() ? f % animation.lengthInSeconds() : f;
 	}
