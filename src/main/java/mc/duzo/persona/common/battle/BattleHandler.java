@@ -211,6 +211,8 @@ public class BattleHandler {
 				pos = enemyCentre.west(count / 2);
 			}
 
+
+			// @TODO im lazy so er remove this yourself :)) but ill do the mixin
 			if (target instanceof PlayerEntity) {
 				target.teleport((ServerWorld) centre.getWorld(), pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, Set.of(), target.headYaw, target.getPitch());
 			}
