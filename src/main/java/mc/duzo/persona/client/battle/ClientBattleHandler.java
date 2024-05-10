@@ -32,7 +32,7 @@ public class ClientBattleHandler {
 	 */
 	private static Optional<ClientBattleData> findPlayersBattle(AbstractClientPlayerEntity player) {
 		for (ClientBattleData data : ClientData.getBattles()) {
-			if (data.getPlayers().contains(player)) {
+			if (data.hasPlayer(player)) {
 				return Optional.of(data);
 			}
 		}
@@ -55,10 +55,9 @@ public class ClientBattleHandler {
 	}
 	public static Optional<ClientBattleData> findTargetsBattle(LivingEntity target) {
 		if (target == null) return Optional.empty();
-		if (target.getServer() == null) return Optional.empty();
 
 		for (ClientBattleData data : ClientData.getBattles()) {
-			if (data.getTargets().contains(target)) {
+			if (data.hasTarget(target)) {
 				return Optional.of(data);
 			}
 		}

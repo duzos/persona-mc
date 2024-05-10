@@ -82,7 +82,7 @@ public class BattleHandler {
 	 */
 	private static Optional<ServerBattleData> findPlayersBattle(ServerPlayerEntity player) {
 		for (ServerBattleData data : ServerData.getBattles(player.getServer())) {
-			if (data.getPlayers().contains(player)) {
+			if (data.hasPlayer(player)) {
 				return Optional.of(data);
 			}
 		}
@@ -108,7 +108,7 @@ public class BattleHandler {
 		if (target.getServer() == null) return Optional.empty();
 
 		for (ServerBattleData data : ServerData.getBattles(target.getServer())) {
-			if (data.getTargets().contains(target)) {
+			if (data.hasTarget(target)) {
 				return Optional.of(data);
 			}
 		}

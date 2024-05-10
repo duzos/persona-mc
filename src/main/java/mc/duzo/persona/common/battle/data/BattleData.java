@@ -111,7 +111,7 @@ public abstract class BattleData {
 			this.players.add(uuid);
 		});
 
-		NbtCompound targetsNbt = nbt.getCompound("Players");
+		NbtCompound targetsNbt = nbt.getCompound("Targets");
 		targetsNbt.getKeys().forEach(key -> {
 			UUID uuid = UUID.fromString(key);
 			this.targets.add(uuid);
