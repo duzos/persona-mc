@@ -42,7 +42,7 @@ public class ClientBattleCache {
 	public static Optional<ClientBattleData> findCurrentBattle() {
 		if (!shouldUpdateCache() && current != null){
 			if (!BattleHandler.isBattleFinished(current)) { // Often doesnt work
-				return Optional.of(current);
+				return Optional.ofNullable(current);
 			}
 
 			ClientData.removeBattle(current.getUuid());
