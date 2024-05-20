@@ -8,6 +8,7 @@ import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.common.skill.SkillRegistry;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.util.AbsoluteBlockPos;
+import mc.duzo.persona.util.WorldUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -185,7 +186,7 @@ public class BattleHandler {
 	public static ServerBattleData createBattle(List<ServerPlayerEntity> players, List<LivingEntity> targets) {
 		ServerBattleData created = new ServerBattleData(players, targets);
 
-		applyPositionTransforms(created);
+		applyPositionTransforms(created, true);
 
 		ServerData.addBattle(players.stream().findAny().get().getServer(), created);
 
@@ -194,7 +195,7 @@ public class BattleHandler {
 		return created;
 	}
 
-	public static void applyPositionTransforms(ServerBattleData data) {
+	public static void applyPositionTransforms(ServerBattleData data, boolean findFloor) {
 		AbsoluteBlockPos centre = data.getBattlePos();
 		BlockPos enemyCentre = centre.north(2);
 		BlockPos playerCentre = centre.south(2);
@@ -211,8 +212,10 @@ public class BattleHandler {
 				pos = enemyCentre.west(count / 2);
 			}
 
+			if (findFloor) {
+				pos = WorldUtil.findFloor(centre.getWorld(), pos);
+			}
 
-			// @TODO im lazy so er remove this yourself :)) but ill do the mixin
 			if (target instanceof PlayerEntity) {
 				target.teleport((ServerWorld) centre.getWorld(), pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, Set.of(), target.headYaw, target.getPitch());
 			}
@@ -232,6 +235,10 @@ public class BattleHandler {
 				pos = playerCentre.east((count / 2));
 			} else {
 				pos = playerCentre.west(count / 2);
+			}
+
+			if (findFloor) {
+				pos = WorldUtil.findFloor(centre.getWorld(), pos);
 			}
 
 			target.teleport((ServerWorld) centre.getWorld(), pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, Set.of(), target.headYaw, target.getPitch());

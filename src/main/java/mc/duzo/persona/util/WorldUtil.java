@@ -1,6 +1,7 @@
 package mc.duzo.persona.util;
 
 import mc.duzo.persona.PersonaMod;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
@@ -10,6 +11,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -59,5 +62,38 @@ public class WorldUtil {
             player.networkHandler.sendPacket(new EntityStatusEffectS2CPacket(player.getId(), effect));
         });
         player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
+    }
+
+    public static BlockPos findFloor(World world, BlockPos pos) {
+        // I shouldn't be allowed to code tbh
+
+        BlockPos.Mutable mutable = new BlockPos.Mutable().set(pos);
+
+        boolean isDown;
+        int movementMultiplier = 1;
+
+        int freeCount = 0; // Needs to be 2 to be seen as "safe"
+
+        int MAX_ITERATIONS = 64;
+        for (int i = 0; i < MAX_ITERATIONS; i++) {
+            freeCount = (isFree(world.getBlockState(mutable))) ? freeCount + 1 : 0;
+
+
+            if (freeCount >= 2 && !isFree(world.getBlockState(mutable.down(2))) && isFree(world.getBlockState(mutable.down()))) {
+                break;
+            }
+
+            isDown = i < MAX_ITERATIONS / 2;
+
+            mutable.set(pos);
+
+            movementMultiplier = isDown ? i : i - (MAX_ITERATIONS / 2);
+            mutable.move(0, isDown ? -movementMultiplier : movementMultiplier, 0);
+        }
+
+        return mutable.down();
+    }
+    private static boolean isFree(BlockState state) {
+        return state.isAir() || state.isReplaceable();
     }
 }

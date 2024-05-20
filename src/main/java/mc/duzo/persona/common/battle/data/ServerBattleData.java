@@ -108,7 +108,7 @@ public class ServerBattleData extends BattleData {
 	public void tick(MinecraftServer server) {
 		if (server.getTicks() % 32 == 0) {
 			BattleHandler.validateBattle(server, this);
-			BattleHandler.applyPositionTransforms(this);
+			BattleHandler.applyPositionTransforms(this, true);
 
 			if (!(this.getTurn().getCurrent() instanceof ServerPlayerEntity)) {
 				LivingEntity current = this.getTurn().getCurrent();
