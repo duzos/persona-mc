@@ -2,6 +2,7 @@ package mc.duzo.persona.common.battle.data;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.ai.BattleAI;
 import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.common.battle.turn.ServerBattleTurn;
 import mc.duzo.persona.common.skill.Skill;
@@ -77,6 +78,10 @@ public class ServerBattleData extends BattleData {
 		return this.turn;
 	}
 
+	public ServerBattleTurn getServerTurn() {
+		return (ServerBattleTurn) this.getTurn();
+	}
+
 	private void createCacheDelay() {
 		DeltaTimeManager.createDelay(this.getCacheKey(), this.getCacheDelay());
 	}
@@ -111,14 +116,7 @@ public class ServerBattleData extends BattleData {
 			BattleHandler.applyPositionTransforms(this, true);
 
 			if (!(this.getTurn().getCurrent() instanceof ServerPlayerEntity)) {
-				LivingEntity current = this.getTurn().getCurrent();
-
-				if (current == null || !current.isAlive()) {
-					this.getTurn().next();
-					return;
-				}
-
-				PersonaUtil.useSkill(current);
+				BattleAI.performTurn(this.getServerTurn());
 			}
 		}
 	}
