@@ -19,7 +19,6 @@
     "client.MusicMixin",
     "client.PlayerEntityModelMixin",
     "client.PlayerEntityRendererMixin",
-    "client.PlayerMovementMixin",
     "client.SkyboxMixin"
   ]
 }

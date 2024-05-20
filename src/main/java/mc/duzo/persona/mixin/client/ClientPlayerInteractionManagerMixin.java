@@ -1,5 +1,6 @@
 package mc.duzo.persona.mixin.client;
 
+import mc.duzo.persona.client.battle.ClientBattleHandler;
 import mc.duzo.persona.util.VelvetUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
@@ -30,6 +31,11 @@ public class ClientPlayerInteractionManagerMixin {
 
 
         if (!player.isCreative() && VelvetUtil.isVelvetRoom(world)) {
+            cir.setReturnValue(false);
+            cir.cancel();
+        }
+
+        if (ClientBattleHandler.findBattle(player).isPresent()) {
             cir.setReturnValue(false);
             cir.cancel();
         }
