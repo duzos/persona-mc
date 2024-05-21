@@ -1,7 +1,7 @@
 package mc.duzo.persona.client.sound;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 
@@ -14,7 +14,7 @@ public class PlayerFollowingLoopingSound extends LoopingSound {
     public PlayerFollowingLoopingSound(SoundEvent soundEvent, SoundCategory soundCategory, float volume, float pitch) {
         super(soundEvent, soundCategory);
 
-        ClientPlayerEntity client = MinecraftClient.getInstance().player;
+        AbstractClientPlayerEntity client = MinecraftClient.getInstance().player;
 
         if (client != null) {
             this.x = client.getX();
@@ -42,7 +42,7 @@ public class PlayerFollowingLoopingSound extends LoopingSound {
     }
 
     private void setCoordsToPlayerCoords() {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        AbstractClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
 
         this.x = player.getX();

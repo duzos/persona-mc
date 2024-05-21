@@ -4,12 +4,16 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "server.BlockItemMixin",
+    "server.EntityMixin",
+    "server.LivingEntityMixin",
+    "server.MobEntityMixin",
     "server.ServerPlayerInteractionManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
+    "client.CameraMixin",
     "client.ClientPlayerInteractionManagerMixin",
     "client.HeadFeatureRendererMixin",
     "client.MusicMixin",

@@ -1,6 +1,10 @@
 package mc.duzo.persona.common.skill;
 
 import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.affinities.Affinity;
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
@@ -9,10 +13,13 @@ import mc.duzo.persona.util.Identifiable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public abstract class Skill implements Identifiable {
     private final Identifier id;
@@ -28,18 +35,35 @@ public abstract class Skill implements Identifiable {
                 '}';
     }
 
-    public void run(ServerPlayerEntity source, AbstractPersona persona, LivingEntity target) {
-        PlayerData data = ServerData.getPlayerState(source);
+    public boolean run(LivingEntity source, AbstractPersona persona, LivingEntity target) {
+        Optional<ServerBattleData> battle = BattleHandler.findBattle(source);
+        if (battle.isPresent()) {
+            BattleTurn turn = battle.get().getTurn();
+
+            if (!turn.isCurrent(source)) {
+                source.sendMessage(Text.literal("Not your turn!"));
+                source.getWorld().playSound(null, source.getBlockPos(), PersonaSounds.FAIL, SoundCategory.PLAYERS);
+                return false;
+            }
+
+            turn.next();
+            turn.getCurrent().sendMessage(Text.literal("It's your turn!"));
+        }
 
         if (this.usesHealth()) {
             source.damage(source.getDamageSources().generic(), source.getMaxHealth() * (this.getCost() / 100f));
-            return;
+            return true;
         }
 
-        data.removeSP(this.getCost());
+        if (source instanceof ServerPlayerEntity player) {
+            PlayerData data = ServerData.getPlayerState(player);
 
-        ServerData.getServerState(source.getServer()).markDirty();
-        PersonaMessages.syncData(source, source);
+            data.removeSP(this.getCost());
+
+            ServerData.getServerState(player.getServer()).markDirty();
+            PersonaMessages.syncData(player, player);
+        }
+        return true;
     }
 
     public Text getName() {
@@ -51,6 +75,7 @@ public abstract class Skill implements Identifiable {
     public abstract boolean usesHealth();
     public abstract int getCost();
     public abstract double getCooldown();
+    public abstract Affinity getAffinity();
     public SoundEvent getUseSound() {
         return PersonaSounds.ATTACK;
     }
@@ -74,13 +99,17 @@ public abstract class Skill implements Identifiable {
         return SkillRegistry.get(new Identifier(nbt.getString("id")));
     }
 
-    public static Skill create(Identifier id, RunSkill onRun, boolean usesHealth, int cost, double cooldown, @Nullable SoundEvent sound) {
+    public static Skill create(Identifier id, Affinity affinity, RunSkill onRun, boolean usesHealth, int cost, double cooldown, @Nullable SoundEvent sound) {
         return new Skill(id) {
             @Override
-            public void run(ServerPlayerEntity source, AbstractPersona persona, LivingEntity target) {
-                super.run(source, persona, target);
+            public boolean run(LivingEntity source, AbstractPersona persona, LivingEntity target) {
+                boolean success = super.run(source, persona, target);
+
+                if (!success) return false;
 
                 onRun.run(source, persona, target);
+
+                return true;
             }
 
             @Override
@@ -108,12 +137,17 @@ public abstract class Skill implements Identifiable {
                 if (sound == null) return super.getUseSound();
                 return sound;
             }
+
+            @Override
+            public Affinity getAffinity() {
+                return affinity;
+            }
         };
     }
-    public static Skill create(Identifier id, RunSkill onRun, boolean usesHealth, int cost, double cooldown) {
-        return create(id, onRun, usesHealth, cost, cooldown, null);
+    public static Skill create(Identifier id, Affinity affinity, RunSkill onRun, boolean usesHealth, int cost, double cooldown) {
+        return create(id, affinity, onRun, usesHealth, cost, cooldown, null);
     }
     public interface RunSkill {
-        void run(ServerPlayerEntity source, AbstractPersona persona, LivingEntity target);
+        void run(LivingEntity source, AbstractPersona persona, LivingEntity target);
     }
 }

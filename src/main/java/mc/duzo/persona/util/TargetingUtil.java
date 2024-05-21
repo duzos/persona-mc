@@ -32,6 +32,8 @@ public class TargetingUtil {
 
         if (entityHitResult == null || entityHitResult.getType() != HitResult.Type.ENTITY) return Optional.empty();
 
+        if (!(entityHitResult.getEntity() instanceof LivingEntity)) return Optional.empty();
+
         return Optional.ofNullable((LivingEntity) entityHitResult.getEntity());
     }
 

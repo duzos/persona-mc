@@ -23,11 +23,16 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 			PersonaSoundProvider provider = new PersonaSoundProvider(output);
 
 			// Music
-			provider.addSound("velvet_room", PersonaSounds.VELVET_MUSIC);
+			provider.addSound("velvet_room", PersonaSounds.MUSIC_VELVET);
+			provider.addSound("reach_out_to_the_truth", PersonaSounds.MUSIC_REACH_OUT);
+			provider.addSound("going_down", PersonaSounds.MUSIC_GOING_DOWN);
+			provider.addSound("make_history", PersonaSounds.MUSIC_MAKE_HISTORY);
+			provider.addSound("take_over", PersonaSounds.MUSIC_TAKE_OVER);
 
 			// Skills
 			provider.addSound("attack", PersonaSounds.ATTACK);
 			provider.addSound("dia", PersonaSounds.DIA);
+			provider.addSound("weak_phys", PersonaSounds.WEAK_PHYS);
 
 			// PERSONA!!
 			provider.addSound("persona_shout", PersonaSounds.PERSONA_SHOUT);
@@ -35,6 +40,8 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 
 			// Other
 			provider.addSound("welcome_velvet", PersonaSounds.WELCOME_VELVET);
+			provider.addSound("fail", PersonaSounds.FAIL);
+			provider.addSound("skill_switch", PersonaSounds.SKILL_SWITCH);
 
 			return provider;
 		})));

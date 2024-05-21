@@ -9,10 +9,15 @@ public enum Affinity implements Identifiable {
     FIRE("fire"),
     ICE("ice"),
     ELEC("elec"),
-    FORCE("force"),
-    LIGHT("light"),
-    DARK("dark"),
-    ALMIGHTY("almighty");
+    WIND("wind"),
+    PSY("psy"),
+    NUKE("nuke"),
+    BLESS("bless"),
+    CURSE("curse"),
+    ALMIGHTY("almighty"),
+    HEAL("heal"),
+    SUPPORT("support"),
+    PASSIVE("passive");
 
     private final Identifier id;
 

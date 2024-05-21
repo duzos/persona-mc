@@ -5,7 +5,7 @@ import mc.duzo.persona.client.render.model.door.VelvetDoorRegistry;
 import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
 import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -37,7 +37,7 @@ public class VelvetDoorRenderer extends EntityRenderer<VelvetDoorEntity> {
         // Face towards the player
 
         if (MinecraftClient.getInstance().player != null) {
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
+            AbstractClientPlayerEntity player = MinecraftClient.getInstance().player;
 
             matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(-yaw));
             matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(player.getHeadYaw() + 180)); // todo - should face the player, not copy its head

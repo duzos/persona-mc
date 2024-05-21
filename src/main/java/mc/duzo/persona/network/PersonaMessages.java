@@ -1,6 +1,7 @@
 package mc.duzo.persona.network;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
@@ -21,6 +22,8 @@ public class PersonaMessages {
     // Data
     public static final Identifier SYNC_DATA = new Identifier(PersonaMod.MOD_ID, "sync_data");
     public static final Identifier ASK_DATA = new Identifier(PersonaMod.MOD_ID, "ask_data");
+    public static final Identifier BATTLE_DATA = new Identifier(PersonaMod.MOD_ID, "sync_data_battle");
+    public static final Identifier BATTLE_FINISH = new Identifier(PersonaMod.MOD_ID, "battle_finish");
 
     // Skills
     public static final Identifier PRESS_TARGET = new Identifier(PersonaMod.MOD_ID, "press_target");
@@ -79,6 +82,21 @@ public class PersonaMessages {
             syncData(target, player);
         }
     }
+    public static void syncBattleData(ServerPlayerEntity target, ServerBattleData data) {
+        PacketByteBuf buf = PacketByteBufs.create();
+
+        buf.writeNbt(data.toNbt());
+
+        ServerPlayNetworking.send(target, BATTLE_DATA, buf);
+    }
+    public static void syncBattleRemoval(ServerPlayerEntity target, ServerBattleData data) {
+        PacketByteBuf buf = PacketByteBufs.create();
+
+        buf.writeUuid(data.getUuid());
+
+        ServerPlayNetworking.send(target, BATTLE_FINISH, buf);
+    }
+
     private static void recieveTargetRequest(ServerPlayerEntity player) {
         Optional<LivingEntity> found = TargetingUtil.findEntityBeingLookedAt(player);
 

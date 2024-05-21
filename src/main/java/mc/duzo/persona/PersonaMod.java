@@ -16,6 +16,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.entity.LivingEntity;
@@ -113,6 +114,10 @@ public class PersonaMod implements ModInitializer {
 			if (world.getRegistryKey() == World.OVERWORLD) {
 				PersonaMod.SERVER = server;
 			}
+		});
+
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			ServerData.tick(server);
 		});
 	}
 

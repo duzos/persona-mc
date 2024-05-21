@@ -39,7 +39,16 @@ public class SoundsManager {
     }
 
     public boolean isPlaying(SoundEvent event) {
-        return MinecraftClient.getInstance().getSoundManager().isPlaying(findSoundByEvent(event));
+        SoundInstance sound = findSoundByEvent(event);
+        if (sound.getId().equals(SoundEvents.INTENTIONALLY_EMPTY.getId())) return false;
+
+        boolean playing = MinecraftClient.getInstance().getSoundManager().isPlaying(sound);
+
+        if (!playing) {
+            this.sounds.remove(sound);
+        }
+
+        return playing;
     }
     public boolean isPlaying(SoundInstance sound) {
         return MinecraftClient.getInstance().getSoundManager().isPlaying(sound);
@@ -60,10 +69,11 @@ public class SoundsManager {
         this.sounds.add(sound);
     }
     public void stopSound(SoundEvent event) {
-        MinecraftClient.getInstance().getSoundManager().stop(findSoundByEvent(event));
+        this.stopSound(findSoundByEvent(event));
     }
     public void stopSound(SoundInstance sound) {
         MinecraftClient.getInstance().getSoundManager().stop(sound);
+        this.sounds.remove(sound);
     }
     public void stopSounds() {
         if (this.sounds == null) return;
@@ -88,7 +98,7 @@ public class SoundsManager {
             if (temp.equals(id)) return sound;
         }
 
-        PersonaMod.LOGGER.error("Could not find sound " + id + " in list, returning empty sound!");
+        // PersonaMod.LOGGER.error("Could not find sound " + id + " in list, returning empty sound!");
         return new PlayerFollowingLoopingSound(SoundEvents.INTENTIONALLY_EMPTY, SoundCategory.NEUTRAL);
     }
 }

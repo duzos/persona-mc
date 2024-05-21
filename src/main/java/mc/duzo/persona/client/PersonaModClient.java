@@ -1,11 +1,15 @@
 package mc.duzo.persona.client;
 
 import mc.duzo.persona.Register;
+import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.data.ClientData;
 import mc.duzo.persona.client.hud.SPHudOverlay;
 import mc.duzo.persona.client.network.PersonaClientMessages;
 import mc.duzo.persona.client.render.VelvetDoorRenderer;
+import mc.duzo.persona.client.sound.MusicSound;
 import mc.duzo.persona.client.sound.PlayerFollowingLoopingSound;
 import mc.duzo.persona.client.sound.SoundsManager;
+import mc.duzo.persona.client.sound.persona.SoundSetRegistry;
 import mc.duzo.persona.client.util.Keybinds;
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.util.VelvetUtil;
@@ -17,7 +21,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 
 public class PersonaModClient implements ClientModInitializer {
@@ -27,16 +32,19 @@ public class PersonaModClient implements ClientModInitializer {
     public void onInitializeClient() {
         PersonaClientMessages.initialise();
         Keybinds.initialise();
+        SoundSetRegistry.initialise();
 
         HudRenderCallback.EVENT.register(new SPHudOverlay());
 
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
 
         ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            if (!(entity instanceof ClientPlayerEntity player)) return;
+            if (!(entity instanceof AbstractClientPlayerEntity player)) return;
 
             PersonaClientMessages.askForPlayerData(player.getUuid());
         });
+
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> ClientData.clearBattles());
 
         // Entity Renderers
         EntityRendererRegistry.register(Register.VELVET_DOOR_ENTITY, VelvetDoorRenderer::new);
@@ -44,5 +52,19 @@ public class PersonaModClient implements ClientModInitializer {
 
     private void tick(MinecraftClient client) {
         if (client.player == null) return;
+        ClientData.getInstance().tick(client);
+
+        tickBattleMusic(client);
+    }
+
+    private void tickBattleMusic(MinecraftClient client) {
+        if (!SoundSetRegistry.isPlayingBattleMusic() && ClientBattleCache.findCurrentBattle().isPresent()) {
+            SoundSetRegistry.playRandomBattleMusic();
+            return;
+        }
+        if (SoundSetRegistry.isPlayingBattleMusic() && ClientBattleCache.findCurrentBattle().isEmpty()) {
+            SoundSetRegistry.stopBattleMusic();
+            return;
+        }
     }
 }

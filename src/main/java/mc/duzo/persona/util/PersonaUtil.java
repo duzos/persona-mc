@@ -1,11 +1,18 @@
 package mc.duzo.persona.util;
 
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.affinities.Affinity;
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -14,6 +21,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Math;
 
+import java.util.List;
 import java.util.Optional;
 
 public class PersonaUtil {
@@ -26,11 +34,33 @@ public class PersonaUtil {
         TargetingUtil.verifyTarget(player);
 
         AbstractPersona persona = data.findPersona().get();
-        Optional<LivingEntity> foundTarget = data.findTarget(player.getServerWorld());
+        // Optional<LivingEntity> foundTarget = data.findTarget(player.getServerWorld());
+        Optional<LivingEntity> foundTarget = TargetingUtil.findEntityBeingLookedAt(player);
 
-        if (foundTarget.isEmpty()) return;
+        if (player.isSneaking()) {
+            foundTarget = Optional.of(player);
+        }
 
-        if (!canUseSkill(player, persona.getSkillSet().getSelected())) return;
+        if (foundTarget.isEmpty()) {
+            /*
+            Optional<LivingEntity> newTarget = TargetingUtil.findEntityBeingLookedAt(player);
+            if (newTarget.isPresent()) {
+                data.setTarget(newTarget.get());
+                PersonaMessages.syncData(player, player);
+                foundTarget = newTarget;
+                useSkill(player);
+            }
+             */
+            return;
+        }
+
+        data.setTarget(foundTarget.get());
+        PersonaMessages.syncData(player, player);
+
+        if (!canUseSkill(player, persona.getSkillSet().getSelected())) {
+            player.getServerWorld().playSound(null, player.getBlockPos(), PersonaSounds.FAIL, SoundCategory.PLAYERS);
+            return;
+        }
 
         LivingEntity target = foundTarget.get();
         Skill selected = persona.getSkillSet().getSelected();
@@ -51,6 +81,54 @@ public class PersonaUtil {
             ServerData.getServerState(player.getServer()).markDirty();
             PersonaMessages.syncData(player, player);
         }
+
+        if (target.equals(player)) return;
+
+        Optional<ServerBattleData> battle = BattleHandler.findPlayersBattle(player, true);
+
+        boolean isPlayer = target instanceof ServerPlayerEntity;
+
+        if (isPlayer) {
+            if (BattleHandler.findPlayersBattle((ServerPlayerEntity) target, true).isPresent()) return;
+        }
+
+        if (battle.isEmpty()) {
+            BattleHandler.createBattle(List.of(player), List.of(target));
+            return;
+        }
+
+        battle.get().addTarget(target);
+    }
+    public static void useSkill(LivingEntity entity) {
+        if (entity instanceof ServerPlayerEntity player) {
+            useSkill(player);
+            return;
+        }
+
+        Optional<ServerBattleData> battle = BattleHandler.findBattle(entity);
+        if (battle.isEmpty()) return;
+
+        Skill skill = BattleHandler.findRandomSkill(Affinity.PHYS);
+        LivingEntity target = BattleHandler.findRandomPlayer(battle.get());
+
+        skill.run(entity, null, target);
+
+        DefaultParticleType targetParticle = ParticleTypes.ENCHANTED_HIT;
+        DefaultParticleType sourceParticle = ParticleTypes.FIREWORK;
+
+        if (skill.usesHealth()) {
+            sourceParticle = ParticleTypes.HEART;
+
+            if (entity.getHealth() <= (entity.getMaxHealth() * (skill.getCost() / 100f))) {
+                battle.get().getTurn().next();
+                return;
+            }
+        }
+
+        createSkillParticles(target, targetParticle);
+        createSkillParticles(entity, sourceParticle);
+
+        entity.getWorld().playSound(null, entity.getBlockPos(), skill.getUseSound(), SoundCategory.PLAYERS, 1.0f, 1.0f);
     }
 
     public static void revealPersona(ServerPlayerEntity player) {
@@ -63,7 +141,7 @@ public class PersonaUtil {
         player.getServerWorld().playSound(null, player.getBlockPos(), data.findPersona().get().getSummonSound(), SoundCategory.PLAYERS, 1.0f, 1.0f);
 
         ServerData.getServerState(player.getServer()).markDirty();
-        PersonaMessages.syncData(player, player);
+        syncToNearby(player);
     }
     public static void hidePersona(ServerPlayerEntity player) {
         PlayerData data = ServerData.getPlayerState(player);
@@ -71,7 +149,7 @@ public class PersonaUtil {
         data.hidePersona();
 
         ServerData.getServerState(player.getServer()).markDirty();
-        PersonaMessages.syncData(player, player);
+        syncToNearby(player);
     }
 
     public static void createCooldown(ServerPlayerEntity player, double seconds) {
@@ -85,6 +163,15 @@ public class PersonaUtil {
         if (onCooldown(player)) return false;
 
         PlayerData data = ServerData.getPlayerState(player);
+
+        Optional<ServerBattleData> battle = BattleHandler.findBattle(player);
+        if (battle.isPresent()) {
+            BattleTurn turn = battle.get().getTurn();
+
+            if (!turn.isCurrent(player)) {
+                return false;
+            }
+        }
 
         if (skill.usesHealth()) return true;
 
@@ -116,6 +203,13 @@ public class PersonaUtil {
 
                 world.spawnParticles(particle, pos.getX(), pos.getY(), pos.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
             }
+        }
+    }
+
+    public static void syncToNearby(ServerPlayerEntity player) {
+        PersonaMessages.syncData(player, player);
+        for (ServerPlayerEntity p : PlayerLookup.tracking(player)) {
+            PersonaMessages.syncData(p, player);
         }
     }
 }

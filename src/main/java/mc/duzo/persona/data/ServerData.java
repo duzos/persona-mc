@@ -1,17 +1,19 @@
 package mc.duzo.persona.data;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.data.BattleData;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Data that will be saved to the world in .nbt form
@@ -23,6 +25,7 @@ import java.util.UUID;
 public class ServerData extends PersistentState {
     public boolean hasVelvetRoom;
     private HashMap<UUID, PlayerData> players = new HashMap<>();
+    private HashMap<UUID, ServerBattleData> battles = new HashMap<>();
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
@@ -35,6 +38,12 @@ public class ServerData extends PersistentState {
         nbt.put("players", playersNbt);
 
         nbt.putBoolean("HasVelvetRoom", hasVelvetRoom);
+
+        NbtCompound battlesNbt = new NbtCompound();
+        battles.forEach((uuid, battleData) -> {
+            battlesNbt.put(uuid.toString(), battleData.toNbt());
+        });
+        nbt.put("Battles", battlesNbt);
 
         return nbt;
     }
@@ -51,6 +60,14 @@ public class ServerData extends PersistentState {
         });
 
         data.hasVelvetRoom = nbt.getBoolean("HasVelvetRoom");
+
+        NbtCompound battlesNbt = nbt.getCompound("Battles");
+        battlesNbt.getKeys().forEach(key -> {
+            ServerBattleData battleData = new ServerBattleData(battlesNbt.getCompound(key));
+
+            UUID uuid = UUID.fromString(key);
+            data.battles.put(uuid, battleData);
+        });
 
         return data;
     }
@@ -76,5 +93,46 @@ public class ServerData extends PersistentState {
 
     public static Set<UUID> getKeys(MinecraftServer server) {
         return getServerState(server).players.keySet();
+    }
+
+    public static Collection<ServerBattleData> getBattles(MinecraftServer server) {
+        return getServerState(server).battles.values();
+    }
+    public static Optional<ServerBattleData> getBattleState(MinecraftServer server, UUID uuid) {
+        ServerData serverData = getServerState(server);
+
+        return Optional.ofNullable(serverData.battles.get(uuid));
+    }
+
+    public static void addBattle(MinecraftServer server, UUID uuid, ServerBattleData battleData) {
+        ServerData serverData = getServerState(server);
+        serverData.battles.put(uuid, battleData);
+    }
+    public static void addBattle(MinecraftServer server, ServerBattleData battleData) {
+        addBattle(server, battleData.getUuid(), battleData);
+    }
+    private static void removeBattle(MinecraftServer server, UUID uuid) {
+        PersonaMod.LOGGER.info("Removing battle " + uuid);
+
+        ServerData serverData = getServerState(server);
+        serverData.battles.remove(uuid);
+    }
+    public static void removeBattle(MinecraftServer server, UUID uuid, boolean sync) {
+        if (sync) {
+            ServerBattleData data = getBattleState(server, uuid).orElse(null);
+            if (data == null) return; // No need to remove
+
+            for (PlayerEntity player : data.getPlayers()) {
+                PersonaMessages.syncBattleRemoval((ServerPlayerEntity) player, data);
+            }
+        }
+
+        removeBattle(server, uuid);
+    }
+
+    public static void tick(MinecraftServer server) {
+        for (ServerBattleData data : getBattles(server)) {
+            data.tick(server);
+        }
     }
 }

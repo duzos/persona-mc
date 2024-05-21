@@ -28,11 +28,11 @@ public class PersonaRegistry {
         DEV = register(new Persona(
                 new Identifier(PersonaMod.MOD_ID, "dev"),
                 new SkillSet(
-                        SkillRegistry.DIA,
+                        SkillRegistry.DIARAHAN,
+                        SkillRegistry.MEDIA,
                         SkillRegistry.CLEAVE,
                         SkillRegistry.ZIO,
-                        SkillRegistry.TRAFURI,
-                        SkillRegistry.VELVET
+                        SkillRegistry.MAZIO
                 ),
                 new Identifier(PersonaMod.MOD_ID, "textures/skins/igor.png")
         ));
