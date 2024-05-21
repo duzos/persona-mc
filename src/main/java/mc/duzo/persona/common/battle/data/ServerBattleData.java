@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ServerBattleData extends BattleData {
+public class ServerBattleData extends CachableBattleData {
 	private AbsoluteBlockPos battlePos;
 	private ServerBattleTurn turn;
 
@@ -82,15 +82,7 @@ public class ServerBattleData extends BattleData {
 		return (ServerBattleTurn) this.getTurn();
 	}
 
-	private void createCacheDelay() {
-		DeltaTimeManager.createDelay(this.getCacheKey(), this.getCacheDelay());
-	}
-	private long getCacheDelay() {
-		return (long) ((PersonaMod.RANDOM.nextDouble(2,5)) * 1000L);
-	}
-	private String getCacheKey() {
-		return this.getUuid().toString() + "-cache";
-	}
+
 
 	public AbsoluteBlockPos getBattlePos() {
 		return this.battlePos;

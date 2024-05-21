@@ -17,9 +17,6 @@ public abstract class BattleData {
 	protected final List<UUID> players;
 	protected final List<UUID> targets;
 
-	protected List<? extends PlayerEntity> playersCache;
-	protected List<? extends LivingEntity> targetsCache;
-
 	protected BattleData(UUID uuid) {
 		this.uuid = uuid;
 
@@ -71,7 +68,6 @@ public abstract class BattleData {
 		return this.hasPlayer(player.getUuid());
 	}
 
-	protected abstract boolean shouldUpdateCache();
 
 	public abstract BattleTurn getTurn();
 

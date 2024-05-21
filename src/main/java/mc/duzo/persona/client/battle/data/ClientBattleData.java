@@ -3,6 +3,7 @@ package mc.duzo.persona.client.battle.data;
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.battle.turn.ClientBattleTurn;
 import mc.duzo.persona.common.battle.data.BattleData;
+import mc.duzo.persona.common.battle.data.CachableBattleData;
 import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.DeltaTimeManager;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ClientBattleData extends BattleData {
+public class ClientBattleData extends CachableBattleData {
 	private ClientBattleTurn turn;
 	private BlockPos battlePos;
 
@@ -46,16 +47,6 @@ public class ClientBattleData extends BattleData {
 
 	public BlockPos getBattlePos() {
 		return this.battlePos;
-	}
-
-	private void createCacheDelay() {
-		DeltaTimeManager.createDelay(this.getCacheKey(), this.getCacheDelay());
-	}
-	private long getCacheDelay() {
-		return (long) ((PersonaMod.RANDOM.nextDouble(10,12)) * 1000L);
-	}
-	private String getCacheKey() {
-		return this.getUuid().toString() + "-cache";
 	}
 
 	public void tick(MinecraftClient client) {
