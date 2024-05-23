@@ -1,6 +1,7 @@
 package mc.duzo.persona.common.persona;
 
 import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.persona.arcana.Arcana;
 import mc.duzo.persona.common.skill.SkillSet;
 import mc.duzo.persona.util.Identifiable;
 import net.minecraft.entity.AnimationState;
@@ -11,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 
 public abstract class AbstractPersona implements Identifiable {
 	private final Identifier id;
-	public AnimationState animationState = new AnimationState();
+	public AnimationState animationState = new AnimationState(); // bad cod e
 
 	protected AbstractPersona(Identifier id) {
 		this.id = id;
@@ -42,6 +43,7 @@ public abstract class AbstractPersona implements Identifiable {
 	}
 
 	public abstract Identifier texture();
+	public abstract Arcana getArcana();
 
 	public NbtCompound toNbt() {
 		NbtCompound nbt = new NbtCompound();
@@ -51,6 +53,7 @@ public abstract class AbstractPersona implements Identifiable {
 		nbt.putInt("Level", this.getLevel());
 		nbt.putString("Texture", this.texture().toString());
 		nbt.putString("Sound", this.getSummonSound().getId().toString());
+		nbt.putInt("Arcana", this.getArcana().ordinal());
 
 		return nbt;
 	}

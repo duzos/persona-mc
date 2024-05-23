@@ -1,7 +1,7 @@
 package mc.duzo.persona.common.battle;
 
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.affinities.Affinity;
+import mc.duzo.persona.common.persona.affinities.Affinity;
 import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.skill.Skill;

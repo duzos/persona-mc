@@ -1,7 +1,7 @@
 package mc.duzo.persona.common.skill;
 
 import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.affinities.Affinity;
+import mc.duzo.persona.common.persona.affinities.Affinity;
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.battle.turn.BattleTurn;

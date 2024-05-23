@@ -1,4 +1,4 @@
-package mc.duzo.persona.common.affinities;
+package mc.duzo.persona.common.persona.affinities;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.util.Identifiable;
@@ -26,6 +26,9 @@ public enum Affinity implements Identifiable {
     }
     Affinity(String name) {
         this(new Identifier(PersonaMod.MOD_ID, name));
+    }
+    Affinity() {
+        this.id = new Identifier(PersonaMod.MOD_ID, this.name().toLowerCase());
     }
 
     @Override
