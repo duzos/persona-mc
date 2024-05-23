@@ -97,9 +97,6 @@ public class PersonaMod implements ModInitializer {
 			if (VelvetUtil.isInVelvetRoom(player)) {
 				PersonaMessages.sendVelvetChange(player, true);
 			}
-
-			// Temporary for testing, remove soon.
-			ServerData.getPlayerState(player).setPersona(PersonaRegistry.DEV, player);
 		}));
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> PersonaMod.SERVER = server);

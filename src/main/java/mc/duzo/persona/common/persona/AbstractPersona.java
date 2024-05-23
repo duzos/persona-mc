@@ -2,6 +2,7 @@ package mc.duzo.persona.common.persona;
 
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.common.persona.arcana.Arcana;
+import mc.duzo.persona.common.persona.arcana.ArcanaHolder;
 import mc.duzo.persona.common.skill.SkillSet;
 import mc.duzo.persona.util.Identifiable;
 import net.minecraft.entity.AnimationState;
@@ -10,7 +11,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-public abstract class AbstractPersona implements Identifiable {
+public abstract class AbstractPersona implements Identifiable, ArcanaHolder {
 	private final Identifier id;
 	public AnimationState animationState = new AnimationState(); // bad cod e
 

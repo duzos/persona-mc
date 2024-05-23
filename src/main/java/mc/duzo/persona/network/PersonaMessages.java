@@ -81,6 +81,7 @@ public class PersonaMessages {
         for (ServerPlayerEntity target : PlayerLookup.tracking(player)) {
             syncData(target, player);
         }
+        syncData(player, player);
     }
     public static void syncBattleData(ServerPlayerEntity target, ServerBattleData data) {
         PacketByteBuf buf = PacketByteBufs.create();
@@ -150,10 +151,10 @@ public class PersonaMessages {
         PlayerData data = ServerData.getPlayerState(player);
 
         if (data.isPersonaRevealed()) {
-            PersonaUtil.hidePersona(player);
+            data.hidePersona(player);
             return;
         }
 
-        PersonaUtil.revealPersona(player);
+        data.revealPersona(player);
     }
 }

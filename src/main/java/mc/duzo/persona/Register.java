@@ -1,7 +1,9 @@
 package mc.duzo.persona;
 
 import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
+import mc.duzo.persona.common.item.TarotCardItem;
 import mc.duzo.persona.common.item.WearableItem;
+import mc.duzo.persona.common.persona.arcana.Arcana;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.Block;
@@ -14,6 +16,10 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * This is where all things are registered
  * Based off how Bug registered things
@@ -24,6 +30,28 @@ import net.minecraft.util.Identifier;
 public class Register {
     // Items
     public static final WearableItem JOKER_MASK = register(Registries.ITEM, "joker_mask", new WearableItem(EquipmentSlot.HEAD, true, new FabricItemSettings()));
+
+
+    public static final List<TarotCardItem> TAROT_CARDS = registerTarotCards();
+    public static Optional<TarotCardItem> findTarotCard(Arcana arcana) {
+        for (TarotCardItem card : TAROT_CARDS) {
+            if (card.getArcana() == arcana) return Optional.of(card); // should this be optional or just return null
+        }
+        return Optional.empty();
+    }
+
+    private static List<TarotCardItem> registerTarotCards() {
+        List<TarotCardItem> cards = new ArrayList<>();
+
+        for (Arcana arcana : Arcana.values()) {
+            TarotCardItem created = new TarotCardItem(arcana);
+
+            Registry.register(Registries.ITEM, new Identifier(PersonaMod.MOD_ID, arcana.name().toLowerCase() + "_tarot_card"), created);
+            cards.add(created);
+        }
+
+        return cards;
+    }
 
     // Entities
 

@@ -1,6 +1,9 @@
 package mc.duzo.persona.datagen;
 
+import mc.duzo.persona.Register;
 import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.item.TarotCardItem;
+import mc.duzo.persona.common.persona.arcana.Arcana;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.common.skill.SkillRegistry;
 import mc.duzo.persona.datagen.provider.PersonaSoundProvider;
@@ -58,10 +61,30 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 			for (Skill skill : SkillRegistry.REGISTRY) {
 				Identifier id = skill.id();
 
-				provider.addTranslation("skill." + id.getNamespace() + "." + id.getPath(), skill.id().getPath());
+				provider.addTranslation(skill.getTranslationKey(), id.getPath());
+			}
+
+			for (Arcana arcana : Arcana.values()) {
+				provider.addTranslation(arcana.getTranslationKey(), convertToName(arcana.name()));
+			}
+
+			for (TarotCardItem card : Register.TAROT_CARDS) {
+				String arcanaName = provider.translations.get(card.getArcana().getTranslationKey());
+
+				provider.addTranslation(card, arcanaName + " Tarot Card");
 			}
 
 			return provider;
 		})));
+	}
+
+	private static String convertToName(String str) {
+		String[] split = str.split("_");
+
+		for (int i = 0; i < split.length; i++) {
+			split[i] = split[i].substring(0, 1).toUpperCase() + split[i].substring(1).toLowerCase();
+		}
+
+		return String.join(" ", split);
 	}
 }
