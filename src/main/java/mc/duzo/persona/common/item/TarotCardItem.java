@@ -7,7 +7,9 @@ import mc.duzo.persona.common.persona.arcana.Arcana;
 import mc.duzo.persona.common.persona.arcana.ArcanaHolder;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.util.DataHelper;
+import mc.duzo.persona.util.DeltaTimeManager;
 import mc.duzo.persona.util.PersonaUtil;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,7 +35,7 @@ public class TarotCardItem extends Item implements ArcanaHolder {
 		ItemStack stack = user.getStackInHand(hand);
 
 		if (world.isClient()) {
-			boolean success = ClientData.getPlayerState(user).findPersona().isEmpty();
+			boolean success = ClientData.getPlayerState(user).findPersona().isEmpty() && MaskItem.isWearingMask(user);
 			return success ? TypedActionResult.success(stack) : TypedActionResult.fail(stack);
 		}
 
@@ -42,7 +44,8 @@ public class TarotCardItem extends Item implements ArcanaHolder {
 
 		boolean success = givePersona(player);
 
-		stack.decrement(1);
+		if (success)
+			stack.decrement(1);
 
 		return success ? TypedActionResult.success(stack) : TypedActionResult.fail(stack);
 	}
@@ -52,6 +55,8 @@ public class TarotCardItem extends Item implements ArcanaHolder {
 	 * @return whether giving a persona was successful
 	 */
 	private boolean givePersona(ServerPlayerEntity player) {
+		if (!MaskItem.isWearingMask(player)) return false;
+
 		PlayerData data = PlayerData.get(player);
 
 		if (data.findPersona().isPresent()) return false;
@@ -60,8 +65,7 @@ public class TarotCardItem extends Item implements ArcanaHolder {
 		if (found == null) return false;
 
 		data.setPersona(found, player);
-
-		data.revealPersona(player);
+		data.awakenPersona(player, found);
 
 		return true;
 	}

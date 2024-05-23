@@ -4,7 +4,11 @@ import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.battle.ClientBattleCache;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
 import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
+import mc.duzo.persona.client.render.animation.player.PlayerAnimationTracker;
 import mc.duzo.persona.client.render.animation.player.PlayerAnimations;
+import mc.duzo.persona.client.render.animation.player.holder.PlayerAnimationHolder;
+import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
+import mc.duzo.persona.common.item.MaskItem;
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
@@ -12,6 +16,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,11 +56,22 @@ public class ClientData {
             if (stale.isPersonaRevealed() != updated.isPersonaRevealed()) {
                 // The persona must have been hidden / revealed
                 // Play the touch mask anim
-                findPlayer(playerId).ifPresent(player -> PlayerAnimationHelper.playAnimation(player, PlayerAnimations.PERSONA_BATTLE_MASK_TOUCH));
+                findPlayer(playerId).ifPresent(player -> {
+                    if (PlayerAnimationHelper.isRunningAnimations(player) && PlayerAnimationTracker.getAnimation(player) instanceof PlayerAwakeningAnimation) return;
+
+                    if (!MaskItem.isWearingMask(player)) return;
+
+                    if (ClientBattleCache.findCurrentBattle().isPresent()) {
+                        PlayerAnimationHelper.playAnimation(player, PlayerAnimations.PERSONA_BATTLE_MASK_TOUCH);
+                        return;
+                    }
+
+                    PlayerAnimationHelper.playAnimation(player, PlayerAnimations.PERSONA_BATTLE_MASK_TOUCH);
+                });
             }
         }
     }
-    private static Optional<AbstractClientPlayerEntity> findPlayer(UUID uuid) {
+    public static Optional<AbstractClientPlayerEntity> findPlayer(UUID uuid) {
         ClientWorld world = MinecraftClient.getInstance().world;
 
         if (world == null) {

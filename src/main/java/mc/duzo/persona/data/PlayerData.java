@@ -3,10 +3,14 @@ package mc.duzo.persona.data;
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.common.persona.PersonaUser;
+import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import mc.duzo.persona.util.DataHelper;
+import mc.duzo.persona.util.DeltaTimeManager;
 import mc.duzo.persona.util.PersonaUtil;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -129,6 +133,17 @@ public class PlayerData implements PersonaUser {
         this.hidePersona();
 
         DataHelper.markDirty(player);
+    }
+
+    public void awakenPersona(ServerPlayerEntity player, AbstractPersona persona) {
+        PersonaMessages.sendPersonaAwaken(player);
+        player.setHealth(1f);
+
+        DeltaTimeManager.enqueueTask((long) (13.5 * 1000L), () -> this.onFinishAwaken(player));
+    }
+    private void onFinishAwaken(ServerPlayerEntity player) {
+        // player.getEquippedStack(EquipmentSlot.HEAD).decrement(1);
+        this.revealPersona(player);
     }
 
     /**

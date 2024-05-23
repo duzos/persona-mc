@@ -21,7 +21,11 @@ public class PlayerAnimationHolder {
 
 		if (this.isFinished(player)) {
 			this.state.stop();
+			this.onFinished(player);
 		} else {
+			if (!this.state.isRunning()) {
+				this.onStart(player);
+			}
 			this.state.startIfNotRunning(player.age);
 		}
 	}
@@ -32,7 +36,14 @@ public class PlayerAnimationHolder {
 		return this.getRunningSeconds() >= this.animation.lengthInSeconds();
 	}
 
-	private float getRunningSeconds() {
+	protected void onFinished(AbstractClientPlayerEntity player) {
+
+	}
+	protected void onStart(AbstractClientPlayerEntity player) {
+
+	}
+
+	protected float getRunningSeconds() {
 		return PlayerAnimationHelper.getRunningSeconds(this.animation, this.state.getTimeRunning());
 	}
 	public Animation getAnimation() {

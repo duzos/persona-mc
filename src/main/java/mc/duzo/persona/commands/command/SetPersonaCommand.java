@@ -18,7 +18,9 @@ public class SetPersonaCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
 		dispatcher.register(literal(PersonaMod.MOD_ID)
 				.then(literal("persona").requires(source -> source.hasPermissionLevel(2))
-						.then(literal("set").then(argument("persona", PersonaArgumentType.persona())
+						.then(literal("set")
+								.executes(SetPersonaCommand::runClearCommand)
+								.then(argument("persona", PersonaArgumentType.persona())
 								.executes(SetPersonaCommand::runCommand)))
 				));
 	}
@@ -32,6 +34,18 @@ public class SetPersonaCommand {
 		AbstractPersona persona = PersonaArgumentType.getPersona(context, "persona");
 
 		data.setPersona(persona, player);
+
+		return Command.SINGLE_SUCCESS;
+	}
+	private static int runClearCommand(CommandContext<ServerCommandSource> context) {
+		ServerPlayerEntity player = context.getSource().getPlayer();
+
+		if (player == null) return 0;
+
+		PlayerData data = ServerData.getPlayerState(player);
+
+		data.setPersona(null, player);
+		data.hidePersona(player);
 
 		return Command.SINGLE_SUCCESS;
 	}

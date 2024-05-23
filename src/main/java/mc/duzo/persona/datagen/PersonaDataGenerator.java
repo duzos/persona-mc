@@ -38,6 +38,7 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 			provider.addSound("going_down", PersonaSounds.MUSIC_GOING_DOWN);
 			provider.addSound("make_history", PersonaSounds.MUSIC_MAKE_HISTORY);
 			provider.addSound("take_over", PersonaSounds.MUSIC_TAKE_OVER);
+			provider.addSound("awakening", PersonaSounds.MUSIC_AWAKENING);
 
 			// Skills
 			provider.addSound("attack", PersonaSounds.ATTACK);
@@ -75,7 +76,7 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 				provider.addTranslation(arcana.getTranslationKey(), convertToName(arcana.name()));
 			}
 
-			for (TarotCardItem card : Register.TAROT_CARDS) {
+			for (TarotCardItem card : Register.TAROT_CARDS.values()) {
 				String arcanaName = provider.translations.get(card.getArcana().getTranslationKey());
 
 				provider.addTranslation(card, arcanaName + " Tarot Card");

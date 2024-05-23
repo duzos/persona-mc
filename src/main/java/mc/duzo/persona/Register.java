@@ -1,6 +1,7 @@
 package mc.duzo.persona;
 
 import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
+import mc.duzo.persona.common.item.MaskItem;
 import mc.duzo.persona.common.item.TarotCardItem;
 import mc.duzo.persona.common.item.WearableItem;
 import mc.duzo.persona.common.persona.arcana.Arcana;
@@ -17,6 +18,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,28 +31,30 @@ import java.util.Optional;
  */
 public class Register {
     // Items
-    public static final WearableItem JOKER_MASK = register(Registries.ITEM, "joker_mask", new WearableItem(EquipmentSlot.HEAD, true, new FabricItemSettings()));
-
-
-    public static final List<TarotCardItem> TAROT_CARDS = registerTarotCards();
-    public static Optional<TarotCardItem> findTarotCard(Arcana arcana) {
-        for (TarotCardItem card : TAROT_CARDS) {
-            if (card.getArcana() == arcana) return Optional.of(card); // should this be optional or just return null
-        }
-        return Optional.empty();
+    public static HashMap<String, MaskItem> MASKS = new HashMap<>();
+    private static void registerMasks() {
+        registerMask("joker", new Identifier(PersonaMod.MOD_ID, "textures/mask/joker.png"));
     }
+    private static MaskItem registerMask(String name, Identifier texture) {
+        MaskItem created = new MaskItem(EquipmentSlot.HEAD, texture);
 
-    private static List<TarotCardItem> registerTarotCards() {
-        List<TarotCardItem> cards = new ArrayList<>();
+        register(Registries.ITEM, name + "_mask", created);
+        MASKS.put(name, created);
+
+        return created;
+    }
+    public static final HashMap<Arcana, TarotCardItem> TAROT_CARDS = registerTarotCards();
+    private static HashMap<Arcana, TarotCardItem> registerTarotCards() {
+        HashMap<Arcana, TarotCardItem> map = new HashMap<>();
 
         for (Arcana arcana : Arcana.values()) {
             TarotCardItem created = new TarotCardItem(arcana);
 
             Registry.register(Registries.ITEM, new Identifier(PersonaMod.MOD_ID,  "tarot_card_" + arcana.name().toLowerCase()), created);
-            cards.add(created);
+            map.put(arcana, created);
         }
 
-        return cards;
+        return map;
     }
 
     // Entities
@@ -62,7 +66,9 @@ public class Register {
 
     // Initialising & Registering
 
-    public static void initialize() {}
+    public static void initialize() {
+        registerMasks();
+    }
 
     public static <V, T extends V> T register(Registry<V> registry, String name, T entry) {
         return Registry.register(registry, new Identifier(PersonaMod.MOD_ID, name), entry);

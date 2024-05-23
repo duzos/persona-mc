@@ -29,7 +29,7 @@ public class PersonaModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateItemModels(ItemModelGenerator generator) {
-		for (TarotCardItem card : Register.TAROT_CARDS) {
+		for (TarotCardItem card : Register.TAROT_CARDS.values()) {
 			registerTarotCard(generator, card);
 		}
 	}
