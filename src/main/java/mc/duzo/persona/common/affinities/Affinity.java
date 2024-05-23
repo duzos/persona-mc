@@ -32,4 +32,11 @@ public enum Affinity implements Identifiable {
     public Identifier id() {
         return this.id;
     }
+
+    public enum Type {
+        WEAK,
+        NONE,
+        STRONG,
+        NULL
+    }
 }
