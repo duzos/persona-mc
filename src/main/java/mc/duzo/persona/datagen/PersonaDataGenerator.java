@@ -6,19 +6,26 @@ import mc.duzo.persona.common.item.TarotCardItem;
 import mc.duzo.persona.common.persona.arcana.Arcana;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.common.skill.SkillRegistry;
+import mc.duzo.persona.datagen.provider.PersonaModelProvider;
 import mc.duzo.persona.datagen.provider.PersonaSoundProvider;
 import mc.duzo.persona.datagen.provider.lang.LanguageProvider;
 import mc.duzo.persona.datagen.provider.lang.LanguageType;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.MinecraftVersion;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Identifier;
 
 public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator gen) {
 		FabricDataGenerator.Pack pack = gen.createPack();
+
 		genSounds(pack);
 		genLang(pack);
+		genModels(pack);
 	}
 
 	private void genSounds(FabricDataGenerator.Pack pack) {
@@ -86,5 +93,9 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 		}
 
 		return String.join(" ", split);
+	}
+
+	private void genModels(FabricDataGenerator.Pack pack) {
+		pack.addProvider(((output, registriesFuture) -> new PersonaModelProvider(output)));
 	}
 }

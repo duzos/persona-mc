@@ -46,7 +46,7 @@ public class Register {
         for (Arcana arcana : Arcana.values()) {
             TarotCardItem created = new TarotCardItem(arcana);
 
-            Registry.register(Registries.ITEM, new Identifier(PersonaMod.MOD_ID, arcana.name().toLowerCase() + "_tarot_card"), created);
+            Registry.register(Registries.ITEM, new Identifier(PersonaMod.MOD_ID,  "tarot_card_" + arcana.name().toLowerCase()), created);
             cards.add(created);
         }
 
