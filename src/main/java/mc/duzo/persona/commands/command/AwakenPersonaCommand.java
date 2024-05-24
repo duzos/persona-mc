@@ -1,0 +1,39 @@
+package mc.duzo.persona.commands.command;
+
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.context.CommandContext;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.commands.argument.PersonaArgumentType;
+import mc.duzo.persona.common.persona.AbstractPersona;
+import mc.duzo.persona.data.PlayerData;
+import mc.duzo.persona.data.ServerData;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+
+import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
+
+public class AwakenPersonaCommand {
+	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+		dispatcher.register(literal(PersonaMod.MOD_ID)
+				.then(literal("persona").requires(source -> source.hasPermissionLevel(2))
+						.then(literal("awaken")
+								.then(argument("persona", PersonaArgumentType.persona())
+										.executes(AwakenPersonaCommand::runCommand)))
+				));
+	}
+
+	private static int runCommand(CommandContext<ServerCommandSource> context) {
+		ServerPlayerEntity player = context.getSource().getPlayer();
+
+		if (player == null) return 0;
+
+		PlayerData data = ServerData.getPlayerState(player);
+		AbstractPersona persona = PersonaArgumentType.getPersona(context, "persona");
+
+		data.awakenPersona(player, persona);
+
+		return Command.SINGLE_SUCCESS;
+	}
+}

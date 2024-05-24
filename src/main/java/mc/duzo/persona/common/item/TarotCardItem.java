@@ -9,6 +9,7 @@ import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.util.DataHelper;
 import mc.duzo.persona.util.DeltaTimeManager;
 import mc.duzo.persona.util.PersonaUtil;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -36,6 +37,10 @@ public class TarotCardItem extends Item implements ArcanaHolder {
 
 		if (world.isClient()) {
 			boolean success = ClientData.getPlayerState(user).findPersona().isEmpty() && MaskItem.isWearingMask(user);
+
+			if (success)
+				MinecraftClient.getInstance().gameRenderer.showFloatingItem(stack); // needs testing, may cause crashes when the mod is loaded on servers !
+
 			return success ? TypedActionResult.success(stack) : TypedActionResult.fail(stack);
 		}
 

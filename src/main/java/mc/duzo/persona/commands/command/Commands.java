@@ -16,5 +16,6 @@ public class Commands {
         EnterRoomCommand.register(dispatcher);
         SetSPCommand.register(dispatcher);
         SetPersonaCommand.register(dispatcher);
+        AwakenPersonaCommand.register(dispatcher);
     }
 }
