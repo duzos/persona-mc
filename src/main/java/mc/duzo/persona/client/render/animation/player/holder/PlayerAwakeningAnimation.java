@@ -20,6 +20,6 @@ public class PlayerAwakeningAnimation extends PlayerAnimationHolder{
 	}
 
 	public boolean shouldMaskBeVisible() {
-		return this.getRunningSeconds() < 13.25f;
+		return this.getRunningSeconds() < 13.5f;
 	}
 }

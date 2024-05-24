@@ -64,7 +64,6 @@ public class TarotCardItem extends Item implements ArcanaHolder {
 		AbstractPersona found = PersonaRegistry.findRandom(this.getArcana()); // TODO - not make random persona but instead a "Default" ?
 		if (found == null) return false;
 
-		data.setPersona(found, player);
 		data.awakenPersona(player, found);
 
 		return true;

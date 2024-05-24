@@ -139,10 +139,10 @@ public class PlayerData implements PersonaUser {
         PersonaMessages.sendPersonaAwaken(player);
         player.setHealth(1f);
 
-        DeltaTimeManager.enqueueTask((long) (13.5 * 1000L), () -> this.onFinishAwaken(player));
+        DeltaTimeManager.enqueueTask((long) (13.5 * 1000L), () -> this.onFinishAwaken(player, persona));
     }
-    private void onFinishAwaken(ServerPlayerEntity player) {
-        // player.getEquippedStack(EquipmentSlot.HEAD).decrement(1);
+    private void onFinishAwaken(ServerPlayerEntity player, AbstractPersona persona) {
+        this.setPersona(persona);
         this.revealPersona(player);
     }
 

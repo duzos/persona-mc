@@ -2,6 +2,7 @@ package mc.duzo.persona.client.data;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.battle.ClientBattleHandler;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
 import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
 import mc.duzo.persona.client.render.animation.player.PlayerAnimationTracker;
@@ -57,16 +58,17 @@ public class ClientData {
                 // The persona must have been hidden / revealed
                 // Play the touch mask anim
                 findPlayer(playerId).ifPresent(player -> {
+                    // TODO - cleanup
                     if (PlayerAnimationHelper.isRunningAnimations(player) && PlayerAnimationTracker.getAnimation(player) instanceof PlayerAwakeningAnimation) return;
 
                     if (!MaskItem.isWearingMask(player)) return;
 
-                    if (ClientBattleCache.findCurrentBattle().isPresent()) {
+                    if (ClientBattleHandler.findBattle(player).isPresent()) {
                         PlayerAnimationHelper.playAnimation(player, PlayerAnimations.PERSONA_BATTLE_MASK_TOUCH);
                         return;
                     }
 
-                    PlayerAnimationHelper.playAnimation(player, PlayerAnimations.PERSONA_BATTLE_MASK_TOUCH);
+                    PlayerAnimationHelper.playAnimation(player, PlayerAnimations.TOUCH_MASK);
                 });
             }
         }

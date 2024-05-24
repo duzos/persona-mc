@@ -538,4 +538,30 @@ public class PlayerAnimations {
                                     Transformation.Interpolations.CUBIC),
                             new Keyframe(14.458344f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
                                     Transformation.Interpolations.CUBIC))).build();
+
+    public static final Animation TOUCH_MASK = Animation.Builder.create(0.75f)
+            .addBoneAnimation("right_arm",
+                    new Transformation(Transformation.Targets.TRANSLATE,
+                            new Keyframe(0f, AnimationHelper.createTranslationalVector(0f, 0f, 0f),
+                                    Transformation.Interpolations.CUBIC)))
+            .addBoneAnimation("right_arm",
+                    new Transformation(Transformation.Targets.ROTATE,
+                            new Keyframe(0f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
+                                    Transformation.Interpolations.CUBIC),
+                            new Keyframe(0.25f, AnimationHelper.createRotationalVector(-131.22f, -46.64f, 6.75f),
+                                    Transformation.Interpolations.CUBIC),
+                            new Keyframe(0.5f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
+                                    Transformation.Interpolations.CUBIC)))
+            .addBoneAnimation("right_arm",
+                    new Transformation(Transformation.Targets.SCALE,
+                            new Keyframe(0f, AnimationHelper.createScalingVector(1f, 1f, 1f),
+                                    Transformation.Interpolations.CUBIC)))
+            .addBoneAnimation("head",
+                    new Transformation(Transformation.Targets.ROTATE,
+                            new Keyframe(0f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
+                                    Transformation.Interpolations.CUBIC),
+                            new Keyframe(0.25f, AnimationHelper.createRotationalVector(5f, 0f, 0f),
+                                    Transformation.Interpolations.CUBIC),
+                            new Keyframe(0.5f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
+                                    Transformation.Interpolations.CUBIC))).build();
 }
