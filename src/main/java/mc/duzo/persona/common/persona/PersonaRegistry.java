@@ -28,6 +28,9 @@ public class PersonaRegistry {
     }
     public static AbstractPersona findRandom(Arcana arcana) {
         List<AbstractPersona> matching = findMatching(arcana);
+
+        if (matching.isEmpty()) return null;
+
         int chosen = PersonaMod.RANDOM.nextInt(matching.size());
         return matching.get(chosen);
     }

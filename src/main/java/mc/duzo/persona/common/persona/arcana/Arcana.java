@@ -1,10 +1,11 @@
 package mc.duzo.persona.common.persona.arcana;
 
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.datagen.provider.lang.Translatable;
 import mc.duzo.persona.util.Identifiable;
 import net.minecraft.util.Identifier;
 
-public enum Arcana implements Identifiable {
+public enum Arcana implements Identifiable, Translatable {
 	FOOL,
 	MAGICIAN,
 	PRIESTESS,
@@ -52,4 +53,8 @@ public enum Arcana implements Identifiable {
 		return this.id;
 	}
 
+	@Override
+	public String getTranslationKey() {
+		return PersonaMod.MOD_ID + "." + this.name().toLowerCase();
+	}
 }

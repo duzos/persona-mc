@@ -1,6 +1,9 @@
 package mc.duzo.persona.util;
 
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Used for creating delays
@@ -48,5 +51,16 @@ public class DeltaTimeManager {
     public static int timeLeft(String string) {
         if (!nextUpdateTimeMap.containsKey(string)) return 0;
         return Math.round(nextUpdateTimeMap.get(string) - System.currentTimeMillis());
+    }
+
+    /**
+     * Enqueues a task to be run after the specified number of milliseconds.
+     * @param runnable what to run
+     * @param millis how long to wait in milliseconds
+     */
+    public static void enqueueTask(long millis, Runnable runnable) {
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+        executorService.schedule(runnable, millis, TimeUnit.MILLISECONDS);
     }
 }

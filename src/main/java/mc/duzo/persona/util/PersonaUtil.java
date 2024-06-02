@@ -131,27 +131,6 @@ public class PersonaUtil {
         entity.getWorld().playSound(null, entity.getBlockPos(), skill.getUseSound(), SoundCategory.PLAYERS, 1.0f, 1.0f);
     }
 
-    public static void revealPersona(ServerPlayerEntity player) {
-        PlayerData data = ServerData.getPlayerState(player);
-
-        data.revealPersona();
-
-        if (data.findPersona().isEmpty()) return;
-
-        player.getServerWorld().playSound(null, player.getBlockPos(), data.findPersona().get().getSummonSound(), SoundCategory.PLAYERS, 1.0f, 1.0f);
-
-        ServerData.getServerState(player.getServer()).markDirty();
-        syncToNearby(player);
-    }
-    public static void hidePersona(ServerPlayerEntity player) {
-        PlayerData data = ServerData.getPlayerState(player);
-
-        data.hidePersona();
-
-        ServerData.getServerState(player.getServer()).markDirty();
-        syncToNearby(player);
-    }
-
     public static void createCooldown(ServerPlayerEntity player, double seconds) {
         DeltaTimeManager.createDelay("skill-cooldown-" + player.getUuidAsString(), (long) (seconds * 1000L));
     }

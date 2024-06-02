@@ -14,14 +14,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class SetPersonaCommand {
+public class AwakenPersonaCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
 		dispatcher.register(literal(PersonaMod.MOD_ID)
 				.then(literal("persona").requires(source -> source.hasPermissionLevel(2))
-						.then(literal("set")
-								.executes(SetPersonaCommand::runClearCommand)
+						.then(literal("awaken")
 								.then(argument("persona", PersonaArgumentType.persona())
-								.executes(SetPersonaCommand::runCommand)))
+										.executes(AwakenPersonaCommand::runCommand)))
 				));
 	}
 
@@ -33,19 +32,7 @@ public class SetPersonaCommand {
 		PlayerData data = ServerData.getPlayerState(player);
 		AbstractPersona persona = PersonaArgumentType.getPersona(context, "persona");
 
-		data.setPersona(persona, player);
-
-		return Command.SINGLE_SUCCESS;
-	}
-	private static int runClearCommand(CommandContext<ServerCommandSource> context) {
-		ServerPlayerEntity player = context.getSource().getPlayer();
-
-		if (player == null) return 0;
-
-		PlayerData data = ServerData.getPlayerState(player);
-
-		data.setPersona(null, player);
-		data.hidePersona(player);
+		data.awakenPersona(player, persona);
 
 		return Command.SINGLE_SUCCESS;
 	}

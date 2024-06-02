@@ -27,6 +27,7 @@ public class PersonaSounds {
     public static final SoundEvent MUSIC_MAKE_HISTORY = register("make_history");
     public static final SoundEvent MUSIC_TAKE_OVER = register("take_over");
     public static final SoundEvent MUSIC_VELVET = register("velvet_room");
+    public static final SoundEvent MUSIC_AWAKENING = register("awakening");
 
     public static void init() {
 

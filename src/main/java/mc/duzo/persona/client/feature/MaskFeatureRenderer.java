@@ -3,6 +3,11 @@ package mc.duzo.persona.client.feature;
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.Register;
 import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
+import mc.duzo.persona.client.render.animation.player.PlayerAnimationTracker;
+import mc.duzo.persona.client.render.animation.player.holder.PlayerAnimationHolder;
+import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
+import mc.duzo.persona.common.item.MaskItem;
 import mc.duzo.persona.data.PlayerData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -34,7 +39,6 @@ import net.minecraft.util.math.RotationAxis;
 public class MaskFeatureRenderer<T extends LivingEntity, M extends EntityModel<T>>
         extends FeatureRenderer<T, M> {
 
-    private static final Identifier MASK_TEXTURE = new Identifier(PersonaMod.MOD_ID, "textures/skins/mask.png"); // https://www.planetminecraft.com/skin/joker-persona-5-5675860/
     private final PlayerEntityModel<T> model;
 
     public MaskFeatureRenderer(FeatureRendererContext<T, M> context, EntityModelLoader loader) {
@@ -44,13 +48,12 @@ public class MaskFeatureRenderer<T extends LivingEntity, M extends EntityModel<T
 
     @Override
     public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l) {
-        if (livingEntity.getEquippedStack(EquipmentSlot.HEAD).getItem() != Register.JOKER_MASK) return;
-
-        PlayerData data = ClientData.getPlayerState(livingEntity);
-
-        if (data.isPersonaRevealed() || data.findPersona().isEmpty()) return;
+        if (!MaskItem.isWearingMask(livingEntity)) return;
+        MaskItem mask = (MaskItem) livingEntity.getEquippedStack(EquipmentSlot.HEAD).getItem();
 
         if (!(livingEntity instanceof AbstractClientPlayerEntity player)) return;
+
+        if (!shouldMaskBeVisible(player)) return;
 
         matrixStack.push();
 
@@ -58,10 +61,24 @@ public class MaskFeatureRenderer<T extends LivingEntity, M extends EntityModel<T
         this.model.setAngles(livingEntity, f, g, j, k, l);
         this.model.sneaking = player.isSneaking();
 
-        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucent(MASK_TEXTURE));
+        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucent(mask.getTexture()));
         this.model.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1f);
 
         matrixStack.pop();
+    }
+
+    private boolean shouldMaskBeVisible(AbstractClientPlayerEntity player) {
+        if (isRunningAwakening(player)) {
+            return ((PlayerAwakeningAnimation) PlayerAnimationTracker.getAnimation(player)).shouldMaskBeVisible();
+        }
+
+        PlayerData data = ClientData.getPlayerState(player);
+
+        return !((data.isPersonaRevealed()));
+    }
+
+    private boolean isRunningAwakening(AbstractClientPlayerEntity player) {
+        return PlayerAnimationHelper.isRunningAnimations(player) && PlayerAnimationTracker.getAnimation(player) instanceof PlayerAwakeningAnimation;
     }
 }
 
