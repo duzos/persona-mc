@@ -16,11 +16,17 @@ public abstract class PersonaModel extends EntityModel<LivingEntity> {
 	 * This will be called to render the model, perform all adjustments here and render the model using the proper method.
 	 */
 	public abstract void render(LivingEntity entity, float tickDelta, MatrixStack matrices, VertexConsumer vertexConsumers, int light, float r, float g, float b, float alpha);
+
+	@Override
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+		this.getPart().render(matrices, vertices, light, overlay, red, green, blue, alpha);
+	}
+
 	public Identifier getTexture() {
 		return this.getPersona().texture();
 	}
 	public Optional<Identifier> getEmission() {
-		return Optional.empty(); // TODO
+		return Optional.empty();
 	}
 	public abstract AbstractPersona getPersona();
 

@@ -36,6 +36,7 @@ public class PersonaModelRegistry {
 
 	private void init() {
 		register(PersonaRegistry.ARSENE.id(), new ArseneModel(ArseneModel.getTexturedModelData().createModel()));
+		register(PersonaRegistry.ORPHEUS.id(), new OrpheusModel(OrpheusModel.getTexturedModelData().createModel()));
 	}
 
 	// for obtaining our models statically
