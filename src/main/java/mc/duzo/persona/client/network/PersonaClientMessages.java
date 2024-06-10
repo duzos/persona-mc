@@ -4,23 +4,18 @@ import mc.duzo.persona.client.PersonaModClient;
 import mc.duzo.persona.client.battle.ClientBattleCache;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
 import mc.duzo.persona.client.data.ClientData;
-import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
-import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
 import mc.duzo.persona.client.sound.MusicSound;
 import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.network.PersonaMessages;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundCategory;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class PersonaClientMessages {
@@ -29,15 +24,6 @@ public class PersonaClientMessages {
         ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.CHANGED_VELVET, ((client, handler, buf, responseSender) -> recieveVelvetChange(buf)));
         ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.BATTLE_DATA, ((client, handler, buf, responseSender) -> receiveBattleData(buf)));
         ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.BATTLE_FINISH, ((client, handler, buf, responseSender) -> receiveBattleFinish(buf)));
-        ClientPlayNetworking.registerGlobalReceiver(PersonaMessages.PERSONA_AWAKEN, (((client, handler, buf, responseSender) -> receivePersonaAwaken(buf))));
-    }
-
-    private static void receivePersonaAwaken(PacketByteBuf buf) {
-        UUID id = buf.readUuid();
-        Optional<AbstractClientPlayerEntity> found = ClientData.findPlayer(id);
-        if (found.isEmpty()) return;
-
-        PlayerAnimationHelper.playAnimation(found.get(), new PlayerAwakeningAnimation());
     }
 
     private static void recieveVelvetChange(boolean entry) {

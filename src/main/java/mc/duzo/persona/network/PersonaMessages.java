@@ -32,7 +32,6 @@ public class PersonaMessages {
 
     // Personas
     public static final Identifier PERSONA_TOGGLE = new Identifier(PersonaMod.MOD_ID, "persona_toggle");
-    public static final Identifier PERSONA_AWAKEN = new Identifier(PersonaMod.MOD_ID, "persona_awaken");
 
     // Velvet Room
     public static final Identifier CHANGED_VELVET = new Identifier(PersonaMod.MOD_ID, "changed_velvet");
@@ -51,15 +50,6 @@ public class PersonaMessages {
         buf.writeBoolean(entry);
 
         ServerPlayNetworking.send(player, CHANGED_VELVET, buf);
-    }
-    public static void sendPersonaAwaken(ServerPlayerEntity player) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeUuid(player.getUuid());
-
-        ServerPlayNetworking.send(player, PERSONA_AWAKEN, buf);
-        for (ServerPlayerEntity target : PlayerLookup.tracking(player)) {
-            ServerPlayNetworking.send(target, PERSONA_AWAKEN, buf);
-        }
     }
 
     public static void syncAllData(ServerPlayerEntity target) {
@@ -91,7 +81,6 @@ public class PersonaMessages {
         for (ServerPlayerEntity target : PlayerLookup.tracking(player)) {
             syncData(target, player);
         }
-        syncData(player, player);
     }
     public static void syncBattleData(ServerPlayerEntity target, ServerBattleData data) {
         PacketByteBuf buf = PacketByteBufs.create();
@@ -161,10 +150,10 @@ public class PersonaMessages {
         PlayerData data = ServerData.getPlayerState(player);
 
         if (data.isPersonaRevealed()) {
-            data.hidePersona(player);
+            PersonaUtil.hidePersona(player);
             return;
         }
 
-        data.revealPersona(player);
+        PersonaUtil.revealPersona(player);
     }
 }

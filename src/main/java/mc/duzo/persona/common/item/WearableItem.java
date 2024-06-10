@@ -1,5 +1,6 @@
 package mc.duzo.persona.common.item;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
