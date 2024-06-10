@@ -34,6 +34,7 @@ public class PersonaRegistry {
 
     public static AbstractPersona DEV;
     public static AbstractPersona ARSENE;
+    public static AbstractPersona ORPHEUS;
 
     public static void init() {
         DEV = register(new Persona(
@@ -56,6 +57,18 @@ public class PersonaRegistry {
                 ),
                 new Identifier(PersonaMod.MOD_ID, "textures/persona/arsene.png"),
                 PersonaSounds.ARSENE_SHOUT
+        ));
+
+        ORPHEUS = register(new Persona(
+                new Identifier(PersonaMod.MOD_ID, "orpheus"),
+                Arcana.FOOL,
+                new SkillSet(
+                        SkillRegistry.ZIO,
+                        SkillRegistry.MEDIA,
+                        SkillRegistry.CLEAVE
+                ),
+                new Identifier(PersonaMod.MOD_ID, "textures/persona/orpheus.png"),
+                PersonaSounds.ORPHEUS_SHOUT
         ));
     }
 }

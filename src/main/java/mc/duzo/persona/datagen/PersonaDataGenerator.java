@@ -37,6 +37,7 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 			// PERSONA!!
 			provider.addSound("persona_shout", PersonaSounds.PERSONA_SHOUT);
 			provider.addSound("arsene", PersonaSounds.ARSENE_SHOUT);
+			provider.addSound("orpheus", PersonaSounds.ORPHEUS_SHOUT);
 
 			// Other
 			provider.addSound("welcome_velvet", PersonaSounds.WELCOME_VELVET);
