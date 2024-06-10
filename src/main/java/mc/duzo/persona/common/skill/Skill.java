@@ -8,7 +8,6 @@ import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.data.PlayerData;
 import mc.duzo.persona.data.ServerData;
-import mc.duzo.persona.datagen.provider.lang.Translatable;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.Identifiable;
 import net.minecraft.entity.LivingEntity;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class Skill implements Identifiable, Translatable {
+public abstract class Skill implements Identifiable {
     private final Identifier id;
 
     protected Skill(Identifier id) {
@@ -79,11 +78,6 @@ public abstract class Skill implements Identifiable, Translatable {
     public abstract Affinity getAffinity();
     public SoundEvent getUseSound() {
         return PersonaSounds.ATTACK;
-    }
-
-    @Override
-    public String getTranslationKey() {
-        return "skill." + id.getNamespace() + "." + id.getPath();
     }
 
     public NbtCompound toNbt() {
