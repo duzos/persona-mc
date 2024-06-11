@@ -1,15 +1,14 @@
 package mc.duzo.persona.client.render.animation.player.holder;
 
-import mc.duzo.persona.client.render.animation.player.PlayerAnimations;
+import mc.duzo.persona.client.render.animation.player.PersonaPlayerAnimations;
 import mc.duzo.persona.common.PersonaSounds;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.sound.SoundCategory;
 
 public class PlayerAwakeningAnimation extends PlayerAnimationHolder{
 	public PlayerAwakeningAnimation() {
-		super(PlayerAnimations.AWAKENING);
+		super(PersonaPlayerAnimations.AWAKENING);
 	}
 
 	@Override

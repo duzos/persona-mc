@@ -6,8 +6,7 @@ import mc.duzo.persona.client.battle.ClientBattleHandler;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
 import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
 import mc.duzo.persona.client.render.animation.player.PlayerAnimationTracker;
-import mc.duzo.persona.client.render.animation.player.PlayerAnimations;
-import mc.duzo.persona.client.render.animation.player.holder.PlayerAnimationHolder;
+import mc.duzo.persona.client.render.animation.player.PersonaPlayerAnimations;
 import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
 import mc.duzo.persona.common.item.MaskItem;
 import mc.duzo.persona.common.persona.AbstractPersona;
@@ -18,7 +17,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,11 +63,11 @@ public class ClientData {
                     if (!MaskItem.isWearingMask(player)) return;
 
                     if (ClientBattleHandler.findBattle(player).isPresent()) {
-                        PlayerAnimationHelper.playAnimation(player, PlayerAnimations.PERSONA_BATTLE_MASK_TOUCH);
+                        PlayerAnimationHelper.playAnimation(player, PersonaPlayerAnimations.PERSONA_BATTLE_MASK_TOUCH);
                         return;
                     }
 
-                    PlayerAnimationHelper.playAnimation(player, PlayerAnimations.TOUCH_MASK);
+                    PlayerAnimationHelper.playAnimation(player, PersonaPlayerAnimations.TOUCH_MASK);
                 });
             }
         }

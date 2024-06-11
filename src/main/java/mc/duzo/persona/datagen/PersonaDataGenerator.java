@@ -83,6 +83,8 @@ public class PersonaDataGenerator implements DataGeneratorEntrypoint {
 				provider.addTranslation(card, arcanaName + " Tarot Card");
 			}
 
+			provider.addTranslation(Register.EVOKER, "SEES Evoker");
+
 			return provider;
 		})));
 	}

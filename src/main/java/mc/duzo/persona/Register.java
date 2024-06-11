@@ -1,6 +1,7 @@
 package mc.duzo.persona;
 
 import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
+import mc.duzo.persona.common.item.EvokerItem;
 import mc.duzo.persona.common.item.MaskItem;
 import mc.duzo.persona.common.item.TarotCardItem;
 import mc.duzo.persona.common.item.WearableItem;
@@ -56,6 +57,8 @@ public class Register {
 
         return map;
     }
+
+    public static final EvokerItem EVOKER = register(Registries.ITEM, "evoker", new EvokerItem());
 
     // Entities
 

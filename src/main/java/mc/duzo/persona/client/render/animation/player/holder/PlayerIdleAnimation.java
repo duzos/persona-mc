@@ -2,14 +2,14 @@ package mc.duzo.persona.client.render.animation.player.holder;
 
 import mc.duzo.persona.client.battle.ClientBattleHandler;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
-import mc.duzo.persona.client.render.animation.player.PlayerAnimations;
+import mc.duzo.persona.client.render.animation.player.PersonaPlayerAnimations;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 
 import java.util.Optional;
 
 public class PlayerIdleAnimation extends PlayerAnimationHolder {
 	public PlayerIdleAnimation() {
-		super(PlayerAnimations.PERSONA_BATTLE_IDLE);
+		super(PersonaPlayerAnimations.PERSONA_BATTLE_IDLE);
 	}
 
 	@Override
