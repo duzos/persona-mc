@@ -118,7 +118,7 @@ public abstract class PlayerData implements PersonaUser {
     public boolean isPersonaRevealed() {
         return this.personaRevealed;
     }
-    private void revealPersona() {
+    public void revealPersona() {
         if (this.findPersona().isEmpty()) {
             if (this.isPersonaRevealed()) this.hidePersona();
             return;
@@ -126,34 +126,8 @@ public abstract class PlayerData implements PersonaUser {
 
         this.personaRevealed = true;
     }
-    public void revealPersona(ServerPlayerEntity player) {
-        this.revealPersona();
-
-        if (this.findPersona().isEmpty()) return;
-
-        player.getServerWorld().playSound(null, player.getBlockPos(), this.findPersona().get().getSummonSound(), SoundCategory.PLAYERS, 1.0f, 1.0f);
-
-        DataHelper.markDirty(player);
-    }
-
-    private void hidePersona() {
+    public void hidePersona() {
         this.personaRevealed = false;
-    }
-    public void hidePersona(ServerPlayerEntity player) {
-        this.hidePersona();
-
-        DataHelper.markDirty(player);
-    }
-
-    public void awakenPersona(ServerPlayerEntity player, AbstractPersona persona) {
-        PersonaMessages.sendPersonaAwaken(player);
-        player.setHealth(1f);
-
-        DeltaTimeManager.enqueueTask((long) (13.5 * 1000L), () -> this.onFinishAwaken(player, persona));
-    }
-    private void onFinishAwaken(ServerPlayerEntity player, AbstractPersona persona) {
-        this.setPersona(persona);
-        this.revealPersona(player);
     }
 
     /**

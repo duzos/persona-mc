@@ -1,16 +1,13 @@
 package mc.duzo.persona.common.item;
 
-import mc.duzo.persona.client.data.ClientData;
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.persona.PersonaRegistry;
 import mc.duzo.persona.common.persona.arcana.Arcana;
 import mc.duzo.persona.common.persona.arcana.ArcanaHolder;
-import mc.duzo.persona.data.PlayerData;
-import mc.duzo.persona.util.DataHelper;
-import mc.duzo.persona.util.DeltaTimeManager;
-import mc.duzo.persona.util.PersonaUtil;
+import mc.duzo.persona.data.global.client.ClientData;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -62,14 +59,14 @@ public class TarotCardItem extends Item implements ArcanaHolder {
 	private boolean givePersona(ServerPlayerEntity player) {
 		if (!MaskItem.isWearingMask(player)) return false;
 
-		PlayerData data = PlayerData.get(player);
+		ServerPlayerData data = ServerData.getPlayerState(player);
 
 		if (data.findPersona().isPresent()) return false;
 
 		AbstractPersona found = PersonaRegistry.findRandom(this.getArcana()); // TODO - not make random persona but instead a "Default" ?
 		if (found == null) return false;
 
-		data.awakenPersona(player, found);
+		data.awakenPersona(found);
 
 		return true;
 	}

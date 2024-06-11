@@ -6,8 +6,9 @@ import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.battle.turn.BattleTurn;
 import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.data.PlayerData;
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
 import mc.duzo.persona.datagen.provider.lang.Translatable;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.Identifiable;
@@ -57,12 +58,9 @@ public abstract class Skill implements Identifiable, Translatable {
         }
 
         if (source instanceof ServerPlayerEntity player) {
-            PlayerData data = ServerData.getPlayerState(player);
+            ServerPlayerData data = ServerData.getPlayerState(player);
 
             data.removeSP(this.getCost());
-
-            ServerData.getServerState(player.getServer()).markDirty();
-            PersonaMessages.syncData(player, player);
         }
         return true;
     }

@@ -45,8 +45,8 @@ public class SetPersonaCommand {
 
 		PlayerData data = ServerData.getPlayerState(player);
 
-		data.setPersona(null, player);
-		data.hidePersona(player);
+		data.setPersona(null);
+		data.hidePersona();
 
 		return Command.SINGLE_SUCCESS;
 	}

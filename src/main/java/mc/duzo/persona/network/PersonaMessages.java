@@ -159,13 +159,13 @@ public class PersonaMessages {
     }
 
     private static void recievePersonaToggleRequest(ServerPlayerEntity player) {
-        PlayerData data = ServerData.getPlayerState(player);
+        ServerPlayerData data = ServerData.getPlayerState(player);
 
         if (data.isPersonaRevealed()) {
-            data.hidePersona(player);
+            data.hidePersona();
             return;
         }
 
-        data.revealPersona(player);
+        data.revealPersona();
     }
 }
