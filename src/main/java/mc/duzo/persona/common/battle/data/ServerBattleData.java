@@ -119,12 +119,13 @@ public class ServerBattleData extends CachableBattleData {
 			return this.playersCache;
 		}
 
-		if (!PersonaMod.hasServer()) {
+		MinecraftServer server = PersonaMod.getServer().orElse(null);
+
+		if (server == null) {
 			PersonaMod.LOGGER.error("Tried to get players from server without a server!");
 			return List.of();
 		}
 
-		MinecraftServer server = PersonaMod.SERVER;
 		List<ServerPlayerEntity> list = new ArrayList<>();
 
 		ServerPlayerEntity found;
@@ -147,12 +148,12 @@ public class ServerBattleData extends CachableBattleData {
 			return this.targetsCache;
 		}
 
-		if (!PersonaMod.hasServer()) {
+		MinecraftServer server = PersonaMod.getServer().orElse(null);
+
+		if (server == null) {
 			PersonaMod.LOGGER.error("Tried to get targets from server without a server!");
 			return List.of();
 		}
-
-		MinecraftServer server = PersonaMod.SERVER;
 
 		ArrayList<UUID> searchList = new ArrayList<>(this.targets);
 		List<LivingEntity> list = new ArrayList<>();

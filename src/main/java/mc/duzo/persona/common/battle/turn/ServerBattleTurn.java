@@ -22,12 +22,12 @@ public class ServerBattleTurn extends BattleTurn {
 			}
 		}
 
-		if (!PersonaMod.hasServer()) {
+		MinecraftServer server = PersonaMod.getServer().orElse(null);
+
+		if (server == null) {
 			PersonaMod.LOGGER.error("Tried to grab current turn entity without a server!");
 			return null;
 		}
-
-		MinecraftServer server = PersonaMod.SERVER;
 
 		Entity found = null;
 		// Search through every world to try and find the entity, shouldn't be needed as they should be in the same world though.

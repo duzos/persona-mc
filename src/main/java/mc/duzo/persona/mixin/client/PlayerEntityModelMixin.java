@@ -1,9 +1,10 @@
 package mc.duzo.persona.mixin.client;
 
-import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.data.global.client.ClientData;
 import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
 import mc.duzo.persona.client.render.animation.player.PlayerModelHook;
-import mc.duzo.persona.data.PlayerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.player.client.ClientPlayerData;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
@@ -42,7 +43,7 @@ public abstract class PlayerEntityModelMixin<T extends LivingEntity>
 
 	@Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
 	public void persona$setAngles(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
-		PlayerData data = ClientData.getPlayerState(livingEntity);
+		ClientPlayerData data = ClientData.getPlayerState(livingEntity);
 
 		if (!(livingEntity instanceof AbstractClientPlayerEntity player)) return;
 

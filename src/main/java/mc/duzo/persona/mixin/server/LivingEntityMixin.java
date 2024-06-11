@@ -1,10 +1,9 @@
 package mc.duzo.persona.mixin.server;
 
 import mc.duzo.persona.common.battle.BattleHandler;
-import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
-import mc.duzo.persona.data.PlayerData;
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.global.server.ServerData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -14,7 +13,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;

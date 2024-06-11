@@ -1,17 +1,18 @@
-package mc.duzo.persona.data;
+package mc.duzo.persona.data.player;
 
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.common.persona.PersonaUser;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import mc.duzo.persona.util.DataHelper;
 import mc.duzo.persona.util.DeltaTimeManager;
-import mc.duzo.persona.util.PersonaUtil;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -19,6 +20,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Player specific nbt data which will be stored in {@link ServerData}
@@ -26,7 +28,7 @@ import java.util.Optional;
  *
  * @author duzo
  */
-public class PlayerData implements PersonaUser {
+public abstract class PlayerData implements PersonaUser {
     public static final int MAX_SP = 100;
 
     private AbstractPersona persona;
@@ -35,6 +37,24 @@ public class PlayerData implements PersonaUser {
     private int spiritPoints;
     private boolean personaRevealed;
     private AbsoluteBlockPos.Directed velvetDoorPos; // the position of the velvet door through which the player entered the velvet room
+    private final UUID playerId;
+
+    public PlayerData(UUID player) {
+        this.playerId = player;
+    }
+    public PlayerData(NbtCompound data) {
+        this(data.getUuid("PlayerId"));
+
+        this.deserialize(data);
+    }
+
+    public boolean isClient() {
+        return !(this instanceof ServerPlayerData);
+    }
+    protected abstract Optional<PlayerEntity> getPlayer();
+    protected UUID getPlayerId() {
+        return this.playerId;
+    }
 
     @Override
     public Optional<AbstractPersona> findPersona() {
@@ -43,15 +63,9 @@ public class PlayerData implements PersonaUser {
 
     /**
      * Sets the players persona
-     * Will not call markdirty
      */
     public void setPersona(AbstractPersona persona) {
         this.persona = persona;
-    }
-    public void setPersona(AbstractPersona persona, ServerPlayerEntity player) {
-        this.setPersona(persona);
-
-        DataHelper.markDirty(player);
     }
 
     /**
@@ -68,10 +82,6 @@ public class PlayerData implements PersonaUser {
 
         this.target = target.getId();
         this.hasTarget = true;
-
-        if (!target.getWorld().isClient()) {
-            ServerData.getServerState(target.getServer()).markDirty();
-        }
     }
     public Optional<LivingEntity> findTarget(World world) {
         if (!this.hasTarget) return Optional.empty();
@@ -162,7 +172,7 @@ public class PlayerData implements PersonaUser {
         this.velvetDoorPos = pos;
     }
 
-    public NbtCompound toNbt() {
+    public NbtCompound serialize() {
         NbtCompound nbt = new NbtCompound();
 
         if (this.findPersona().isPresent())
@@ -172,32 +182,25 @@ public class PlayerData implements PersonaUser {
         nbt.putBoolean("PersonaRevealed", this.isPersonaRevealed());
         nbt.putBoolean("hasTarget", this.hasTarget());
         nbt.putInt("targetId", this.getTargetId());
+        nbt.putUuid("PlayerId", this.getPlayerId());
 
         return nbt;
     }
 
-    public static PlayerData createFromNbt(NbtCompound nbt) {
-        PlayerData data = new PlayerData();
+    protected void deserialize(NbtCompound data) {
+        if (data.contains("persona"))
+            this.persona = new Persona(data.getCompound("persona"));
 
-        if (nbt.contains("persona"))
-            data.persona = new Persona(nbt.getCompound("persona"));
+        if (data.contains("SP"))
+            this.spiritPoints = data.getInt("SP");
 
-        if (nbt.contains("SP"))
-            data.spiritPoints = nbt.getInt("SP");
+        if (data.contains("PersonaRevealed"))
+            this.personaRevealed = data.getBoolean("PersonaRevealed");
 
-        if (nbt.contains("PersonaRevealed"))
-            data.personaRevealed = nbt.getBoolean("PersonaRevealed");
+        if(data.contains("hasTarget"))
+            this.hasTarget = data.getBoolean("hasTarget");
 
-        if(nbt.contains("hasTarget"))
-            data.hasTarget = nbt.getBoolean("hasTarget");
-
-        if(nbt.contains("targetId"))
-            data.target = nbt.getInt("targetId");
-
-        return data;
-    }
-
-    public static PlayerData get(ServerPlayerEntity player) {
-        return ServerData.getPlayerState(player);
+        if(data.contains("targetId"))
+            this.target = data.getInt("targetId");
     }
 }

@@ -143,8 +143,6 @@ public class SkillRegistry {
             new Identifier(PersonaMod.MOD_ID, "trafuri"),
             Affinity.SUPPORT,
             (source, persona, target) -> {
-                if (!PersonaMod.hasServer()) return;
-
                 if (!(source instanceof ServerPlayerEntity sauce)) return;
 
                 ServerWorld world = WorldUtil.findWorld(sauce.getSpawnPointDimension());

@@ -1,14 +1,10 @@
 package mc.duzo.persona.client.battle;
 
 import mc.duzo.persona.client.battle.data.ClientBattleData;
-import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.data.global.client.ClientData;
 import mc.duzo.persona.common.battle.BattleHandler;
-import mc.duzo.persona.common.battle.data.ServerBattleData;
-import mc.duzo.persona.data.ServerData;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Optional;
 

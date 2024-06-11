@@ -16,7 +16,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Utilities related to the world and the server
@@ -24,12 +26,11 @@ import java.util.Set;
  * @author duzo
  * */
 public class WorldUtil {
-    public static MinecraftServer getServer() {
-        return PersonaMod.SERVER;
-    }
-
     public static ServerWorld findWorld(RegistryKey<World> key) {
-        return WorldUtil.getServer().getWorld(key);
+        MinecraftServer server = PersonaMod.getServer().orElse(null);
+        if (server == null) return null;
+
+        return server.getWorld(key);
     }
 
     public static ServerWorld findWorld(Identifier identifier) {
@@ -95,5 +96,12 @@ public class WorldUtil {
     }
     private static boolean isFree(BlockState state) {
         return state.isAir() || state.isReplaceable();
+    }
+
+    public static Optional<ServerPlayerEntity> findPlayer(UUID id) {
+        MinecraftServer server = PersonaMod.getServer().orElse(null);
+        if (server == null) return Optional.empty();
+
+        return Optional.ofNullable(server.getPlayerManager().getPlayer(id));
     }
 }

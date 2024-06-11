@@ -3,8 +3,9 @@ package mc.duzo.persona.network;
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.data.PlayerData;
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
 import mc.duzo.persona.util.PersonaUtil;
 import mc.duzo.persona.util.TargetingUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -73,7 +74,7 @@ public class PersonaMessages {
         PacketByteBuf buf = PacketByteBufs.create();
 
         buf.writeUuid(player.getUuid());
-        buf.writeNbt(data.toNbt());
+        buf.writeNbt(data.serialize());
 
         ServerPlayNetworking.send(target, SYNC_DATA, buf);
     }

@@ -1,13 +1,12 @@
 package mc.duzo.persona;
 
 import mc.duzo.persona.commands.argument.PersonaArgumentRegister;
-import mc.duzo.persona.commands.argument.PersonaArgumentType;
 import mc.duzo.persona.commands.command.Commands;
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.common.persona.PersonaRegistry;
 import mc.duzo.persona.common.skill.SkillRegistry;
-import mc.duzo.persona.data.PlayerData;
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.global.server.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.VelvetUtil;
 import net.fabricmc.api.ModInitializer;
@@ -26,6 +25,7 @@ import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class PersonaMod implements ModInitializer {
@@ -33,7 +33,7 @@ public class PersonaMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("persona");
 	public static final Random RANDOM = new Random();
 
-	public static MinecraftServer SERVER;
+	private static MinecraftServer SERVER;
 
 	@Override
 	public void onInitialize() {
@@ -117,8 +117,7 @@ public class PersonaMod implements ModInitializer {
 			ServerData.tick(server);
 		});
 	}
-
-	public static boolean hasServer() {
-		return SERVER != null;
+	public static Optional<MinecraftServer> getServer() {
+		return Optional.ofNullable(SERVER);
 	}
 }

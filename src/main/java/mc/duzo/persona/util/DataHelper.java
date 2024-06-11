@@ -1,6 +1,6 @@
 package mc.duzo.persona.util;
 
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.global.server.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.server.network.ServerPlayerEntity;
 

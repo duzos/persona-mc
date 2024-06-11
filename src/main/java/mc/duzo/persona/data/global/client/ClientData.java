@@ -1,4 +1,4 @@
-package mc.duzo.persona.client.data;
+package mc.duzo.persona.data.global.client;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.battle.ClientBattleCache;
@@ -11,8 +11,9 @@ import mc.duzo.persona.client.render.animation.player.holder.PlayerAnimationHold
 import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
 import mc.duzo.persona.common.item.MaskItem;
 import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.data.PlayerData;
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.client.ClientPlayerData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -32,7 +33,7 @@ import java.util.*;
  */
 public class ClientData {
     private static ClientData instance;
-    private HashMap<UUID, PlayerData> players = new HashMap<>();
+    private HashMap<UUID, ClientPlayerData> players = new HashMap<>();
     private HashMap<UUID, ClientBattleData> battles = new HashMap<>();
 
     public static ClientData getInstance() {
@@ -44,9 +45,9 @@ public class ClientData {
     }
 
     public static void addPlayer(UUID uuid, NbtCompound data) {
-        PlayerData playerData = PlayerData.createFromNbt(data);
+        ClientPlayerData playerData = new ClientPlayerData(data);
 
-        PlayerData stale = getInstance().players.get(uuid);
+        ClientPlayerData stale = getInstance().players.get(uuid);
 
         getInstance().players.put(uuid, playerData);
 
@@ -86,10 +87,10 @@ public class ClientData {
         return Optional.of((AbstractClientPlayerEntity) world.getPlayerByUuid(uuid));
     }
 
-    public static PlayerData getPlayerState(UUID uuid) {
-        return getInstance().players.computeIfAbsent(uuid, key -> new PlayerData());
+    public static ClientPlayerData getPlayerState(UUID uuid) {
+        return getInstance().players.computeIfAbsent(uuid, key -> new ClientPlayerData(uuid));
     }
-    public static PlayerData getPlayerState(LivingEntity player) {
+    public static ClientPlayerData getPlayerState(LivingEntity player) {
         return getPlayerState(player.getUuid());
     }
 

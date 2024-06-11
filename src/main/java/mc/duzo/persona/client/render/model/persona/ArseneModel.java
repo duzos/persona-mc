@@ -1,7 +1,7 @@
 package mc.duzo.persona.client.render.model.persona;
 
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.data.global.client.ClientData;
 import mc.duzo.persona.client.render.animation.persona.PersonaAnimationHelper;
 import mc.duzo.persona.client.render.animation.persona.ArseneAnimations;
 import mc.duzo.persona.common.persona.AbstractPersona;

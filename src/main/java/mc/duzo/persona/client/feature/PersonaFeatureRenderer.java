@@ -1,11 +1,12 @@
 package mc.duzo.persona.client.feature;
 
-import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.data.global.client.ClientData;
 import mc.duzo.persona.client.render.model.persona.PersonaModel;
 import mc.duzo.persona.client.render.model.persona.PersonaModelRegistry;
 import mc.duzo.persona.client.render.model.persona.PersonaSkinModel;
 import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.data.PlayerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.player.client.ClientPlayerData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -35,7 +36,7 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
 
     @Override
     public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l) {
-        PlayerData data = ClientData.getPlayerState(livingEntity);
+        ClientPlayerData data = ClientData.getPlayerState(livingEntity);
 
         if (!data.isPersonaRevealed() || data.findPersona().isEmpty()) return;
         AbstractPersona persona = data.findPersona().get();

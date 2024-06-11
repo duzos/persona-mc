@@ -5,9 +5,9 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.data.PlayerData;
-import mc.duzo.persona.data.ServerData;
-import mc.duzo.persona.network.PersonaMessages;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -28,10 +28,8 @@ public final class SetSPCommand {
 
         if (player == null) return 0;
 
-        PlayerData playerData = ServerData.getPlayerState(player);
+        ServerPlayerData playerData = ServerData.getPlayerState(player);
         playerData.setSP(PlayerData.MAX_SP);
-        ServerData.getServerState(context.getSource().getServer()).markDirty();
-        PersonaMessages.syncData(player, player);
 
         return Command.SINGLE_SUCCESS;
     }

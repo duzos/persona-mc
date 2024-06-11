@@ -2,8 +2,8 @@ package mc.duzo.persona.common.entity.door;
 
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.Register;
-import mc.duzo.persona.data.PlayerData;
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.global.server.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import mc.duzo.persona.util.VelvetUtil;
@@ -15,7 +15,6 @@ import net.minecraft.entity.VariantHolder;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,7 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class VelvetDoorEntity extends Entity implements VariantHolder<VelvetDoorVariant> {
     private static final double REQUIRED_DISTANCE = 0.25f;

@@ -1,8 +1,8 @@
-package mc.duzo.persona.data;
+package mc.duzo.persona.data.global.server;
 
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
 import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class ServerData extends PersistentState {
     public boolean hasVelvetRoom;
-    private HashMap<UUID, PlayerData> players = new HashMap<>();
+    private HashMap<UUID, ServerPlayerData> players = new HashMap<>();
     private HashMap<UUID, ServerBattleData> battles = new HashMap<>();
 
     @Override
@@ -32,7 +32,7 @@ public class ServerData extends PersistentState {
         NbtCompound playersNbt = new NbtCompound();
 
         players.forEach(((uuid, playerData) -> {
-            playersNbt.put(uuid.toString(), playerData.toNbt());
+            playersNbt.put(uuid.toString(), playerData.serialize());
         }));
 
         nbt.put("players", playersNbt);
@@ -53,7 +53,7 @@ public class ServerData extends PersistentState {
         NbtCompound playersNbt = nbt.getCompound("players");
 
         playersNbt.getKeys().forEach(key -> {
-            PlayerData playerData = PlayerData.createFromNbt(playersNbt.getCompound(key));
+            ServerPlayerData playerData = new ServerPlayerData(playersNbt.getCompound(key));
 
             UUID uuid = UUID.fromString(key);
             data.players.put(uuid, playerData);
@@ -82,11 +82,16 @@ public class ServerData extends PersistentState {
 
         return state;
     }
+    public static ServerData getServerState() {
+        MinecraftServer server = PersonaMod.getServer().orElseThrow();
 
-    public static PlayerData getPlayerState(LivingEntity player) {
+        return getServerState(server);
+    }
+
+    public static ServerPlayerData getPlayerState(LivingEntity player) {
         ServerData serverData = getServerState(player.getWorld().getServer());
 
-        PlayerData playerData = serverData.players.computeIfAbsent(player.getUuid(), uuid -> new PlayerData());
+        ServerPlayerData playerData = serverData.players.computeIfAbsent(player.getUuid(), ServerPlayerData::new);
 
         return playerData;
     }

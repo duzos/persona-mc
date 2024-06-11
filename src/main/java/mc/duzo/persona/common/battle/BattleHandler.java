@@ -6,7 +6,7 @@ import mc.duzo.persona.common.battle.data.BattleData;
 import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.skill.Skill;
 import mc.duzo.persona.common.skill.SkillRegistry;
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.global.server.ServerData;
 import mc.duzo.persona.util.AbsoluteBlockPos;
 import mc.duzo.persona.util.WorldUtil;
 import net.minecraft.entity.LivingEntity;

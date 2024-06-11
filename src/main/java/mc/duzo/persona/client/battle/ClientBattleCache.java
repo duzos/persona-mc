@@ -1,9 +1,8 @@
 package mc.duzo.persona.client.battle;
 
 import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.client.PersonaModClient;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
-import mc.duzo.persona.client.data.ClientData;
+import mc.duzo.persona.data.global.client.ClientData;
 import mc.duzo.persona.common.battle.BattleHandler;
 import mc.duzo.persona.util.DeltaTimeManager;
 import net.minecraft.client.MinecraftClient;

@@ -5,11 +5,12 @@ import mc.duzo.persona.Register;
 import mc.duzo.persona.common.PersonaDimensions;
 import mc.duzo.persona.common.PersonaSounds;
 import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
-import mc.duzo.persona.data.ServerData;
+import mc.duzo.persona.data.global.server.ServerData;
 import mc.duzo.persona.network.PersonaMessages;
 import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -40,9 +41,10 @@ public class VelvetUtil {
     }
 
     public static ServerWorld getVelvetDimension() {
-        if (!PersonaMod.hasServer()) return null;
+        MinecraftServer server = PersonaMod.getServer().orElse(null);
+        if (server == null) return null;
 
-        return PersonaMod.SERVER.getWorld(PersonaDimensions.VELVET_DIM_WORLD);
+        return server.getWorld(PersonaDimensions.VELVET_DIM_WORLD);
     }
 
     public static void sendToRoom(LivingEntity entity) {
@@ -65,18 +67,20 @@ public class VelvetUtil {
     }
 
     public static boolean hasVelvetRoom() {
-        if (!PersonaMod.hasServer()) return false;
+        MinecraftServer server = PersonaMod.getServer().orElse(null);
+        if (server == null) return false;
 
-        return ServerData.getServerState(PersonaMod.SERVER).hasVelvetRoom;
+        return ServerData.getServerState(server).hasVelvetRoom;
     }
 
     private static Identifier getRoomStructureLocation() {
         return new Identifier(PersonaMod.MOD_ID, "velvet_room");
     }
     private static Optional<StructureTemplate> findRoomStructure() {
-        if (!PersonaMod.hasServer()) return Optional.empty();
+        MinecraftServer server = PersonaMod.getServer().orElse(null);
+        if (server == null) return Optional.empty();
 
-        return PersonaMod.SERVER.getStructureTemplateManager().getTemplate(getRoomStructureLocation());
+        return server.getStructureTemplateManager().getTemplate(getRoomStructureLocation());
     }
 
     /**
@@ -96,7 +100,13 @@ public class VelvetUtil {
 
         StructureTemplate template = found.get();
 
-        ServerWorld dimension = PersonaMod.SERVER.getWorld(PersonaDimensions.VELVET_DIM_WORLD);
+        MinecraftServer server = PersonaMod.getServer().orElse(null);
+        if (server == null) {
+            PersonaMod.LOGGER.error("Failed to place - Server not found");
+            return;
+        }
+
+        ServerWorld dimension = server.getWorld(PersonaDimensions.VELVET_DIM_WORLD);
 
         if (dimension == null) {
             PersonaMod.LOGGER.error("Velvet Room dimension does not exist - Failed to place");
@@ -115,7 +125,7 @@ public class VelvetUtil {
                 Block.NO_REDRAW
         );
 
-        ServerData data = ServerData.getServerState(PersonaMod.SERVER);
+        ServerData data = ServerData.getServerState();
         data.hasVelvetRoom = true;
         data.markDirty();
 
