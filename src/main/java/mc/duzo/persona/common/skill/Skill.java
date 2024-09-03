@@ -1,17 +1,9 @@
 package mc.duzo.persona.common.skill;
 
-import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.persona.affinities.Affinity;
-import mc.duzo.persona.common.battle.BattleHandler;
-import mc.duzo.persona.common.battle.data.ServerBattleData;
-import mc.duzo.persona.common.battle.turn.BattleTurn;
-import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.data.global.server.ServerData;
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.player.server.ServerPlayerData;
-import mc.duzo.persona.datagen.provider.lang.Translatable;
-import mc.duzo.persona.network.PersonaMessages;
-import mc.duzo.persona.util.Identifiable;
+import java.util.Optional;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,9 +11,17 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
+import mc.duzo.persona.common.persona.AbstractPersona;
+import mc.duzo.persona.common.persona.affinities.Affinity;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
+import mc.duzo.persona.datagen.provider.lang.Translatable;
+import mc.duzo.persona.util.Identifiable;
 
 public abstract class Skill implements Identifiable, Translatable {
     private final Identifier id;

@@ -1,11 +1,13 @@
 package mc.duzo.persona.datagen.provider;
 
-import mc.duzo.persona.datagen.provider.sound.CustomSoundBuilder;
-import mc.duzo.persona.datagen.provider.sound.CustomSoundProvider;
+import java.util.HashMap;
+
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+
 import net.minecraft.sound.SoundEvent;
 
-import java.util.HashMap;
+import mc.duzo.persona.datagen.provider.sound.CustomSoundBuilder;
+import mc.duzo.persona.datagen.provider.sound.CustomSoundProvider;
 
 public class PersonaSoundProvider extends CustomSoundProvider {
     private final FabricDataOutput dataGenerator;

@@ -1,7 +1,7 @@
 package mc.duzo.persona.util;
 
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.global.server.ServerData;
+import java.util.Optional;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -10,7 +10,8 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Optional;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
 
 public class TargetingUtil {
     private static final double MAX_DISTANCE_FROM_TARGET = 32;

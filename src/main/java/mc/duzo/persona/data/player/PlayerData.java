@@ -1,26 +1,22 @@
 package mc.duzo.persona.data.player;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.world.World;
+
 import mc.duzo.persona.common.persona.AbstractPersona;
 import mc.duzo.persona.common.persona.Persona;
 import mc.duzo.persona.common.persona.PersonaUser;
 import mc.duzo.persona.data.global.server.ServerData;
 import mc.duzo.persona.data.player.server.ServerPlayerData;
-import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.AbsoluteBlockPos;
-import mc.duzo.persona.util.DataHelper;
-import mc.duzo.persona.util.DeltaTimeManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Player specific nbt data which will be stored in {@link ServerData}
@@ -133,8 +129,7 @@ public abstract class PlayerData implements PersonaUser {
     /**
      * @return the position of the velvet door that the player entered the room from. Can be null.
      */
-    @Nullable
-    public AbsoluteBlockPos.Directed getVelvetDoorPos() {
+    @Nullable public AbsoluteBlockPos.Directed getVelvetDoorPos() {
         return this.velvetDoorPos;
     }
 

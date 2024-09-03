@@ -1,16 +1,17 @@
 package mc.duzo.persona.datagen.provider.sound;
 
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.sound.SoundEvent;
-
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.concurrent.CompletableFuture;
 
 public abstract class CustomSoundProvider implements DataProvider {
     protected final FabricDataOutput dataOutput;

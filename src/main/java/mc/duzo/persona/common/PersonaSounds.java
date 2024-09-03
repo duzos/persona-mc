@@ -1,10 +1,11 @@
 package mc.duzo.persona.common;
 
-import mc.duzo.persona.PersonaMod;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+
+import mc.duzo.persona.PersonaMod;
 
 public class PersonaSounds {
     public static final SoundEvent WELCOME_VELVET = register("welcome_velvet");

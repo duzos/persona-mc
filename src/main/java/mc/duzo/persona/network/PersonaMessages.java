@@ -1,23 +1,25 @@
 package mc.duzo.persona.network;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.battle.data.ServerBattleData;
-import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.global.server.ServerData;
-import mc.duzo.persona.data.player.server.ServerPlayerData;
-import mc.duzo.persona.util.PersonaUtil;
-import mc.duzo.persona.util.TargetingUtil;
+import java.util.Optional;
+import java.util.UUID;
+
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-import java.util.Optional;
-import java.util.UUID;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.persona.AbstractPersona;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
+import mc.duzo.persona.util.PersonaUtil;
+import mc.duzo.persona.util.TargetingUtil;
 
 public class PersonaMessages {
     // Data

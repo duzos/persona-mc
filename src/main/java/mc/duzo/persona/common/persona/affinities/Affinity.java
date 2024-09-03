@@ -1,8 +1,9 @@
 package mc.duzo.persona.common.persona.affinities;
 
+import net.minecraft.util.Identifier;
+
 import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.util.Identifiable;
-import net.minecraft.util.Identifier;
 
 public enum Affinity implements Identifiable {
     PHYS("phys"),

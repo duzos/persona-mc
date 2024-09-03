@@ -1,52 +1,53 @@
 package mc.duzo.persona.client.render.model.persona;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.persona.PersonaRegistry;
-import net.minecraft.util.Identifier;
-
 import java.util.HashMap;
 
+import net.minecraft.util.Identifier;
+
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.persona.PersonaRegistry;
+
 public class PersonaModelRegistry {
-	// static registry stuff
-	private static final HashMap<Identifier, PersonaModel> models = new HashMap<>();
+    // static registry stuff
+    private static final HashMap<Identifier, PersonaModel> models = new HashMap<>();
 
-	public static PersonaModel get(Identifier variant) {
-		getInstance();
+    public static PersonaModel get(Identifier variant) {
+        getInstance();
 
-		if (!models.containsKey(variant) && PersonaRegistry.get(variant) != null) {
-			PersonaMod.LOGGER.info("Registering generic skin model for " + variant); // Risky ?
-			register(variant, new PersonaSkinModel(PersonaRegistry.get(variant)));
-		}
+        if (!models.containsKey(variant) && PersonaRegistry.get(variant) != null) {
+            PersonaMod.LOGGER.info("Registering generic skin model for " + variant); // Risky ?
+            register(variant, new PersonaSkinModel(PersonaRegistry.get(variant)));
+        }
 
-		return models.get(variant);
-	}
+        return models.get(variant);
+    }
 
-	public static PersonaModel register(Identifier variant, PersonaModel model) {
-		models.put(variant, model);
-		return model;
-	}
-
-
-	// initialising and adding our default stuff
+    public static PersonaModel register(Identifier variant, PersonaModel model) {
+        models.put(variant, model);
+        return model;
+    }
 
 
-	public PersonaModelRegistry() {
-		this.init();
-	}
+    // initialising and adding our default stuff
 
-	private void init() {
-		register(PersonaRegistry.ARSENE.id(), new ArseneModel(ArseneModel.getTexturedModelData().createModel()));
-		register(PersonaRegistry.ORPHEUS.id(), new OrpheusModel(OrpheusModel.getTexturedModelData().createModel()));
-	}
 
-	// for obtaining our models statically
-	// idk why i did it this way, i might change it later so this entire class is static.
+    public PersonaModelRegistry() {
+        this.init();
+    }
 
-	private static PersonaModelRegistry INSTANCE;
+    private void init() {
+        register(PersonaRegistry.ARSENE.id(), new ArseneModel(ArseneModel.getTexturedModelData().createModel()));
+        register(PersonaRegistry.ORPHEUS.id(), new OrpheusModel(OrpheusModel.getTexturedModelData().createModel()));
+    }
 
-	public static PersonaModelRegistry getInstance() {
-		if (INSTANCE == null) INSTANCE = new PersonaModelRegistry();
+    // for obtaining our models statically
+    // idk why i did it this way, i might change it later so this entire class is static.
 
-		return INSTANCE;
-	}
+    private static PersonaModelRegistry INSTANCE;
+
+    public static PersonaModelRegistry getInstance() {
+        if (INSTANCE == null) INSTANCE = new PersonaModelRegistry();
+
+        return INSTANCE;
+    }
 }

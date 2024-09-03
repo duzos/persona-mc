@@ -1,13 +1,9 @@
 package mc.duzo.persona.common.skill;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.persona.affinities.Affinity;
-import mc.duzo.persona.common.battle.BattleHandler;
-import mc.duzo.persona.common.battle.data.ServerBattleData;
-import mc.duzo.persona.util.PersonaUtil;
-import mc.duzo.persona.util.WorldUtil;
+import java.util.Optional;
+
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -24,7 +20,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Optional;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.persona.affinities.Affinity;
+import mc.duzo.persona.util.PersonaUtil;
+import mc.duzo.persona.util.WorldUtil;
 
 public class SkillRegistry {
     public static final SimpleRegistry<Skill> REGISTRY = FabricRegistryBuilder.createSimple(RegistryKey.<Skill>ofRegistry(new Identifier(PersonaMod.MOD_ID, "skill"))).buildAndRegister();

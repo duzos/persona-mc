@@ -1,12 +1,11 @@
 package mc.duzo.persona.client.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.client.battle.ClientBattleCache;
-import mc.duzo.persona.data.global.client.ClientData;
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.player.client.ClientPlayerData;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -20,9 +19,11 @@ import net.minecraft.util.Colors;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
+
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.data.global.client.ClientData;
+import mc.duzo.persona.data.player.client.ClientPlayerData;
 
 public class SPHudOverlay implements HudRenderCallback {
 

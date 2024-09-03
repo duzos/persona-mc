@@ -1,11 +1,12 @@
 package mc.duzo.persona.common.persona;
 
-import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.persona.arcana.Arcana;
-import mc.duzo.persona.common.skill.SkillSet;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.persona.arcana.Arcana;
+import mc.duzo.persona.common.skill.SkillSet;
 
 public class Persona extends AbstractPersona {
     private final Identifier texture;

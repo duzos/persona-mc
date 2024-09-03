@@ -1,14 +1,10 @@
 package mc.duzo.persona.client.feature;
 
-import mc.duzo.persona.data.global.client.ClientData;
-import mc.duzo.persona.client.render.model.persona.PersonaModel;
-import mc.duzo.persona.client.render.model.persona.PersonaModelRegistry;
-import mc.duzo.persona.client.render.model.persona.PersonaSkinModel;
-import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.player.client.ClientPlayerData;
+import java.util.Objects;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
@@ -18,7 +14,12 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 
-import java.util.Objects;
+import mc.duzo.persona.client.render.model.persona.PersonaModel;
+import mc.duzo.persona.client.render.model.persona.PersonaModelRegistry;
+import mc.duzo.persona.client.render.model.persona.PersonaSkinModel;
+import mc.duzo.persona.common.persona.AbstractPersona;
+import mc.duzo.persona.data.global.client.ClientData;
+import mc.duzo.persona.data.player.client.ClientPlayerData;
 
 @Environment(value= EnvType.CLIENT)
 public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityModel<T>>
@@ -85,4 +86,3 @@ public class PersonaFeatureRenderer<T extends LivingEntity, M extends EntityMode
         matrixStack.pop();
     }
 }
-

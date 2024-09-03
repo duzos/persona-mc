@@ -1,10 +1,11 @@
 package mc.duzo.persona.client.render.animation.player;
 
+import mc.duzo.animation.player.PlayerAnimationHelper;
+
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.animation.AnimationHelper;
 import net.minecraft.client.render.entity.animation.Keyframe;
 import net.minecraft.client.render.entity.animation.Transformation;
-import mc.duzo.animation.player.PlayerAnimationHelper;
 
 public class PersonaPlayerAnimations {
 

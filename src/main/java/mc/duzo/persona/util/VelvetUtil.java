@@ -1,12 +1,7 @@
 package mc.duzo.persona.util;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.Register;
-import mc.duzo.persona.common.PersonaDimensions;
-import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
-import mc.duzo.persona.data.global.server.ServerData;
-import mc.duzo.persona.network.PersonaMessages;
+import java.util.Optional;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -22,7 +17,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.Optional;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.Register;
+import mc.duzo.persona.common.PersonaDimensions;
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.network.PersonaMessages;
 
 /**
  * Welcome to the Velvet Room.

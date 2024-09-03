@@ -1,16 +1,11 @@
 package mc.duzo.persona.util;
 
-import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.persona.affinities.Affinity;
-import mc.duzo.persona.common.battle.BattleHandler;
-import mc.duzo.persona.common.battle.data.ServerBattleData;
-import mc.duzo.persona.common.battle.turn.BattleTurn;
-import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.common.skill.Skill;
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.global.server.ServerData;
-import mc.duzo.persona.network.PersonaMessages;
+import java.util.List;
+import java.util.Optional;
+
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import org.joml.Math;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleEffect;
@@ -19,10 +14,17 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Math;
 
-import java.util.List;
-import java.util.Optional;
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
+import mc.duzo.persona.common.persona.AbstractPersona;
+import mc.duzo.persona.common.persona.affinities.Affinity;
+import mc.duzo.persona.common.skill.Skill;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.network.PersonaMessages;
 
 public class PersonaUtil {
     public static void useSkill(ServerPlayerEntity player) {

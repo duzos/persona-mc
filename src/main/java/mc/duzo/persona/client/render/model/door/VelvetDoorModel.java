@@ -1,11 +1,12 @@
 package mc.duzo.persona.client.render.model.door;
 
-import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
-import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+
+import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
+import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
 
 public abstract class VelvetDoorModel extends SinglePartEntityModel<VelvetDoorEntity> {
     public abstract VelvetDoorVariant getVariant();

@@ -1,13 +1,15 @@
 package mc.duzo.persona.mixin.client;
 
-import mc.duzo.persona.util.VelvetUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sound.MusicTracker;
-import net.minecraft.sound.MusicSound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.sound.MusicTracker;
+import net.minecraft.sound.MusicSound;
+
+import mc.duzo.persona.util.VelvetUtil;
 
 @Mixin(MusicTracker.class)
 public class MusicMixin {

@@ -1,14 +1,10 @@
 package mc.duzo.persona.client.network;
 
-import mc.duzo.persona.client.PersonaModClient;
-import mc.duzo.persona.client.battle.ClientBattleCache;
-import mc.duzo.persona.client.battle.data.ClientBattleData;
-import mc.duzo.persona.client.sound.MusicSound;
-import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.data.global.client.ClientData;
-import mc.duzo.persona.network.PersonaMessages;
+import java.util.UUID;
+
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
@@ -16,7 +12,13 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundCategory;
 
-import java.util.UUID;
+import mc.duzo.persona.client.PersonaModClient;
+import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.battle.data.ClientBattleData;
+import mc.duzo.persona.client.sound.MusicSound;
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.data.global.client.ClientData;
+import mc.duzo.persona.network.PersonaMessages;
 
 public class PersonaClientMessages {
     public static void initialise() {

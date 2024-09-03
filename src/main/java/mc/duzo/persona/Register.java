@@ -1,13 +1,10 @@
 package mc.duzo.persona;
 
-import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
-import mc.duzo.persona.common.item.EvokerItem;
-import mc.duzo.persona.common.item.MaskItem;
-import mc.duzo.persona.common.item.TarotCardItem;
-import mc.duzo.persona.common.item.WearableItem;
-import mc.duzo.persona.common.persona.arcana.Arcana;
+import java.util.HashMap;
+
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -18,10 +15,11 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
+import mc.duzo.persona.common.item.EvokerItem;
+import mc.duzo.persona.common.item.MaskItem;
+import mc.duzo.persona.common.item.TarotCardItem;
+import mc.duzo.persona.common.persona.arcana.Arcana;
 
 /**
  * This is where all things are registered

@@ -1,8 +1,8 @@
 package mc.duzo.persona.client.render.model.door;
 
-import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
-
 import java.util.HashMap;
+
+import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
 
 public class VelvetDoorRegistry {
     // static registry stuff

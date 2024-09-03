@@ -1,104 +1,105 @@
 package mc.duzo.persona.common.battle.turn;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.battle.data.BattleData;
+import java.util.List;
+import java.util.UUID;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 
-import java.util.List;
-import java.util.UUID;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.data.BattleData;
 
 public abstract class BattleTurn {
-	protected UUID current; // The uuid of the current entity whos turn it is
-	private BattleData data;
+    protected UUID current; // The uuid of the current entity whos turn it is
+    private BattleData data;
 
-	protected BattleTurn(BattleData data, UUID current) {
-		this.data = data;
-		this.current = current;
-	}
-	protected BattleTurn(BattleData data) {
-		this(data, null);
-	}
+    protected BattleTurn(BattleData data, UUID current) {
+        this.data = data;
+        this.current = current;
+    }
+    protected BattleTurn(BattleData data) {
+        this(data, null);
+    }
 
-	public abstract LivingEntity getCurrent();
-	public BattleData getData() { return this.data; }
+    public abstract LivingEntity getCurrent();
+    public BattleData getData() { return this.data; }
 
-	protected boolean isCurrent(UUID id) { return id.equals(this.current); }
-	public boolean isCurrent(LivingEntity entity) { return this.isCurrent(entity.getUuid()); }
+    protected boolean isCurrent(UUID id) { return id.equals(this.current); }
+    public boolean isCurrent(LivingEntity entity) { return this.isCurrent(entity.getUuid()); }
 
-	public void next() {
-		int position = 0;
+    public void next() {
+        int position = 0;
 
-		List<? extends LivingEntity> targets = this.getData().getTargets();
-		List<? extends PlayerEntity> players = this.getData().getPlayers();
+        List<? extends LivingEntity> targets = this.getData().getTargets();
+        List<? extends PlayerEntity> players = this.getData().getPlayers();
 
-		if (this.getData().hasTarget(this.current)) {
-			// Select next target or select first player
-			LivingEntity currentTarget = null;
+        if (this.getData().hasTarget(this.current)) {
+            // Select next target or select first player
+            LivingEntity currentTarget = null;
 
-			for (LivingEntity entity : targets) {
-				if (entity.getUuid().equals(this.current)) {
-					currentTarget = entity;
-					break;
-				}
-			}
+            for (LivingEntity entity : targets) {
+                if (entity.getUuid().equals(this.current)) {
+                    currentTarget = entity;
+                    break;
+                }
+            }
 
-			position = targets.indexOf(currentTarget);
-			if (position + 1 < targets.size()) {
-				this.current = targets.get(position + 1).getUuid();
-				return;
-			}
+            position = targets.indexOf(currentTarget);
+            if (position + 1 < targets.size()) {
+                this.current = targets.get(position + 1).getUuid();
+                return;
+            }
 
-			if (!players.isEmpty()) {
-				this.current = ((PlayerEntity) players.toArray()[0]).getUuid();
-				return;
-			}
-		}
+            if (!players.isEmpty()) {
+                this.current = ((PlayerEntity) players.toArray()[0]).getUuid();
+                return;
+            }
+        }
 
-		if (this.getData().hasPlayer(this.current)) {
-			// Select next player or select first target
-			PlayerEntity currentPlayer = null;
+        if (this.getData().hasPlayer(this.current)) {
+            // Select next player or select first target
+            PlayerEntity currentPlayer = null;
 
-			for (PlayerEntity entity : players) {
-				if (entity.getUuid().equals(this.current)) {
-					currentPlayer = entity;
-					break;
-				}
-			}
+            for (PlayerEntity entity : players) {
+                if (entity.getUuid().equals(this.current)) {
+                    currentPlayer = entity;
+                    break;
+                }
+            }
 
-			position = players.indexOf(currentPlayer);
-			if (position + 1 < players.size()) {
-				this.current = players.get(position + 1).getUuid();
-				return;
-			}
+            position = players.indexOf(currentPlayer);
+            if (position + 1 < players.size()) {
+                this.current = players.get(position + 1).getUuid();
+                return;
+            }
 
-			if (!targets.isEmpty()) {
-				this.current = ((LivingEntity) targets.toArray()[0]).getUuid();
-				return;
-			}
-		}
+            if (!targets.isEmpty()) {
+                this.current = ((LivingEntity) targets.toArray()[0]).getUuid();
+                return;
+            }
+        }
 
-		PersonaMod.LOGGER.error("Could not find next entity in turn!");
+        PersonaMod.LOGGER.error("Could not find next entity in turn!");
 
-		if (!players.isEmpty())
-			this.current = ((LivingEntity) players.toArray()[0]).getUuid();
-		// Throw exception?
-	}
+        if (!players.isEmpty())
+            this.current = ((LivingEntity) players.toArray()[0]).getUuid();
+        // Throw exception?
+    }
 
-	public NbtCompound toNbt() {
-		NbtCompound nbt = new NbtCompound();
+    public NbtCompound toNbt() {
+        NbtCompound nbt = new NbtCompound();
 
-		if (this.current != null)
-			nbt.putUuid("Current", this.current);
+        if (this.current != null)
+            nbt.putUuid("Current", this.current);
 
-		return nbt;
-	}
+        return nbt;
+    }
 
-	public BattleTurn loadNbt(NbtCompound nbt) {
-		if (nbt.contains("Current"))
-			this.current = nbt.getUuid("Current");
+    public BattleTurn loadNbt(NbtCompound nbt) {
+        if (nbt.contains("Current"))
+            this.current = nbt.getUuid("Current");
 
-		return this;
-	}
+        return this;
+    }
 }

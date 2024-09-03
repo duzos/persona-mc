@@ -1,15 +1,14 @@
 package mc.duzo.persona.client.sound;
 
-import mc.duzo.persona.PersonaMod;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A manager for playing sounds on the client

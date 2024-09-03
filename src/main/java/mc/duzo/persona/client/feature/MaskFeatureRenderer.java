@@ -2,13 +2,9 @@ package mc.duzo.persona.client.feature;
 
 import mc.duzo.animation.player.PlayerAnimationHelper;
 import mc.duzo.animation.player.PlayerAnimationTracker;
-import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
-import mc.duzo.persona.common.item.MaskItem;
-import mc.duzo.persona.data.global.client.ClientData;
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.player.client.ClientPlayerData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -23,6 +19,11 @@ import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+
+import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
+import mc.duzo.persona.common.item.MaskItem;
+import mc.duzo.persona.data.global.client.ClientData;
+import mc.duzo.persona.data.player.client.ClientPlayerData;
 
 /**
  * A slightly transparent mask on the players face which shows if they have a persona and its hidden
@@ -76,4 +77,3 @@ public class MaskFeatureRenderer<T extends LivingEntity, M extends EntityModel<T
         return PlayerAnimationHelper.isRunningAnimations(player) && PlayerAnimationTracker.getInstance().get(player) instanceof PlayerAwakeningAnimation;
     }
 }
-

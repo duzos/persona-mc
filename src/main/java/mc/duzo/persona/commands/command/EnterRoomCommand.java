@@ -1,14 +1,16 @@
 package mc.duzo.persona.commands.command;
 
+import static net.minecraft.server.command.CommandManager.literal;
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.util.VelvetUtil;
+
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import static net.minecraft.server.command.CommandManager.literal;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.util.VelvetUtil;
 
 public final class EnterRoomCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {

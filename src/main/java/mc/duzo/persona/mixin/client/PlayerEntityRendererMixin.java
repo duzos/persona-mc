@@ -1,9 +1,10 @@
 package mc.duzo.persona.mixin.client;
 
-import mc.duzo.persona.client.feature.MaskFeatureRenderer;
-import mc.duzo.persona.client.feature.PersonaFeatureRenderer;
-import mc.duzo.persona.util.VelvetUtil;
-import net.fabricmc.loader.api.metadata.Person;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -12,10 +13,10 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import mc.duzo.persona.client.feature.MaskFeatureRenderer;
+import mc.duzo.persona.client.feature.PersonaFeatureRenderer;
+import mc.duzo.persona.util.VelvetUtil;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {

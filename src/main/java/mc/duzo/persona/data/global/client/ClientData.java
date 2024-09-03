@@ -1,26 +1,22 @@
 package mc.duzo.persona.data.global.client;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.client.battle.ClientBattleCache;
-import mc.duzo.persona.client.battle.ClientBattleHandler;
-import mc.duzo.persona.client.battle.data.ClientBattleData;
-import mc.duzo.animation.player.PlayerAnimationHelper;
-import mc.duzo.animation.player.PlayerAnimationTracker;
-import mc.duzo.persona.client.render.animation.player.PersonaPlayerAnimations;
-import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
-import mc.duzo.persona.common.item.MaskItem;
-import mc.duzo.persona.common.persona.AbstractPersona;
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.global.server.ServerData;
-import mc.duzo.persona.data.player.client.ClientPlayerData;
+import java.util.*;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.battle.data.ClientBattleData;
+import mc.duzo.persona.common.persona.AbstractPersona;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.player.client.ClientPlayerData;
 
 /**
  * The clients version of {@link ServerData}

@@ -1,22 +1,22 @@
 package mc.duzo.persona.common.battle.ai;
 
-import mc.duzo.persona.common.battle.turn.BattleTurn;
-import mc.duzo.persona.common.battle.turn.ServerBattleTurn;
-import mc.duzo.persona.util.PersonaUtil;
 import net.minecraft.entity.LivingEntity;
 
+import mc.duzo.persona.common.battle.turn.ServerBattleTurn;
+import mc.duzo.persona.util.PersonaUtil;
+
 public class BattleAI {
-	// TODO
+    // TODO
 
-	public static void performTurn(ServerBattleTurn turn) {
-		// TEMPORARY
-		LivingEntity current = turn.getCurrent();
+    public static void performTurn(ServerBattleTurn turn) {
+        // TEMPORARY
+        LivingEntity current = turn.getCurrent();
 
-		if (current == null || !current.isAlive()) {
-			turn.next();
-			return;
-		}
+        if (current == null || !current.isAlive()) {
+            turn.next();
+            return;
+        }
 
-		PersonaUtil.useSkill(current);
-	}
+        PersonaUtil.useSkill(current);
+    }
 }

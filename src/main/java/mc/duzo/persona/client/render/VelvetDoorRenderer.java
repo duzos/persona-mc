@@ -1,9 +1,7 @@
 package mc.duzo.persona.client.render;
 
-import mc.duzo.persona.client.render.model.door.VelvetDoorModel;
-import mc.duzo.persona.client.render.model.door.VelvetDoorRegistry;
-import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
-import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
+import java.util.Optional;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -13,7 +11,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 
-import java.util.Optional;
+import mc.duzo.persona.client.render.model.door.VelvetDoorModel;
+import mc.duzo.persona.client.render.model.door.VelvetDoorRegistry;
+import mc.duzo.persona.common.entity.door.VelvetDoorEntity;
+import mc.duzo.persona.common.entity.door.VelvetDoorVariant;
 
 public class VelvetDoorRenderer extends EntityRenderer<VelvetDoorEntity> {
 

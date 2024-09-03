@@ -1,17 +1,19 @@
 package mc.duzo.persona.common.persona;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.PersonaSounds;
-import mc.duzo.persona.common.persona.arcana.Arcana;
-import mc.duzo.persona.common.skill.SkillRegistry;
-import mc.duzo.persona.common.skill.SkillSet;
+import java.util.List;
+
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.persona.arcana.Arcana;
+import mc.duzo.persona.common.skill.SkillRegistry;
+import mc.duzo.persona.common.skill.SkillSet;
 
 public class PersonaRegistry {
     public static final SimpleRegistry<AbstractPersona> REGISTRY = FabricRegistryBuilder.createSimple(RegistryKey.<AbstractPersona>ofRegistry(new Identifier(PersonaMod.MOD_ID, "persona"))).buildAndRegister();

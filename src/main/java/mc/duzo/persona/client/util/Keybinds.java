@@ -1,13 +1,15 @@
 package mc.duzo.persona.client.util;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.client.network.PersonaClientMessages;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import org.lwjgl.glfw.GLFW;
+
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.client.network.PersonaClientMessages;
 
 public class Keybinds {
     private static KeyBinding targetingKey;

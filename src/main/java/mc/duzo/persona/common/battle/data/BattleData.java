@@ -1,118 +1,117 @@
 package mc.duzo.persona.common.battle.data;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.battle.turn.BattleTurn;
-import mc.duzo.persona.util.AbsoluteBlockPos;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.turn.BattleTurn;
+
 public abstract class BattleData {
-	protected final UUID uuid;
-	protected final List<UUID> players;
-	protected final List<UUID> targets;
+    protected final UUID uuid;
+    protected final List<UUID> players;
+    protected final List<UUID> targets;
 
-	protected BattleData(UUID uuid) {
-		this.uuid = uuid;
+    protected BattleData(UUID uuid) {
+        this.uuid = uuid;
 
-		this.players = new ArrayList<>();
-		this.targets = new ArrayList<>();
-	}
-	protected BattleData(NbtCompound data) {
-		this(data.getUuid("Uuid"));
+        this.players = new ArrayList<>();
+        this.targets = new ArrayList<>();
+    }
+    protected BattleData(NbtCompound data) {
+        this(data.getUuid("Uuid"));
 
-		this.loadNbt(data);
-	}
-	protected BattleData() {
-		this(UUID.randomUUID());
-	}
-	public UUID getUuid() { return this.uuid; }
-
-
-	public abstract List<? extends PlayerEntity> getPlayers();
-	public abstract List<? extends LivingEntity> getTargets();
-	protected void addTarget(UUID id) {
-		if (this.targets.contains(id)) return;
-		if (this.players.contains(id)) return;
-
-		this.targets.add(id);
-	}
-	public void addTarget(LivingEntity entity) {
-		this.addTarget(entity.getUuid());
-	}
-	public boolean hasTarget(UUID id) {
-		return this.targets.contains(id);
-	}
-	public boolean hasTarget(LivingEntity entity) {
-		return this.hasTarget(entity.getUuid());
-	}
-
-	protected void addPlayer(UUID id) {
-		if (this.targets.contains(id)) return;
-		if (this.players.contains(id)) return;
-
-		this.players.add(id);
-	}
-	public void addPlayer(PlayerEntity entity) {
-		this.addPlayer(entity.getUuid());
-	}
-	public boolean hasPlayer(UUID id) {
-		return this.players.contains(id);
-	}
-	public boolean hasPlayer(PlayerEntity player) {
-		return this.hasPlayer(player.getUuid());
-	}
+        this.loadNbt(data);
+    }
+    protected BattleData() {
+        this(UUID.randomUUID());
+    }
+    public UUID getUuid() { return this.uuid; }
 
 
-	public abstract BattleTurn getTurn();
+    public abstract List<? extends PlayerEntity> getPlayers();
+    public abstract List<? extends LivingEntity> getTargets();
+    protected void addTarget(UUID id) {
+        if (this.targets.contains(id)) return;
+        if (this.players.contains(id)) return;
 
-	public NbtCompound toNbt() {
-		NbtCompound nbt = new NbtCompound();
+        this.targets.add(id);
+    }
+    public void addTarget(LivingEntity entity) {
+        this.addTarget(entity.getUuid());
+    }
+    public boolean hasTarget(UUID id) {
+        return this.targets.contains(id);
+    }
+    public boolean hasTarget(LivingEntity entity) {
+        return this.hasTarget(entity.getUuid());
+    }
 
-		nbt.putUuid("Uuid", this.uuid);
+    protected void addPlayer(UUID id) {
+        if (this.targets.contains(id)) return;
+        if (this.players.contains(id)) return;
 
-		NbtCompound playersNbt = new NbtCompound();
-		for (UUID player : this.players) {
-			playersNbt.putUuid(player.toString(), player);
-		}
-		nbt.put("Players", playersNbt);
+        this.players.add(id);
+    }
+    public void addPlayer(PlayerEntity entity) {
+        this.addPlayer(entity.getUuid());
+    }
+    public boolean hasPlayer(UUID id) {
+        return this.players.contains(id);
+    }
+    public boolean hasPlayer(PlayerEntity player) {
+        return this.hasPlayer(player.getUuid());
+    }
 
-		NbtCompound targetsNbt = new NbtCompound();
-		for (UUID target : this.targets) {
-			targetsNbt.putUuid(target.toString(), target);
-		}
-		nbt.put("Targets", targetsNbt);
 
-		nbt.put("Turn", this.getTurn().toNbt());
+    public abstract BattleTurn getTurn();
 
-		return nbt;
-	}
+    public NbtCompound toNbt() {
+        NbtCompound nbt = new NbtCompound();
 
-	public BattleData loadNbt(NbtCompound nbt) {
-		this.players.clear();
-		this.targets.clear();
+        nbt.putUuid("Uuid", this.uuid);
 
-		if (!this.getUuid().equals(nbt.getUuid("Uuid"))) {
-			PersonaMod.LOGGER.warn("Loading a battle data with a different UUID than the original!");
-		}
+        NbtCompound playersNbt = new NbtCompound();
+        for (UUID player : this.players) {
+            playersNbt.putUuid(player.toString(), player);
+        }
+        nbt.put("Players", playersNbt);
 
-		NbtCompound playersNbt = nbt.getCompound("Players");
-		playersNbt.getKeys().forEach(key -> {
-			UUID uuid = UUID.fromString(key);
-			this.players.add(uuid);
-		});
+        NbtCompound targetsNbt = new NbtCompound();
+        for (UUID target : this.targets) {
+            targetsNbt.putUuid(target.toString(), target);
+        }
+        nbt.put("Targets", targetsNbt);
 
-		NbtCompound targetsNbt = nbt.getCompound("Targets");
-		targetsNbt.getKeys().forEach(key -> {
-			UUID uuid = UUID.fromString(key);
-			this.targets.add(uuid);
-		});
+        nbt.put("Turn", this.getTurn().toNbt());
 
-		return this;
-	}
+        return nbt;
+    }
+
+    public BattleData loadNbt(NbtCompound nbt) {
+        this.players.clear();
+        this.targets.clear();
+
+        if (!this.getUuid().equals(nbt.getUuid("Uuid"))) {
+            PersonaMod.LOGGER.warn("Loading a battle data with a different UUID than the original!");
+        }
+
+        NbtCompound playersNbt = nbt.getCompound("Players");
+        playersNbt.getKeys().forEach(key -> {
+            UUID uuid = UUID.fromString(key);
+            this.players.add(uuid);
+        });
+
+        NbtCompound targetsNbt = nbt.getCompound("Targets");
+        targetsNbt.getKeys().forEach(key -> {
+            UUID uuid = UUID.fromString(key);
+            this.targets.add(uuid);
+        });
+
+        return this;
+    }
 }

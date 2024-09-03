@@ -1,7 +1,8 @@
 package mc.duzo.persona.common.entity.door;
 
-import mc.duzo.persona.PersonaMod;
 import net.minecraft.util.Identifier;
+
+import mc.duzo.persona.PersonaMod;
 
 public enum VelvetDoorVariant {
     FOUR("four");

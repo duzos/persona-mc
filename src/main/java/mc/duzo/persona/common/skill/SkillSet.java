@@ -1,10 +1,10 @@
 package mc.duzo.persona.common.skill;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 
 public class SkillSet {
     public static final int MAX_SKILLS = 8;

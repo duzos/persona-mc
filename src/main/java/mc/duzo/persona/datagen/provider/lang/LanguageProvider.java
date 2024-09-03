@@ -1,12 +1,14 @@
 package mc.duzo.persona.datagen.provider.lang;
 
-import mc.duzo.persona.PersonaMod;
+import java.util.HashMap;
+
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-import java.util.HashMap;
+import mc.duzo.persona.PersonaMod;
 
 public class LanguageProvider extends FabricLanguageProvider {
 

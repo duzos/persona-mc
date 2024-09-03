@@ -1,6 +1,9 @@
 package mc.duzo.persona.util;
 
-import mc.duzo.persona.PersonaMod;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
@@ -12,13 +15,10 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import mc.duzo.persona.PersonaMod;
 
 /**
  * Utilities related to the world and the server

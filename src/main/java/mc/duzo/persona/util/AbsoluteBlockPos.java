@@ -1,5 +1,7 @@
 package mc.duzo.persona.util;
 
+import org.jetbrains.annotations.Unmodifiable;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -8,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * This class should be immutable. It contains the BlockPos and a Dimension of the block position.

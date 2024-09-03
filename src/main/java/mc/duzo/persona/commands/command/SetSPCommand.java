@@ -1,18 +1,20 @@
 package mc.duzo.persona.commands.command;
 
+import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.data.player.PlayerData;
-import mc.duzo.persona.data.global.server.ServerData;
-import mc.duzo.persona.data.player.server.ServerPlayerData;
+
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.data.global.server.ServerData;
+import mc.duzo.persona.data.player.PlayerData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
 
 public final class SetSPCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {

@@ -1,9 +1,7 @@
 package mc.duzo.persona.data.global.server;
 
-import mc.duzo.persona.PersonaMod;
-import mc.duzo.persona.common.battle.data.ServerBattleData;
-import mc.duzo.persona.data.player.server.ServerPlayerData;
-import mc.duzo.persona.network.PersonaMessages;
+import java.util.*;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -13,7 +11,10 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 
-import java.util.*;
+import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
+import mc.duzo.persona.data.player.server.ServerPlayerData;
+import mc.duzo.persona.network.PersonaMessages;
 
 /**
  * Data that will be saved to the world in .nbt form
