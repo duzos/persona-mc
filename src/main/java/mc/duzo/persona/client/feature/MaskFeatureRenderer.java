@@ -1,7 +1,7 @@
 package mc.duzo.persona.client.feature;
 
-import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
-import mc.duzo.persona.client.render.animation.player.PlayerAnimationTracker;
+import mc.duzo.animation.player.PlayerAnimationHelper;
+import mc.duzo.animation.player.PlayerAnimationTracker;
 import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
 import mc.duzo.persona.common.item.MaskItem;
 import mc.duzo.persona.data.global.client.ClientData;
@@ -64,7 +64,7 @@ public class MaskFeatureRenderer<T extends LivingEntity, M extends EntityModel<T
 
     private boolean shouldMaskBeVisible(AbstractClientPlayerEntity player) {
         if (isRunningAwakening(player)) {
-            return ((PlayerAwakeningAnimation) PlayerAnimationTracker.getAnimation(player)).shouldMaskBeVisible();
+            return ((PlayerAwakeningAnimation) PlayerAnimationTracker.getInstance().get(player)).shouldMaskBeVisible();
         }
 
         ClientPlayerData data = ClientData.getPlayerState(player);
@@ -73,7 +73,7 @@ public class MaskFeatureRenderer<T extends LivingEntity, M extends EntityModel<T
     }
 
     private boolean isRunningAwakening(AbstractClientPlayerEntity player) {
-        return PlayerAnimationHelper.isRunningAnimations(player) && PlayerAnimationTracker.getAnimation(player) instanceof PlayerAwakeningAnimation;
+        return PlayerAnimationHelper.isRunningAnimations(player) && PlayerAnimationTracker.getInstance().get(player) instanceof PlayerAwakeningAnimation;
     }
 }
 

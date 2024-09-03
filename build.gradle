@@ -1,6 +1,8 @@
 plugins {
-	id 'fabric-loom' version '1.5-SNAPSHOT'
+	id 'fabric-loom' version '1.7-SNAPSHOT'
 	id 'maven-publish'
+
+	id "com.diffplug.spotless" version "6.20.0"
 }
 
 apply from: 'versioning.gradle'
@@ -25,20 +27,16 @@ fabricApi {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:23.0.0'
-
-    // To change the versions see the gradle.properties file
+	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
-	// Uncomment the following line to enable the deprecated Fabric API modules. 
-	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
-	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+	// duzos animator
+	modImplementation files("libs/animator.jar")
 }
 
 processResources {
@@ -83,5 +81,29 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+spotless {
+	format 'misc', {
+		// define the files to apply `misc` to
+		target '*.gradle', '.gitattributes', '.gitignore'
+
+		// define the steps to apply to those files
+		trimTrailingWhitespace()
+		indentWithSpaces()
+		endWithNewline()
+	}
+
+	java {
+		//eclipse()
+
+		removeUnusedImports()
+		importOrder('java', 'javax', '', 'net.minecraft', group)
+
+		indentWithSpaces()
+		trimTrailingWhitespace()
+
+		formatAnnotations()
 	}
 }

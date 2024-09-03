@@ -4,6 +4,8 @@ import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.animation.AnimationHelper;
 import net.minecraft.client.render.entity.animation.Keyframe;
 import net.minecraft.client.render.entity.animation.Transformation;
+import mc.duzo.animation.player.PlayerAnimationHelper;
+
 public class PersonaPlayerAnimations {
 
     public static final Animation PERSONA_BATTLE_DASH_ATTACK = Animation.Builder.create(2.125f)

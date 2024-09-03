@@ -4,8 +4,8 @@ import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.battle.ClientBattleCache;
 import mc.duzo.persona.client.battle.ClientBattleHandler;
 import mc.duzo.persona.client.battle.data.ClientBattleData;
-import mc.duzo.persona.client.render.animation.player.PlayerAnimationHelper;
-import mc.duzo.persona.client.render.animation.player.PlayerAnimationTracker;
+import mc.duzo.animation.player.PlayerAnimationHelper;
+import mc.duzo.animation.player.PlayerAnimationTracker;
 import mc.duzo.persona.client.render.animation.player.PersonaPlayerAnimations;
 import mc.duzo.persona.client.render.animation.player.holder.PlayerAwakeningAnimation;
 import mc.duzo.persona.common.item.MaskItem;
@@ -52,25 +52,7 @@ public class ClientData {
         onUpdatePlayerData(uuid, stale, playerData);
     }
     private static void onUpdatePlayerData(UUID playerId, @Nullable PlayerData stale, PlayerData updated) {
-        if (stale != null) {
-            if (stale.isPersonaRevealed() != updated.isPersonaRevealed()) {
-                // The persona must have been hidden / revealed
-                // Play the touch mask anim
-                findPlayer(playerId).ifPresent(player -> {
-                    // TODO - cleanup
-                    if (PlayerAnimationHelper.isRunningAnimations(player) && PlayerAnimationTracker.getAnimation(player) instanceof PlayerAwakeningAnimation) return;
 
-                    if (!MaskItem.isWearingMask(player)) return;
-
-                    if (ClientBattleHandler.findBattle(player).isPresent()) {
-                        PlayerAnimationHelper.playAnimation(player, PersonaPlayerAnimations.PERSONA_BATTLE_MASK_TOUCH);
-                        return;
-                    }
-
-                    PlayerAnimationHelper.playAnimation(player, PersonaPlayerAnimations.TOUCH_MASK);
-                });
-            }
-        }
     }
     public static Optional<AbstractClientPlayerEntity> findPlayer(UUID uuid) {
         ClientWorld world = MinecraftClient.getInstance().world;

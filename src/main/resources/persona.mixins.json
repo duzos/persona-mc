@@ -17,7 +17,6 @@
     "client.ClientPlayerInteractionManagerMixin",
     "client.HeadFeatureRendererMixin",
     "client.MusicMixin",
-    "client.PlayerEntityModelMixin",
     "client.PlayerEntityRendererMixin",
     "client.SkyboxMixin"
   ]

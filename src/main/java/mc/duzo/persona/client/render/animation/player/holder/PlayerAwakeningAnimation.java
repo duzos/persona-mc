@@ -1,21 +1,24 @@
 package mc.duzo.persona.client.render.animation.player.holder;
 
+import mc.duzo.animation.player.holder.PlayerAnimationHolder;
+import mc.duzo.persona.PersonaMod;
 import mc.duzo.persona.client.render.animation.player.PersonaPlayerAnimations;
 import mc.duzo.persona.common.PersonaSounds;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.Identifier;
 
-public class PlayerAwakeningAnimation extends PlayerAnimationHolder{
+public class PlayerAwakeningAnimation extends PlayerAnimationHolder {
 	public PlayerAwakeningAnimation() {
-		super(PersonaPlayerAnimations.AWAKENING);
+		super(new Identifier(PersonaMod.MOD_ID, "awakening"), PersonaPlayerAnimations.AWAKENING);
 	}
 
 	@Override
 	protected void onStart(AbstractClientPlayerEntity player) {
 		super.onStart(player);
 
-		player.clientWorld.playSound(MinecraftClient.getInstance().player, player.getBlockPos(), PersonaSounds.MUSIC_AWAKENING, SoundCategory.PLAYERS, 1f, 1f);
+		player.clientWorld.playSound(null, player.getBlockPos(), PersonaSounds.MUSIC_AWAKENING, SoundCategory.PLAYERS, 1f, 1f);
 	}
 
 	public boolean shouldMaskBeVisible() {

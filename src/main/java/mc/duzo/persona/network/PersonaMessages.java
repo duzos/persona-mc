@@ -53,15 +53,6 @@ public class PersonaMessages {
 
         ServerPlayNetworking.send(player, CHANGED_VELVET, buf);
     }
-    public static void sendPersonaAwaken(ServerPlayerEntity player) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeUuid(player.getUuid());
-
-        ServerPlayNetworking.send(player, PERSONA_AWAKEN, buf);
-        for (ServerPlayerEntity target : PlayerLookup.tracking(player)) {
-            ServerPlayNetworking.send(target, PERSONA_AWAKEN, buf);
-        }
-    }
 
     public static void syncAllData(ServerPlayerEntity target) {
         for (UUID uuid : ServerData.getKeys(target.getServer())) {
@@ -166,6 +157,6 @@ public class PersonaMessages {
             return;
         }
 
-        data.revealPersona();
+        data.revealPersona(true);
     }
 }

@@ -1,7 +1,16 @@
 package mc.duzo.persona.data.player.server;
 
+import mc.duzo.animation.DuzoAnimationMod;
+import mc.duzo.animation.player.PlayerAnimationTracker;
+import mc.duzo.animation.player.holder.PlayerAnimationHolder;
 import mc.duzo.persona.PersonaMod;
+import mc.duzo.persona.client.render.animation.PersonaAnimationRegistry;
+import mc.duzo.persona.client.render.animation.player.PersonaPlayerAnimations;
+import mc.duzo.persona.common.PersonaSounds;
+import mc.duzo.persona.common.battle.BattleHandler;
+import mc.duzo.persona.common.battle.data.ServerBattleData;
 import mc.duzo.persona.common.persona.AbstractPersona;
+import mc.duzo.persona.data.global.server.ServerData;
 import mc.duzo.persona.data.player.PlayerData;
 import mc.duzo.persona.network.PersonaMessages;
 import mc.duzo.persona.util.AbsoluteBlockPos;
@@ -17,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class ServerPlayerData extends PlayerData {
 	private ServerPlayerEntity player;
@@ -88,6 +98,7 @@ public class ServerPlayerData extends PlayerData {
 	public void hidePersona() {
 		super.hidePersona();
 
+		this.playMaskTouchAnimation();
 		this.markDirty();
 	}
 
@@ -102,17 +113,28 @@ public class ServerPlayerData extends PlayerData {
 
 		this.markDirty();
 	}
+	public void revealPersona(boolean animate) {
+		this.revealPersona();
+
+		if (animate) this.playMaskTouchAnimation();
+	}
+	private void playMaskTouchAnimation() {
+		Supplier<PlayerAnimationHolder> anim = (BattleHandler.findPlayersBattle(player, true).isPresent()) ? PersonaAnimationRegistry.Players.TOUCH_MASK_BATTLE : PersonaAnimationRegistry.Players.TOUCH_MASK;
+		DuzoAnimationMod.play(player, PlayerAnimationTracker.getInstance(), anim.get());
+	}
 
 	public void awakenPersona(AbstractPersona persona) {
 		if (this.getPlayer().isEmpty()) return;
 
-		PersonaMessages.sendPersonaAwaken(player);
 		player.setHealth(1f);
+
+		DuzoAnimationMod.play(player, PlayerAnimationTracker.getInstance(), PersonaAnimationRegistry.Players.AWAKENING.get());
+		player.getServerWorld().playSound(null, player.getBlockPos(), PersonaSounds.MUSIC_AWAKENING, SoundCategory.PLAYERS, 1.0f, 1.0f);
 
 		DeltaTimeManager.enqueueTask((long) (13.5 * 1000L), () -> this.onFinishAwaken(persona));
 	}
 	private void onFinishAwaken(AbstractPersona persona) {
 		this.setPersona(persona);
-		this.revealPersona();
+		this.revealPersona(false);
 	}
 }

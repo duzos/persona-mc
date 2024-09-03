@@ -2,6 +2,8 @@ package mc.duzo.persona.client;
 
 import mc.duzo.persona.Register;
 import mc.duzo.persona.client.battle.ClientBattleCache;
+import mc.duzo.persona.client.render.animation.PersonaAnimationRegistry;
+import mc.duzo.persona.client.render.animation.player.PersonaPlayerAnimations;
 import mc.duzo.persona.data.global.client.ClientData;
 import mc.duzo.persona.client.hud.SPHudOverlay;
 import mc.duzo.persona.client.network.PersonaClientMessages;
@@ -26,6 +28,7 @@ public class PersonaModClient implements ClientModInitializer {
         PersonaClientMessages.initialise();
         Keybinds.initialise();
         SoundSetRegistry.initialise();
+        PersonaAnimationRegistry.init();
 
         HudRenderCallback.EVENT.register(new SPHudOverlay());
 
