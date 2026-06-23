@@ -38,14 +38,27 @@ jobs:
       - name: Build
         run: ./gradlew build
 
-      - name: Publish artifacts
+      # The mod jar is too large for a Discord webhook attachment, so it's
+      # uploaded as a run artifact and the Discord notification links to it.
+      - name: Upload artifact
+        id: artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: persona-dev-${{ github.run_number }}
+          path: |
+            build/libs/*.jar
+            !build/libs/*-dev.jar
+            !build/libs/*-sources.jar
+            !build/libs/*-javadoc.jar
+          if-no-files-found: error
+
+      - name: Notify Discord
         uses: DrTheodor/discord-webhook-upload-action@v0.4
         with:
           url: ${{ secrets.DEV_BUILDS }}
-          file: 'build/libs/*'
           username: igor
           avatar: 'https://static.wikia.nocookie.net/megamitensei/images/9/9a/IgorPersona3.png/revision/latest/scale-to-width/360?cb=20141103082542'
           msg_commit: '> :sparkles: [${commitMessage}](<${commitUrl}>) by ${authors}'
           message: |
-            <:new1:1253371736510959636><:new2:1253371805734015006> New `${{ github.repository }}` dev build `#${{ github.run_number }}`:
+            <:new1:1253371736510959636><:new2:1253371805734015006> New `${{ github.repository }}` dev build `#${{ github.run_number }}` ([download](<${{ steps.artifact.outputs.artifact-url }}>)):
             ${commits}
