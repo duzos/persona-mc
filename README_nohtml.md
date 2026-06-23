@@ -1,6 +1,4 @@
-<div align="center">
-
-<img src="https://raw.githubusercontent.com/Duzos/persona-mc/trunk/src/main/resources/assets/persona/icon.png" height="120" alt="Persona">
+![Persona](https://raw.githubusercontent.com/Duzos/persona-mc/trunk/src/main/resources/assets/persona/icon.png)
 
 # Persona
 
@@ -9,14 +7,12 @@
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.20.1-62B47A?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Beta-orange?style=for-the-badge)
 
-[<img alt="curseforge" height="52" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg">](https://www.curseforge.com/minecraft/mc-mods/persona-mc)
-[<img alt="modrinth" height="52" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg">](https://modrinth.com/project/personas)
-[<img alt="fabric" height="52" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">](https://fabricmc.net/)
-[<img alt="discord" height="52" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-singular_vector.svg">](https://discord.gg/ZgssqpUMHS)
+[![curseforge](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg)](https://www.curseforge.com/minecraft/mc-mods/persona-mc)
+[![modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg)](https://modrinth.com/project/personas)
+[![fabric](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg)](https://fabricmc.net/)
+[![discord](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-singular_vector.svg)](https://discord.gg/ZgssqpUMHS)
 
 **by [Duzo](https://duzo.is-a.dev/)**
-
-</div>
 
 ## What is it?
 
