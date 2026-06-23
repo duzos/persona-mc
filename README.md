@@ -18,17 +18,17 @@
 
 ## What is it?
 
-A Minecraft mod inspired by Atlus' **Persona** series. Rip off your mask, awaken a Persona, and fight turn-based battles — Velvet Room and all.
+A Minecraft mod inspired by Atlus' **Persona** series. Rip off your mask, awaken a Persona, and fight turn-based battles - Velvet Room and all.
 
 It's in **beta** and actively in development, so expect things to grow over time.
 
 ## Features
 
-- **Awaken a Persona** — summon Personas such as Arsene and Orpheus, each with their own model and animations.
-- **Turn-based battles** — a battle system with its own HUD and turn flow.
-- **The Velvet Room** — step through the velvet door.
-- **Masks** — worn and torn off as part of the awakening.
-- **Sound & music** — atmospheric looping music and battle audio.
+- **Awaken a Persona** - summon Personas such as Arsene and Orpheus, each with their own model and animations.
+- **Turn-based battles** - a battle system with its own HUD and turn flow.
+- **The Velvet Room** - step through the velvet door.
+- **Masks** - worn and torn off as part of the awakening.
+- **Sound & music** - atmospheric looping music and battle audio.
 
 ## Requirements
 
